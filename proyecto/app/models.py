@@ -1,8 +1,7 @@
 from django.db import models
 from datetime import datetime
 
-# Create your models here.
-
+# Se agrego la tabla Empleado con sus atributos y metodos
 class Empleado(models.Model):
     id_empleado = models.AutoField(primary_key=True)
     nombres = models.CharField(max_length=50, verbose_name="Nombres")
@@ -17,7 +16,7 @@ class Empleado(models.Model):
         verbose_name_plural = "Empleados"
         db_table = "Empleado"
 
-
+# Se agrego la tabla Marca con sus atributos y metodos
 class Marca(models.Model):
     id_marca = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=50, verbose_name="Nombre")
@@ -30,6 +29,7 @@ class Marca(models.Model):
         verbose_name_plural = "Marcas"
         db_table = "Marca"
 
+# Se agrego la tabla Categoria con sus atributos y metodos
 class Categoria(models.Model):
     id_categoria = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=50, verbose_name="Nombre")
@@ -42,6 +42,7 @@ class Categoria(models.Model):
         verbose_name_plural = "Categorias"
         db_table = "Categoria"
 
+# Se agrego la tabla Presentacion con sus atributos y metodos
 class Presentacion(models.Model):
     id_presentacion = models.AutoField(primary_key=True)
     descripcion = models.CharField(max_length=50, verbose_name="Descripcion")
@@ -54,6 +55,7 @@ class Presentacion(models.Model):
         verbose_name_plural = "Presentaciones"
         db_table = "Presentacion"
 
+# Se agrego la tabla Cliente con sus atributos y metodos
 class Cliente(models.Model):
     cc_cliente = models.IntegerField(primary_key=True)
     nombres = models.CharField(max_length=200, verbose_name="Nombres")
@@ -68,6 +70,7 @@ class Cliente(models.Model):
         verbose_name_plural = "Clientes"
         db_table = "Cliente"
 
+# Se agrego la tabla Proveedor con sus atributos y metodos
 class Proveedor(models.Model):    
     id_proveedor = models.AutoField(primary_key=True)
     nombres = models.CharField(max_length=200, verbose_name="Nombres")
@@ -82,6 +85,7 @@ class Proveedor(models.Model):
         verbose_name_plural = "Proveedores"
         db_table = "Proveedor"
 
+# Se agrego la tabla Producto con sus atributos y metodos
 class Producto(models.Model):    
     id_producto = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=200, verbose_name="Nombre")
@@ -100,6 +104,7 @@ class Producto(models.Model):
         verbose_name_plural = "Productos"
         db_table = "Producto"
 
+# Se agrego la tabla Venta con sus atributos y metodos
 class Venta(models.Model):    
     id_venta = models.AutoField(primary_key=True)
     fecha_venta = models.DateField(default=datetime.now)  
@@ -115,7 +120,8 @@ class Venta(models.Model):
         verbose_name = "Venta"
         verbose_name_plural = "Ventas"
         db_table = "Venta"
-    
+
+# Se agrego la tabla Compra con sus atributos y metodos
 class Compra(models.Model):
     id_compra = models.AutoField(primary_key=True)
     fecha_compra = models.DateField(default=datetime.now)  
