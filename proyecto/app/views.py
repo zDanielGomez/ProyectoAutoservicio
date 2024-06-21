@@ -8,7 +8,7 @@ def vista1(request):
         "nombre":"El rincon de los angeles",
         "categorias": Categoria.objects.all()
     }
-    return render(request,"index2.html", nombre)
+    return render(request,"body.html", nombre)
 
 def vista2(request):
     
@@ -16,4 +16,4 @@ def vista2(request):
         "nombre":"El rincon de los angeles",
         "categorias": Categoria.objects.all()
     }
-    return render(request,"index1.html", nombre)
+    return render(request,"listar.html", nombre)
