@@ -32,8 +32,9 @@ class Marca(models.Model):
 # Se agrego la tabla Categoria con sus atributos y metodos
 class Categoria(models.Model):
     id_categoria = models.AutoField(primary_key=True)
-    nombre = models.CharField(max_length=50, verbose_name="Nombre")
-    
+    nombre = models.CharField(max_length=50, verbose_name="Nombre", unique=True)
+    descripcion = models.CharField(max_length=200, verbose_name="Descripcion", blank=True, null=True)
+
     def __str__(self):
         return self.nombre
 

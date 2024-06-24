@@ -1,0 +1,59 @@
+{% extends "body.html" %}
+{% load widget_tweaks %}
+{% block contenido %} 
+<form method="post" action=".">
+    <div class="card card-default">
+        <div class="card-header">
+            <h3 class="card-title">
+                <i class="fa fa-plus"></i> 
+                {{titulo}}
+            </h3>
+        </div>
+        <div class="card-body">
+            {% csrf_token %}
+            {% if form.errors %}
+            <div class="alert alert-warning alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <h4><i class="icon fa fa-ban"></i><b>Ha ocurrido un error al intentar guardar la categoria:</b></h4>
+                <ul>
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                        <li>{{error}}</li>
+                        {% endfor %}
+                    {% endfor %}
+                </ul>
+                </div>
+                {% endif %}
+            {% for field in form.visible_fields %}
+                <div class="form-group">
+                    <label for="email">{{ field.label }}:</label>
+                    {{ field|add_class:'form-control'|attr:'autocomplete:off' }}
+                </div>
+            {% endfor %}
+        </div>
+        <div class="card-footer">
+        <button class="btn btn-primary btn btn-xs"><i class="fas fa-plus"></i>
+            Guardar
+            </button>
+        </div>
+    </div>
+</form>
+<script>
+    {% if form.errors %}
+    var errors = '';
+    {% for field in form %}
+        {% for error in field.errors %}
+            errors += '{{errors}}\n';
+        {% endfor %}
+    {% endfor %}
+        
+
+    Swal.fire({
+        title: 'Error!',
+        text: 'Ha ocurrido un error al intentar guardar la categoria',
+        icon: 'error',
+        confirmButtonText: 'Cool'
+    });
+    {% endif %}
+</script>
+{% endblock %}
