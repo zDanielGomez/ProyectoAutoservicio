@@ -1,4 +1,6 @@
 # from django.contrib.auth.decorators import login_required
+from typing import Any
+from django.urls import reverse_lazy
 from django.views.decorators.csrf import csrf_protect,csrf_exempt
 from django.http import JsonResponse
 from django.views.generic import ListView, CreateView
@@ -41,3 +43,10 @@ class CategoriaCreateView(CreateView):
     model = Categoria
     form_class = CategoriaForm
     template_name = 'categoria/crear.html'
+    success_url = reverse_lazy('app:categoria_lista')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['titulo'] = 'Crear Categoria'
+        
+        return context
