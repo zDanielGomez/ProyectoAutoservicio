@@ -16,8 +16,8 @@
     <td>{{c.id_categoria}}</td>
     <td>{{c.nombre}}</td>
     <td>
-        <button type="button" class="btn btn-primary btn-xs"><i class="fas fa-edit"></i></button>
-        <button type="button" class="btn btn-danger btn-xs"><i class="fas fa-trash"></i></button>
+        <a href="{% url 'app:categoria_editar' c.id_categoria%}" type="button" class="btn btn-primary btn-xs"><i class="fas fa-edit"></i></a>
+        <a href="{% url 'app:categoria_eliminar' c.id_categoria%}" type="button" class="btn btn-danger btn-xs"><i class="fas fa-trash"></i></a>
     </td>
 </tr>
 
