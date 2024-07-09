@@ -1,5 +1,5 @@
-# from django.contrib.auth.decorators import login_required
-
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 from django.views.decorators.csrf import csrf_protect,csrf_exempt
 from django.http import JsonResponse
@@ -24,15 +24,13 @@ class CategoriaListView(ListView):
     model = Categoria
     template_name = 'categoria/listar.html'
     
-    # @method_decorator(login_required)
-    @method_decorator(csrf_exempt)
+    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs): 
         return super().dispatch(request, *args, **kwargs)
     
     def post(self, request, *args, **kwargs):
         nombre ={'nombre': 'fabian'}
         return JsonResponse(nombre)
-    
     
     def get_context_data(self, **kwargs):
         context= super().get_context_data(**kwargs)
@@ -46,6 +44,10 @@ class CategoriaCreateView(CreateView):
     form_class = CategoriaForm
     template_name = 'categoria/crear.html'
     success_url = reverse_lazy('app:categoria_lista')
+    
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs): 
+        return super().dispatch(request, *args, **kwargs)
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -61,6 +63,10 @@ class CategoriaUpdateView(UpdateView):
     template_name = 'categoria/crear.html'
     success_url = reverse_lazy('app:categoria_lista')
     
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs): 
+        return super().dispatch(request, *args, **kwargs)
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['titulo'] = 'Editar Categoria'
@@ -73,6 +79,10 @@ class CategoriaDeleteView(DeleteView):
     model = Categoria
     template_name = 'categoria/eliminar.html'
     success_url = reverse_lazy('app:categoria_lista')
+    
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs): 
+        return super().dispatch(request, *args, **kwargs)
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
