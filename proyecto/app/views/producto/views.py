@@ -1,0 +1,93 @@
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
+from django.urls import reverse_lazy
+from django.views.decorators.csrf import csrf_protect, csrf_exempt
+from django.http import JsonResponse
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.utils.decorators import method_decorator
+from django.shortcuts import render, redirect
+from app.models import *
+from app.forms import *
+
+def lista_producto(request):
+    
+    nombre = {
+        
+        'titulo': 'Listado de producto',
+        'empleados': Producto.objects.all()
+    }
+    
+    return render(request, "producto/listar.html", nombre)
+
+
+class ProductoListView(ListView):
+    model = Producto
+    template_name = 'producto/listar.html'
+    
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs): 
+        return super().dispatch(request, *args, **kwargs)
+    
+    def post(self, request, *args, **kwargs):
+        nombre = {'nombre': 'fabian'}
+        return JsonResponse(nombre)
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['titulo'] = 'Listado de Productos'
+        context['crear_url'] = reverse_lazy('app:producto_crear')
+        context['entidad'] = 'Producto'
+        return context
+    
+class ProductoCreateView(CreateView):
+    model = Producto
+    form_class = ProductoForm
+    template_name = 'producto/crear.html'
+    success_url = reverse_lazy('app:producto_lista')
+    
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs): 
+        return super().dispatch(request, *args, **kwargs)
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['titulo'] = 'Crear Producto'
+        context['entidad'] = 'Producto'
+        context['listar_url'] = reverse_lazy('app:producto_lista')
+        
+        return context
+
+class ProductoUpdateView(UpdateView):
+    model = Producto
+    form_class = ProductoForm
+    template_name = 'producto/crear.html'
+    success_url = reverse_lazy('app:producto_lista')
+    
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs): 
+        return super().dispatch(request, *args, **kwargs)
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['titulo'] = 'Editar Producto'
+        context['entidad'] = 'Producto'
+        context['listar_url'] = reverse_lazy('app:producto_lista')
+        
+        return context
+    
+class ProductoDeleteView(DeleteView):
+    model = Producto
+    template_name = 'Producto/eliminar.html'
+    success_url = reverse_lazy('app:producto_lista')
+    
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs): 
+        return super().dispatch(request, *args, **kwargs)
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['titulo'] = 'Eliminar Producto'
+        context['entidad'] = 'Producto'
+        context['listar_url'] = reverse_lazy('app:producto_lista')
+        
+        return context

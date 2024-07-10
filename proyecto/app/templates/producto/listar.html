@@ -1,0 +1,38 @@
+{% extends 'listar.html' %}
+
+{% block columnas %}
+<tr>
+    <th scope="col">#</th>
+    <th scope="col">nombre</th>
+    <th scope="col">descripcion</th>
+    <th scope="col">cantidad</th>
+    <th scope="col">marca</th>
+    <th scope="col">categoria</th>
+    <th scope="col">presentacion</th>
+    <th scope="col">precio</th>
+</tr>
+{% endblock %}
+
+{% block filas %}
+{% for c in object_list %}
+
+    <tr>
+    <td>{{c.id}}</td>
+    <td>{{c.nombre}}</td>
+    <td>{{c.descripcion}}</td>
+    <td>{{c.cantidad}}</td>
+    <td>{{c.marca}}</td>
+    <td>{{c.categoria}}</td>
+    <td>{{c.presentacion}}</td>
+    <td>{{c.precio}}</td>
+    <td>
+        <a href="{% url 'app:producto_editar' c.id%}" type="button" class="btn btn-primary btn-xs"><i class="fas fa-edit"></i></a>
+        <a href="{% url 'app:producto_eliminar' c.id%}" type="button" class="btn btn-danger btn-xs"><i class="fas fa-trash"></i></a>
+    </td>
+</tr>
+
+
+
+{% endfor %}
+
+{% endblock %}
