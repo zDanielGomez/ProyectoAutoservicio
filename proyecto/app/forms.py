@@ -43,12 +43,7 @@ class EmpleadoForm(ModelForm):
                 attrs= {
                     'placeholder' : 'Ingrese los apellidos',
                 }
-            ),
-            'telefono' : TextInput(
-                attrs= {
-                    'placeholder' : 'Ingrese el telefono',
-                }
-            ),     
+            ),   
         }
 
 class ClienteForm(ModelForm):
@@ -67,11 +62,6 @@ class ClienteForm(ModelForm):
             'apellidos' : TextInput(
                 attrs= {
                     'placeholder' : 'Ingrese los apellidos',
-                }
-            ),
-            'telefono' : TextInput(
-                attrs= {
-                    'placeholder' : 'Ingrese el telefono',
                 }
             ),     
         }
@@ -204,7 +194,7 @@ class MarcaForm(ModelForm):
 class PresentacionForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['nombre'].widget.attrs['autofocus'] = True
+        self.fields['descripcion'].widget.attrs['autofocus'] = True
     class Meta:
         model = Presentacion
         fields = '__all__'

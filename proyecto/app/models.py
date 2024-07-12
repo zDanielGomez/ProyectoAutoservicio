@@ -5,7 +5,7 @@ from datetime import datetime
 class Empleado(models.Model):
     nombres = models.CharField(max_length=50, verbose_name="Nombres")
     apellidos = models.CharField(max_length=50, verbose_name="Apellidos")
-    telefono = models.CharField(unique=True, max_length=10,verbose_name="Telefono")
+    telefono = models.IntegerField(unique=True,verbose_name="Telefono")
     
     def __str__(self):
         return self.nombres
@@ -30,7 +30,6 @@ class Marca(models.Model):
 # Se agrego la tabla Categoria con sus atributos y metodos
 class Categoria(models.Model):
     nombre = models.CharField(max_length=50, verbose_name="Nombre", unique=True)
-    descripcion = models.CharField(max_length=200, verbose_name="Descripcion", blank=True, null=True)
 
     def __str__(self):
         return self.nombre
@@ -57,7 +56,7 @@ class Cliente(models.Model):
     cc_cliente = models.IntegerField(unique=True)
     nombres = models.CharField(max_length=200, verbose_name="Nombres")
     apellidos = models.CharField(max_length=200, verbose_name="Apellidos")
-    telefono = models.CharField(unique=True, max_length=10,verbose_name="Telefono")
+    telefono = models.IntegerField(unique=True,verbose_name="Telefono")
     
     def __str__(self):
         return self.nombres
@@ -70,7 +69,7 @@ class Cliente(models.Model):
 # Se agrego la tabla Proveedor con sus atributos y metodos
 class Proveedor(models.Model):    
     nombres = models.CharField(max_length=200, verbose_name="Nombres")
-    telefono = models.CharField(unique=True, max_length=10,verbose_name="Telefono")
+    telefono = models.IntegerField(unique=True,verbose_name="Telefono")
     correo = models.CharField(max_length=200, verbose_name="Correo")
     
     def __str__(self):
@@ -84,7 +83,6 @@ class Proveedor(models.Model):
 # Se agrego la tabla Producto con sus atributos y metodos
 class Producto(models.Model):    
     nombre = models.CharField(max_length=200, verbose_name="Nombre")
-    descripcion = models.CharField(max_length=50, verbose_name="Descripcion")
     cantidad = models.IntegerField(verbose_name="Cantidad")
     marca = models.ForeignKey(Marca,on_delete=models.CASCADE)
     categoria = models.ForeignKey(Categoria,on_delete=models.CASCADE)
