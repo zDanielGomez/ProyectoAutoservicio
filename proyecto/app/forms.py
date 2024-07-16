@@ -67,9 +67,7 @@ class ClienteForm(ModelForm):
         }
         
 class VentaForm(ModelForm):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['fecha_venta'].widget.attrs['autofocus'] = True
+    
     class Meta:
         model = Venta
         fields = '__all__'
@@ -117,9 +115,7 @@ class ProductoForm(ModelForm):
         }
 
 class CompraForm(ModelForm):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['fecha_compra'].widget.attrs['autofocus'] = True
+    
     class Meta:
         model = Compra
         fields = '__all__'
