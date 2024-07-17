@@ -27,10 +27,7 @@ class CategoriaListView(ListView):
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs): 
         return super().dispatch(request, *args, **kwargs)
-    
-    def post(self, request, *args, **kwargs):
-        nombre ={'nombre': 'fabian'}
-        return JsonResponse(nombre)
+
     
     def get_context_data(self, **kwargs):
         context= super().get_context_data(**kwargs)

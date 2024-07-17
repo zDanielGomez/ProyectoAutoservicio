@@ -5,7 +5,7 @@ from datetime import datetime
 class Empleado(models.Model):
     nombres = models.CharField(max_length=50, verbose_name="Nombres")
     apellidos = models.CharField(max_length=50, verbose_name="Apellidos")
-    telefono = models.IntegerField(unique=True,verbose_name="Telefono")
+    telefono = models.PositiveIntegerField(unique=True,verbose_name="Telefono")
     
     def __str__(self):
         return self.nombres
@@ -53,10 +53,10 @@ class Presentacion(models.Model):
 
 # Se agrego la tabla Cliente con sus atributos y metodos
 class Cliente(models.Model):
-    cc_cliente = models.IntegerField(unique=True)
+    cc_cliente = models.PositiveIntegerField(unique=True)
     nombres = models.CharField(max_length=200, verbose_name="Nombres")
     apellidos = models.CharField(max_length=200, verbose_name="Apellidos")
-    telefono = models.IntegerField(unique=True,verbose_name="Telefono")
+    telefono = models.PositiveIntegerField(unique=True,verbose_name="Telefono")
     
     def __str__(self):
         return self.nombres
@@ -67,9 +67,9 @@ class Cliente(models.Model):
         db_table = "Cliente"
 
 # Se agrego la tabla Proveedor con sus atributos y metodos
-class Proveedor(models.Model):    
+class Proveedor(models.Model):
     nombres = models.CharField(max_length=200, verbose_name="Nombres")
-    telefono = models.IntegerField(unique=True,verbose_name="Telefono")
+    telefono = models.PositiveIntegerField(unique=True,verbose_name="Telefono")
     correo = models.CharField(max_length=200, verbose_name="Correo")
     
     def __str__(self):
@@ -83,7 +83,7 @@ class Proveedor(models.Model):
 # Se agrego la tabla Producto con sus atributos y metodos
 class Producto(models.Model):    
     nombre = models.CharField(max_length=200, verbose_name="Nombre")
-    cantidad = models.IntegerField(verbose_name="Cantidad")
+    cantidad = models.PositiveIntegerField(verbose_name="Cantidad")
     marca = models.ForeignKey(Marca,on_delete=models.CASCADE)
     categoria = models.ForeignKey(Categoria,on_delete=models.CASCADE)
     presentacion = models.ForeignKey(Presentacion,on_delete=models.CASCADE)
