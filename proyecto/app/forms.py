@@ -49,7 +49,7 @@ class EmpleadoForm(ModelForm):
 class ClienteForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['nombres'].widget.attrs['autofocus'] = True
+        self.fields['cc_cliente'].widget.attrs['autofocus'] = True
     class Meta:
         model = Cliente
         fields = '__all__'
