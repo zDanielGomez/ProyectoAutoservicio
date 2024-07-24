@@ -53,7 +53,7 @@ body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-size: 1rem;
-  font-weight: 400;
+  font-weight: 100;
   line-height: 1.5;
   color: #212529;
   text-align: left;
@@ -8134,11 +8134,11 @@ a.text-dark:hover, a.text-dark:focus {
 
 body {
   font-family: "Poppins", Arial, sans-serif;
-  background: #000000;
+  background: #ffffff;
   font-size: 16px;
   line-height: 1.8;
   font-weight: 400;
-  color: #999999; }
+  color: #000000; }
   body.menu-show {
     overflow: hidden;
     position: fixed;
@@ -8158,14 +8158,14 @@ a {
 h1, h2, h3, h4, h5,
 .h1, .h2, .h3, .h4, .h5 {
   line-height: 1.5;
-  color: white;
+  color: #000000;
   font-weight: 400; }
 
 .text-primary {
   color: #ffbd39 !important; }
 
 .ftco-navbar-light {
-  background: transparent !important;
+  background: #000000 !important;
   position: absolute;
   top: 0;
   left: 0;
@@ -8198,12 +8198,12 @@ h1, h2, h3, h4, h5,
       padding-bottom: 20px;
       margin-right: 0; } }
   .ftco-navbar-light .navbar-nav > .nav-item > .nav-link {
-    font-size: 16px;
+    font-size: 22px;
     padding-top: .7rem;
     padding-bottom: .7rem;
     padding-left: 20px;
     padding-right: 20px;
-    color: #fff;
+    color: #ffffff;
     font-weight: 400;
     opacity: 1 !important; }
     .ftco-navbar-light .navbar-nav > .nav-item > .nav-link span {
@@ -8252,7 +8252,7 @@ h1, h2, h3, h4, h5,
     padding-top: .7rem;
     padding-bottom: .7rem;
     padding-left: 18px;
-    padding-right: 18px;
+    padding-right: 180px;
     background: #ffbd39;
     margin-top: 0;
     -webkit-border-radius: 5px;
@@ -8526,7 +8526,7 @@ h1, h2, h3, h4, h5,
           z-index: 1; }
         .owl-carousel.home-slider .slider-item .slider-text h1 {
           font-size: 60px;
-          color: #fff;
+          color: #000000;
           line-height: 1.2;
           font-weight: 800; }
           .owl-carousel.home-slider .slider-item .slider-text h1 span {
@@ -8624,9 +8624,9 @@ h1, h2, h3, h4, h5,
         height: 10px;
         margin: 5px;
         border-radius: 50%;
-        background: rgba(255, 255, 255, 0.4); }
+        background: #000000; }
         .owl-carousel.home-slider .owl-dots .owl-dot.active {
-          background: #fff; }
+          background: #F8BD48; }
 
 .hero-wrap {
   width: 100%;
@@ -8782,14 +8782,14 @@ h1, h2, h3, h4, h5,
       width: calc(100% - 130px); }
       .ftco-about ul.about-info li span:first-child {
         font-weight: 600;
-        color: #fff;
+        color: #F8BD48;
         width: 130px; }
 
 .ftco-about .counter-wrap .text p {
   font-size: 20px; }
   .ftco-about .counter-wrap .text p span {
     font-weight: 400;
-    color: #fff; }
+    color: #000000; }
   .ftco-about .counter-wrap .text p span.number {
     font-weight: 600;
     color: #ffbd39; }
@@ -9082,15 +9082,15 @@ textarea.form-control {
 .ftco-footer {
   font-size: 16px;
   background: #000000;
-  padding: 7em 0;
+  padding: 3em 0;
   z-index: 0; }
   .ftco-footer .ftco-footer-logo {
     text-transform: uppercase;
     letter-spacing: .1em; }
   .ftco-footer .ftco-footer-widget h2 {
     font-weight: normal;
-    color: #fff;
-    margin-bottom: 40px;
+    color: #ffbd39;
+    margin-bottom: 20px;
     font-size: 22px;
     font-weight: 600; }
   .ftco-footer .ftco-footer-widget ul li {
@@ -9193,8 +9193,8 @@ textarea.form-control {
     position: absolute;
     top: 0px;
     left: 0;
-    font-size: 7vw;
-    color: rgba(255, 255, 255, 0.1);
+    font-size: 10vw;
+    color: #fff2d7;
     z-index: -1;
     font-weight: 900; }
     .heading-section h1.big.big-2 {
