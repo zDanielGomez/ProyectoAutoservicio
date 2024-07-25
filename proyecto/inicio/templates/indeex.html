@@ -36,7 +36,7 @@
     >
       <div class="container">
       <a class="navbar-brand" href="index.html">
-        <img src= "{% static 'image/autosrvlogo.png'%}" alt="Logo" width="140">
+        <img src= "{% static 'image/autosrvlogo2.png'%}" alt="Logo" width="140">
         </a>
         <button
           class="navbar-toggler js-fh5co-nav-toggle fh5co-nav-toggle"
@@ -61,9 +61,7 @@
               <a href="#seccion-nosotros" class="nav-link"><span>Sobre Nosotros</span></a>
             </li>
             <li class="nav-item">
-              <a href="#ftco-footer" class="nav-link"
-                ><span>Iniciar Sesión</span></a
-              >
+              <b><a href="{% url 'login' %}" class="btn btn-primary py-3 px-4">Iniciar sesión</a></b>
             </li>
           </ul>
         </div>
@@ -99,7 +97,7 @@
                 </div>
                 </div>
                 <div class="col-md-6">
-                  <img src="{% static 'image/refrescos.png'%}" class="img-fluid" alt="Refrescos" style="max-width: 80%; height: auto;">
+                  <img src="{% static 'image/refrescos1.png'%}" class="img-fluid" alt="Refrescos" style="max-width: 80%; height: auto;">
                 </div>
               </div>
             </div>
@@ -124,9 +122,9 @@
                 data-scrollax=" properties: { translateY: '70%' }"
               >
               <div style="text;">
-                <div style="flex-basis: 100%; margin: 300px 50px 200px 75px;">
+                <div style="flex-basis: 100%; margin: 100px 100px 100px 75px;">
                   <h1 class="mb-4 mt-3">
-                    Disfruta de nuestros <span>Buenos precios</span>, acompañados de un buen servicio.
+                    <span>Disfruta de nuestros </span>buenos precios.
                   </h1>
                   <p>
                     <b><a href="#seccion-productos" class="btn btn-primary py-3 px-4">Saber más</a></b>
@@ -147,7 +145,8 @@
         <div class="row justify-content-center pb-2">
           <div class="col-md-10 heading-section text-center ftco-animate">
             <h1 class="big big-2" style="margin-top: 385px; font-size: 6em;">Productos</h1>
-            <h2 class="mb-1" style="color:#FFBD39;">Nuestros productos</h2>
+            <h1 class="big big-2" style="margin-top: 820px; font-size: 6em;">Conócenos</h1>
+            <h2 class="mb-1" style="color:#044064;">Nuestros productos</h2>
           </div>
         </div>
         <div class="row">
@@ -211,13 +210,12 @@
           <div class="col-md-6 col-lg-7 pl-lg-5 pb-5">
             <div class="row justify-content-start pb-3">
               <div class="col-md-12 heading-section ftco-animate" style= "margin-bottom:15px;">
-                <h1 class="big big-1" style="margin-top: 570px; font-size: 5em;">Conócenos</h1>
                 <h2 class="mb-4">Sobre Nosotros</h2>
                 <p>
                   Información básica sobre nuestro emprendimiento:
                 </p>
                 <ul class="about-info mt-4 px-md-0 px-2">
-                  <img src="/static/image/exteriorautosrv.png" class="imagen-exterior" style="width: 600px; float: right; margin-right: -500px; margin-top: -120px">
+                  <img src="/static/image/conocenos.png" class="imagen-exterior" style="width: 600px; float: right; margin-right: -500px; margin-top: -120px">
                   <li class="d-flex">
                     <span>Propietario:</span> <span>Yeison Duván Vanegas</span>
                   </li>
