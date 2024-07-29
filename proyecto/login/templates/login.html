@@ -1,87 +1,47 @@
 {% load static %}
 {% load widget_tweaks %}
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AdminLTE 3 | Log in</title>
-
-<!-- Font Awesome -->
-<link rel="stylesheet" href="{% static 'lib/adminlte-3.0.4/plugins/font-awesome-5.11.1/css/all.min.css' %}">
-<!-- Theme style -->
-<link rel="stylesheet" href="{% static 'lib/adminlte-3.0.4/css/adminlte.min.css' %}">
-<!-- Google Font: Source Sans Pro -->
-<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
-<!-- Sweetalert2 -->
-<script src="{% static 'lib/sweetalert2/sweetalert2.all.min.js' %}"></script>
-
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autoservicio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+        integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="{% static 'login/css/styles.css' %}">
 </head>
-<body class="hold-transition login-page">
-<div class="login-box">
-<div class="login-logo">
-<a href="../../index2.html"><b> Inicio de Sesion </b></a>
+<body style="display:flex; align-items:center; justify-content:center;">
+<div class="login-page">
+  <div class="form">
+    <form class="register-form" method="POST">
+      <a href="/">
+        <img src= "{% static 'img/autosrvlogo.png'%}" alt="Logo" width="140">
+      </a>
+      
+      <h2><i class="fas fa-lock"></i> Register</h2>
+      <input type="text" placeholder="Username *" required/>
+      <input type="email" placeholder="Email *" required/>
+      <input type="password" placeholder="Password *" required/>
+      <button type="submit">create</button>
+      <p class="message">Already registered? <a href="#">Sign In</a></p>
+    </form>
+    <form class="login-form" method="post">
+      {% csrf_token %} 
+      <a href="/">
+        <img src= "{% static 'img/autosrvlogo.png'%}" alt="Logo" width="140">
+      </a>
+      <h2><i class="fas fa-lock"></i> Login</h2>
+      {{ form.username|add_class:'form-control'|attr:'autocomplete:off'|attr:"placeholder: Ingrese su usuario" }}
+      {{ form.password|add_class:'form-control'|attr:'autocomplete:off'|attr:"placeholder:Contraseña" }}
+      <button type="submit" name="send2">login</button>
+      <p class="message"><a href="{% url 'password_reset' %}">¿Olvido su contraseña? </a></p>
+      <p class="message">¿No registrado? <a href="#">Crea una cuenta</a></p>
+    </form>
+  </div>
 </div>
-
-<div class="card">
-<div class="card-body login-card-body">
-
-<p class="login-box-msg"></p>
-<form method="post">
-    {% csrf_token %}    
-<div class="input-group mb-3">
-    {{ form.username|add_class:'form-control'|attr:'autocomplete:off'|attr:"placeholder: Ingrese su usuario" }}
-<div class="input-group-append">
-<div class="input-group-text">
-<span class="fas fa-envelope"></span>
-</div>
-</div>
-</div>
-<div class="input-group mb-3">
-    {{ form.password|add_class:'form-control'|attr:'autocomplete:off'|attr:"placeholder:Contraseña" }}
-<div class="input-group-append">
-<div class="input-group-text">
-<span class="fas fa-lock"></span>
-</div>
-</div>
-</div>
-<div class="row">
-<div class="col-8">
-<div class="icheck-primary">
-<input type="checkbox" id="remember">
-<label for="remember">
-Remember Me
-</label>
-</div>
-</div>
-
-
-<div class="col-4">
-<button type="submit"  class="btn btn-primary btn-block" >Sign In</button>
-</div>
-
-
-</div>
-
-<p class="mb-1">
-<a href="{% url 'password_reset' %}">Olvido su contraseña</a>
-</p>
-
-
-<p class="mb-0">
-<a href="register.html" class="text-center">Register a new membership</a>
-</p>
-</div>
-
-</div>
-</div>
-
-<!-- jQuery -->
-<script src="{% static 'lib/adminlte-3.0.4/plugins/jquery/jquery.min.js' %}"></script>
-<!-- Bootstrap 4 -->
-<script src="{% static 'lib/adminlte-3.0.4/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-<!-- AdminLTE App -->
-<script src="{% static 'lib/adminlte-3.0.4/js/adminlte.min.js' %}"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{% static 'login/js/main.js' %}"></script>
 </body>
 </html>

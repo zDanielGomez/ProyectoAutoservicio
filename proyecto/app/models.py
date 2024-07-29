@@ -18,7 +18,6 @@ class Empleado(models.Model):
 # Se agrego la tabla Marca con sus atributos y metodos
 class Marca(models.Model):
     nombre = models.CharField(max_length=50, verbose_name="Nombre")
-    
     def __str__(self):
         return self.nombre
 
