@@ -1,6 +1,11 @@
 {% extends "layout.html" %}
 {% load static %}
 {% block head %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <link rel="stylesheet" href="{% static 'lib/datatables-1.10.20/css/dataTables.bootstrap4.min.css' %}"/> 
 <link rel="stylesheet" href="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/css/responsive.bootstrap4.min.css' %}"/>
@@ -12,25 +17,99 @@
 {% endblock %}
 
 {% block contenido %}
-<div class="card card-default">
-    <div class="card-header">
-        <h3 class="card-title">
-            <i class="fas fa-search"></i> 
-            {{titulo}}
-        </h3>
+    <style>
+        .card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin: 20px;
+            padding: 20px;
+        }
+
+        .card-default {
+            border: 1px solid #ddd;
+        }
+
+        .card-header {
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #ddd;
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .card-title {
+            font-size: 18px;
+            margin: 0;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .card-title i {
+            margin-right: 8px;
+            color: #007bff;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            margin-top: 15px;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table thead {
+            background-color: #f1f1f1;
+        }
+
+        .table th, .table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .table th {
+            font-weight: 700;
+            color: #555;
+        }
+
+        .table tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        @media (max-width: 768px) {
+            .table {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="card card-default">
+        <div class="card-header">
+            <h3 class="card-title">
+                <i class="fas fa-search"></i> 
+                {{titulo}}
+            </h3>
+        </div>
+        <div class="table-responsive">
+            <table id="tabla" class="table">
+                <thead>
+                    {% block columnas %} 
+                    {% endblock %}
+                </thead>
+                <tbody>
+                    {% block filas %}
+                    {% endblock %}
+                </tbody>
+            </table>
+        </div>
     </div>
-    <div class="card-body">
-        <table class="table" id="tabla">
-            <thead>
-                {% block columnas %} 
-                {% endblock %}
-            </thead>
-            <tbody>
-                {% block filas %}
-                {% endblock %}
-            </tbody>
-        </table>
-    </div>
+</body>
+</html>
+
     <div class="card-footer">
         <a href="{{crear_url}}" class = "btn btn-primary btn btn-xs"><i class="fas fa-plus"></i>  
             Agregar
@@ -45,7 +124,6 @@
 $(document).ready(function () { 
     $('#tabla').DataTable({
         responsive: false,
-        scrollX:true
     });
 });
 </script>

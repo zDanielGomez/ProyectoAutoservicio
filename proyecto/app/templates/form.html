@@ -32,10 +32,19 @@
             {% endfor %}
         </div>
         <div class="card-footer">
-        <button class="btn btn-primary btn btn-xs"><i class="fas fa-plus"></i>
-            Guardar
-            </button>
-        </div>
+            <button class="btn btn-primary btn btn-xs"><i class="fas fa-plus"></i>
+                Guardar
+                </button>
+                <button class="btn btn-secondary btn-xs" onclick="goBack()">
+                    <i class="fas fa-times"></i> Cancelar
+                </button>
+            </div>
+        
+            <script>
+                function goBack() {
+                    window.history.back();
+                }
+            </script>     
     </div>
 </form>
 <script>
