@@ -97,10 +97,8 @@
         const formData = new FormData(form);
         let valid = true;
 
-        // Remove previous error classes
         document.querySelectorAll('.form-control').forEach(el => el.classList.remove('is-invalid'));
 
-        // Check each field
         formData.forEach((value, key) => {
             const field = form.querySelector(`[name="${key}"]`);
             if (!value.trim()) {
@@ -114,7 +112,6 @@
         });
 
         if (valid) {
-            // If form is valid, submit it and show success alert
             Swal.fire({
                 title: '¡Éxito!',
                 text: 'Se agregó correctamente.',
@@ -139,7 +136,7 @@
             cancelButtonText: 'No, volver'
         }).then((result) => {
             if (result.isConfirmed) {
-                window.history.back();  // Navega hacia atrás en el historial
+                window.history.back(); 
             }
         });
     }

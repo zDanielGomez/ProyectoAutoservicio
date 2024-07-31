@@ -12,7 +12,11 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-sm-6">
-                            <h1 class="m-0 text-dark"> Bienvenidos:    <small>Modulo|{{entidad}}</small></h1>
+                            {% if not entidad  %}
+                            <h1 class="m-0 text-dark"> Bienvenidos:</h1>
+                            {% else %}
+                            <h1 class="m-0 text-dark"><small>Modulo| {{entidad}}</small></h1>
+                            {% endif %}
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
