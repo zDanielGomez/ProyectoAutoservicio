@@ -1,7 +1,47 @@
 {% extends "layout.html" %}
 {% load widget_tweaks %}
 {% block contenido %} 
-<form method="post" action=".">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        .card-footer {
+            margin: 20px;
+        }
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            margin-right: 10px;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+        .btn-xs {
+            font-size: 12px;
+        }
+        .form-control.is-invalid {
+            border-color: #dc3545;
+        }
+        .invalid-feedback {
+            color: #dc3545;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+<form method="post" action="." id="myForm">
     <div class="card card-default">
         <div class="card-header">
             <h3 class="card-title">
@@ -14,7 +54,7 @@
             {% if form.errors %}
             <div class="alert alert-warning alert-dismissible">
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                <h4><i class="icon fa fa-ban"></i><b>Ha ocurrido un error al intentar guardar la categoria:</b></h4>
+                <h4><i class="icon fa fa-ban"></i><b>Ha ocurrido un error al intentar guardar la categoría:</b></h4>
                 <ul>
                     {% for field in form %}
                         {% for error in field.errors %}
@@ -22,47 +62,101 @@
                         {% endfor %}
                     {% endfor %}
                 </ul>
-                </div>
-                {% endif %}
+            </div>
+            {% endif %}
             {% for field in form.visible_fields %}
                 <div class="form-group">
-                    <label for="email">{{ field.label }}:</label>
+                    <label for="{{ field.id_for_label }}">{{ field.label }}:</label>
                     {{ field|add_class:'form-control'|attr:'autocomplete:off' }}
+                    {% if field.errors %}
+                    <div class="invalid-feedback">
+                        {% for error in field.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
                 </div>
             {% endfor %}
         </div>
+
         <div class="card-footer">
-            <button class="btn btn-primary btn btn-xs"><i class="fas fa-plus"></i>
-                Guardar
-                </button>
-                <button class="btn btn-secondary btn-xs" onclick="goBack()">
-                    <i class="fas fa-times"></i> Cancelar
-                </button>
-            </div>
-        
-            <script>
-                function goBack() {
-                    window.history.back();
-                }
-            </script>     
+            <button type="button" class="btn btn-primary btn-xs" onclick="validateForm()">
+                <i class="fas fa-plus"></i> Guardar
+            </button>
+            <button type="button" class="btn btn-secondary btn-xs" onclick="confirmCancel()">
+                <i class="fas fa-times"></i> Cancelar
+            </button>
+        </div>
     </div>
 </form>
-<script>
-    {% if form.errors %}
-    var errors = '';
-    {% for field in form %}
-        {% for error in field.errors %}
-            errors += '{{errors}}\n';
-        {% endfor %}
-    {% endfor %}
-        
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    function validateForm() {
+        const form = document.getElementById('myForm');
+        const formData = new FormData(form);
+        let valid = true;
+
+        // Remove previous error classes
+        document.querySelectorAll('.form-control').forEach(el => el.classList.remove('is-invalid'));
+
+        // Check each field
+        formData.forEach((value, key) => {
+            const field = form.querySelector(`[name="${key}"]`);
+            if (!value.trim()) {
+                valid = false;
+                field.classList.add('is-invalid');
+                const feedback = field.nextElementSibling;
+                if (feedback && feedback.classList.contains('invalid-feedback')) {
+                    feedback.textContent = 'Este campo es obligatorio.';
+                }
+            }
+        });
+
+        if (valid) {
+            // If form is valid, submit it and show success alert
+            Swal.fire({
+                title: '¡Éxito!',
+                text: 'Se agregó correctamente.',
+                icon: 'success',
+                confirmButtonText: 'Aceptar',
+                confirmButtonColor: '#3085d6'
+            }).then(() => {
+                form.submit();
+            });
+        }
+    }
+
+    function confirmCancel() {
+        Swal.fire({
+            title: '¿Está seguro que desea cancelar?',
+            text: "Los cambios no guardados se perderán.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, cancelar',
+            cancelButtonText: 'No, volver'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.history.back();  // Navega hacia atrás en el historial
+            }
+        });
+    }
+</script>
+
+{% if form.errors %}
+<script>
     Swal.fire({
         title: 'Error!',
-        text: 'Ha ocurrido un error al intentar guardar la categoria',
+        text: 'Ha ocurrido un error al intentar guardar la categoría.',
         icon: 'error',
-        confirmButtonText: 'Aceptar'
+        confirmButtonText: 'Aceptar',
+        confirmButtonColor: '#3085d6'
     });
-    {% endif %}
 </script>
+{% endif %}
+
+</body>
+</html>
 {% endblock %}

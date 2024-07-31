@@ -20,8 +20,8 @@
     <td>{{c.apellidos}}</td>
     <td>{{c.telefono}}</td>
     <td>
-        <a href="{% url 'app:empleado_editar' c.id%}" type="button" class="btn btn-primary btn-xs"><i class="fas fa-edit"></i></a>
-        <a href="{% url 'app:empleado_eliminar' c.id%}" type="button" class="btn btn-danger btn-xs"><i class="fas fa-trash"></i></a>
+        <a href="{% url 'app:empleado_editar' c.id%}" type="button" class="btn btn-primary btn-xs"><i class="fas fa-edit" title="Editar elemento"></i></a>
+        <a href="{% url 'app:empleado_eliminar' c.id%}" type="button" class="btn btn-danger btn-xs"><i class="fas fa-trash" title="Eliminar elemento"></i></a>
     </td>
 </tr>
 
