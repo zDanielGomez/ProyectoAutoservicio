@@ -8,6 +8,7 @@ from django.utils.decorators import method_decorator
 from django.shortcuts import render, redirect
 from app.models import *
 from app.forms import *
+from django.views.decorators.cache import never_cache
 
 def lista_empleado(request):
     
@@ -19,7 +20,7 @@ def lista_empleado(request):
     
     return render(request, "empleado/listar.html", nombre)
 
-
+@method_decorator(never_cache, name='dispatch')
 class EmpleadoListView(ListView):
     model = Empleado
     template_name = 'empleado/listar.html'
@@ -34,7 +35,8 @@ class EmpleadoListView(ListView):
         context['crear_url'] = reverse_lazy('app:empleado_crear')
         context['entidad'] = 'Empleados'
         return context
-    
+
+@method_decorator(never_cache, name='dispatch') 
 class EmpleadoCreateView(CreateView):
     model = Empleado
     form_class = EmpleadoForm
@@ -53,6 +55,7 @@ class EmpleadoCreateView(CreateView):
         
         return context
 
+@method_decorator(never_cache, name='dispatch')
 class EmpleadoUpdateView(UpdateView):
     model = Empleado
     form_class = EmpleadoForm
@@ -70,7 +73,8 @@ class EmpleadoUpdateView(UpdateView):
         context['listar_url'] = reverse_lazy('app:empleado_lista')
         
         return context
-    
+
+@method_decorator(never_cache, name='dispatch') 
 class EmpleadoDeleteView(DeleteView):
     model = Empleado
     template_name = 'empleado/eliminar.html'

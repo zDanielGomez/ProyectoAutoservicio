@@ -10,7 +10,7 @@ class LoginFormView(LoginView):
     
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            return redirect("app:categoria_lista")
+            return redirect("dashboard")
         return super().dispatch(request, *args, **kwargs)
             
     

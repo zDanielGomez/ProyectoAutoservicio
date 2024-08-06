@@ -8,6 +8,7 @@ from django.utils.decorators import method_decorator
 from django.shortcuts import render, redirect
 from app.models import *
 from app.forms import *
+from django.views.decorators.cache import never_cache
 
 def lista_proveedor(request):
     
@@ -19,7 +20,8 @@ def lista_proveedor(request):
     
     return render(request, "proveedor/listar.html", nombre)
 
-
+  
+@method_decorator(never_cache, name='dispatch')
 class ProveedorListView(ListView):
     model = Proveedor
     template_name = 'proveedor/listar.html'
@@ -34,7 +36,8 @@ class ProveedorListView(ListView):
         context['crear_url'] = reverse_lazy('app:proveedor_crear')
         context['entidad'] = 'Proveedor'
         return context
-    
+  
+@method_decorator(never_cache, name='dispatch')
 class ProveedorCreateView(CreateView):
     model = Proveedor
     form_class = ProveedorForm
@@ -52,7 +55,8 @@ class ProveedorCreateView(CreateView):
         context['listar_url'] = reverse_lazy('app:proveedor_lista')
         
         return context
-
+  
+@method_decorator(never_cache, name='dispatch')
 class ProveedorUpdateView(UpdateView):
     model = Proveedor
     form_class = ProveedorForm
@@ -71,6 +75,7 @@ class ProveedorUpdateView(UpdateView):
         
         return context
     
+@method_decorator(never_cache, name='dispatch')   
 class ProveedorDeleteView(DeleteView):
     model = Proveedor
     template_name = 'proveedor/eliminar.html'

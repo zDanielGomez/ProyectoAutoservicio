@@ -8,6 +8,7 @@ from django.utils.decorators import method_decorator
 from django.shortcuts import render, redirect
 from app.models import *
 from app.forms import *
+from django.views.decorators.cache import never_cache
 
 def lista_compra(request):
     
@@ -19,7 +20,7 @@ def lista_compra(request):
     
     return render(request, "compra/listar.html", nombre)
 
-
+@method_decorator(never_cache, name='dispatch')
 class CompraListView(ListView):
     model = Compra
     template_name = 'compra/listar.html'
@@ -35,6 +36,7 @@ class CompraListView(ListView):
         context['entidad'] = 'Compra'
         return context
     
+@method_decorator(never_cache, name='dispatch')
 class CompraCreateView(CreateView):
     model = Compra
     form_class = CompraForm
@@ -53,6 +55,7 @@ class CompraCreateView(CreateView):
         
         return context
 
+@method_decorator(never_cache, name='dispatch')
 class CompraUpdateView(UpdateView):
     model = Compra
     form_class = CompraForm
@@ -70,7 +73,8 @@ class CompraUpdateView(UpdateView):
         context['listar_url'] = reverse_lazy('app:compra_lista')
         
         return context
-    
+
+@method_decorator(never_cache, name='dispatch')  
 class CompraDeleteView(DeleteView):
     model = Compra
     template_name = 'compra/eliminar.html'
@@ -87,3 +91,4 @@ class CompraDeleteView(DeleteView):
         context['listar_url'] = reverse_lazy('app:compra_lista')
         
         return context
+

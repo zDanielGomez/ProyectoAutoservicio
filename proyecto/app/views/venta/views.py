@@ -8,6 +8,7 @@ from django.utils.decorators import method_decorator
 from django.shortcuts import render, redirect
 from app.models import *
 from app.forms import *
+from django.views.decorators.cache import never_cache
 
 def lista_venta(request):
     
@@ -20,6 +21,7 @@ def lista_venta(request):
     return render(request, "venta/listar.html", nombre)
 
 
+@method_decorator(never_cache, name='dispatch') 
 class VentaListView(ListView):
     model = Venta
     template_name = 'venta/listar.html'
@@ -34,7 +36,8 @@ class VentaListView(ListView):
         context['crear_url'] = reverse_lazy('app:venta_crear')
         context['entidad'] = 'Venta'
         return context
-    
+
+@method_decorator(never_cache, name='dispatch')     
 class VentaCreateView(CreateView):
     model = Venta
     form_class = VentaForm
@@ -53,6 +56,7 @@ class VentaCreateView(CreateView):
         
         return context
 
+@method_decorator(never_cache, name='dispatch') 
 class VentaUpdateView(UpdateView):
     model = Venta
     form_class = VentaForm
@@ -71,6 +75,7 @@ class VentaUpdateView(UpdateView):
         
         return context
     
+@method_decorator(never_cache, name='dispatch') 
 class VentaDeleteView(DeleteView):
     model = Venta
     template_name = 'venta/eliminar.html'

@@ -8,6 +8,7 @@ from django.utils.decorators import method_decorator
 from django.shortcuts import render,redirect
 from app.models import *
 from app.forms import *
+from django.views.decorators.cache import never_cache
 
 def lista_categoria(request):
     
@@ -19,7 +20,7 @@ def lista_categoria(request):
     
     return render(request, "categoria/listar.html", nombre)
 
-
+@method_decorator(never_cache, name='dispatch')
 class CategoriaListView(ListView):
     model = Categoria
     template_name = 'categoria/listar.html'
@@ -35,7 +36,8 @@ class CategoriaListView(ListView):
         context['crear_url'] = reverse_lazy('app:categoria_crear')
         context['entidad'] = 'Categorías'
         return context
-    
+  
+@method_decorator(never_cache, name='dispatch')  
 class CategoriaCreateView(CreateView):
     model = Categoria
     form_class = CategoriaForm
@@ -54,6 +56,7 @@ class CategoriaCreateView(CreateView):
         
         return context
 
+@method_decorator(never_cache, name='dispatch')
 class CategoriaUpdateView(UpdateView):
     model = Categoria
     form_class = CategoriaForm
@@ -71,7 +74,8 @@ class CategoriaUpdateView(UpdateView):
         context['listar_url'] = reverse_lazy('app:categoria_lista')
         
         return context
-    
+ 
+@method_decorator(never_cache, name='dispatch')   
 class CategoriaDeleteView(DeleteView):
     model = Categoria
     template_name = 'categoria/eliminar.html'

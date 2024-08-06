@@ -8,7 +8,7 @@ from django.utils.decorators import method_decorator
 from django.shortcuts import render,redirect
 from app.models import *
 from app.forms import *
-
+from django.views.decorators.cache import never_cache
 def lista_marca(request):
     
     nombre = {
@@ -20,6 +20,7 @@ def lista_marca(request):
     return render(request, "marca/listar.html", nombre)
 
 
+@method_decorator(never_cache, name='dispatch') 
 class MarcaListView(ListView):
     model = Marca
     template_name = 'categoria/listar.html'
@@ -34,7 +35,9 @@ class MarcaListView(ListView):
         context['crear_url'] = reverse_lazy('app:marca_crear')
         context['entidad'] = 'Marca'
         return context
-    
+
+
+@method_decorator(never_cache, name='dispatch')  
 class MarcaCreateView(CreateView):
     model = Marca
     form_class = MarcaForm
@@ -53,6 +56,8 @@ class MarcaCreateView(CreateView):
         
         return context
 
+
+@method_decorator(never_cache, name='dispatch') 
 class MarcaUpdateView(UpdateView):
     model = Marca
     form_class = Marca
@@ -70,7 +75,9 @@ class MarcaUpdateView(UpdateView):
         context['listar_url'] = reverse_lazy('app:marca_lista')
         
         return context
-    
+
+
+@method_decorator(never_cache, name='dispatch') 
 class MarcaDeleteView(DeleteView):
     model = Marca
     template_name = 'marca/eliminar.html'
