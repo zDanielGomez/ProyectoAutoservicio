@@ -9,6 +9,8 @@ from app.views.compra.views import *
 from app.views.proveedor.views import *
 from app.views.marca.views import *
 from app.views.presentacion.views import *
+from app.views.backup.views import *
+
 
 app_name = 'app'
 urlpatterns = [
@@ -65,4 +67,10 @@ urlpatterns = [
     path('presentacion/crear/', PresentacionCreateView.as_view(), name='presentacion_crear'),
     path('presentacion/editar/<int:pk>/', PresentacionUpdateView.as_view(), name='presentacion_editar'),
     path('presentacion/eliminar/<int:pk>/', PresentacionDeleteView.as_view(), name='presentacion_eliminar'),
+
+    #Urls backup
+    path('crear_backup/', BackupDatabaseView.as_view(), name='crear_backup'),
+    path('restaurar_backup/', RestoreDatabaseView.as_view(), name='restaurar_backup'),
+
 ]
+

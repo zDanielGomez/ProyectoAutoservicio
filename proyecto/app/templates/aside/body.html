@@ -12,15 +12,17 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-sm-6">
-                            {% if not entidad  %}
+                            {% if not entidad or backup.html %}
                             <h1 class="m-0 text-dark"> Bienvenidos:</h1>
+                            {% elif backup.html %}
+                            <h1 class="m-0 text-dark"> Copia de seguridad:</h1>
                             {% else %}
-                            <h1 class="m-0 text-dark"><small>Modulo| {{entidad}}</small></h1>
+                            <h1 class="m-0 text-dark"><small>Modulo|{{entidad}}</small></h1>
                             {% endif %}
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
-                                <li class="breadcrumb-item"><a href="#">Inicio</a></li>
+                                <li class="breadcrumb-item"><a href="{% url 'dashboard' %}" >Inicio</a></li>
                                 <li class="breadcrumb-item"><a href="{{lista_url}}">{{entidad}}</a></li>
                             </ol>
                         </div>

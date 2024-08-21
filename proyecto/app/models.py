@@ -98,7 +98,7 @@ class Producto(models.Model):
 
 # Se agrego la tabla Venta con sus atributos y metodos
 class Venta(models.Model):    
-    fecha_venta = models.DateTimeField(auto_now=True)  
+    fecha_venta = models.DateTimeField(default=datetime.now)  
     cliente = models.ForeignKey(Cliente,on_delete=models.CASCADE,verbose_name="Cliente")
     empleado = models.ForeignKey(Empleado,on_delete=models.CASCADE,verbose_name="Empleado")
     producto = models.ForeignKey(Producto,on_delete=models.CASCADE)
@@ -110,7 +110,7 @@ class Venta(models.Model):
     class Meta:
         verbose_name = "Venta"
         verbose_name_plural = "Ventas"
-        db_table = "Venta"
+        db_table = "Venta" 
 
 # Se agrego la tabla Compra con sus atributos y metodos
 class Compra(models.Model):

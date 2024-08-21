@@ -1,23 +1,25 @@
 {% extends "layout.html" %}
 {% load static %}
+
 {% block head %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<link rel="stylesheet" href="{% static 'lib/datatables-1.10.20/css/dataTables.bootstrap4.min.css' %}"/> 
-<link rel="stylesheet" href="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/css/responsive.bootstrap4.min.css' %}"/>
-<script src="{% static 'lib/datatables-1.10.20/js/jquery.dataTables.js' %}"></script>
-<script src="{% static 'lib/datatables-1.10.20/js/dataTables.bootstrap4.min.js' %}"></script>
-<script src="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/js/dataTables.responsive.min.js' %}"></script>
-<script src="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/js/responsive.bootstrap4.min.js' %}"></script>
-
+<link rel="stylesheet" href="{% static 'lib/adminlte-3.2.0/dataTables-bs4/css/dataTables.bootstrap4.min.css' %}" />
+<link rel="stylesheet" href="{% static 'lib/adminlte-3.2.0/datatables-responsive/css/responsive.bootstrap4.min.css' %}" />
+<link rel="stylesheet" href="{% static 'lib/adminlte-3.2.0/datatables-buttons/css/buttons.bootstrap4.min.css' %}" />
+<link rel="stylesheet" href="{% static 'node_modules/sienna-accessibility/custom.css' %}" />
+<link rel="stylesheet" href="{% static 'lib/adminlte-3.2.0/icheck-bootstrap/icheck-bootstrap.min.css' %}" />
 {% endblock %}
 
 {% block contenido %}
+
     <style>
+        .custom-button {
+            background-color: rgba(3,63,99,1);
+            color: white;
+        }
+
+        .custom-button:hover {
+            background-color: rgb(0, 94, 153);
+        }
         .card {
             background-color: #fff;
             border-radius: 8px;
@@ -61,22 +63,22 @@
         }
 
         .table thead {
-            background-color: #f1f1f1;
+            background-color: #dbdada;
         }
 
         .table th, .table td {
             padding: 12px;
             text-align: left;
-            border-bottom: 1px solid #ddd;
+            border-bottom: 1px solid #dbdada;
         }
 
         .table th {
             font-weight: 700;
-            color: #555;
+            color: #000000;
         }
 
         .table tr:hover {
-            background-color: #f9f9f9;
+            background-color: #f1eeeec9;
         }
 
         @media (max-width: 768px) {
@@ -105,26 +107,56 @@
                     {% endblock %}
                 </tbody>
             </table>
+            <div class="card-footer">
+                <a href="{{crear_url}}" class = "btn btn-primary btn btn-s"><i class="fas fa-plus"></i>  
+                    Agregar
+                </a>
+            </div>
         </div>
     </div>
 </body>
 </html>
 
-    <div class="card-footer">
-        <a href="{{crear_url}}" class = "btn btn-primary btn btn-xs"><i class="fas fa-plus"></i>  
-            Agregar
-        </a>
-    </div>
+
 </div>
 
-{% endblock  %}
+{% endblock %}
 
 {% block javascript %}
-<script type="application/javascript">
-$(document).ready(function () { 
+<script src="{% static 'lib/adminlte-3.2.0/datatables/Spanish.json' %}"></script>
+<script src="{% static 'lib/adminlte-3.2.0/dataTables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'lib/adminlte-3.2.0/dataTables-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'lib/adminlte-3.2.0/datatables-responsive/js/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'lib/adminlte-3.2.0/dataTables-responsive/js/responsive.bootstrap4.min.js' %}"></script>
+<script src="{% static 'lib/adminlte-3.2.0/datatables-buttons/js/dataTables.buttons.min.js' %}"></script>
+<script src="{% static 'lib/adminlte-3.2.0/datatables-buttons/js/buttons.bootstrap4.min.js' %}"></script>
+<script src="{% static 'lib/adminlte-3.2.0/jszip/jszip.min.js' %}"></script>
+<script src="{% static 'lib/adminlte-3.2.0/pdfmake/pdfmake.min.js' %}"></script>
+<script src="{% static 'lib/adminlte-3.2.0/pdfmake/vfs_fonts.js' %}"></script>
+<script src="{% static 'lib/adminlte-3.2.0/datatables-buttons/js/buttons.html5.min.js' %}"></script>
+<script src="{% static 'lib/adminlte-3.2.0/datatables-buttons/js/buttons.print.min.js' %}"></script>
+<script src="{% static 'lib/adminlte-3.2.0/datatables-buttons/js/buttons.colVis.min.js' %}"></script>
+
+<script>
+$(document).ready(function() {
     $('#tabla').DataTable({
-        responsive: false,
-    });
+        responsive: true,
+        lengthChange: false,
+        autoWidth: false,
+        language: {
+            url: "{% static 'lib/adminlte-3.2.0/datatables/Spanish.json' %}"
+        },
+        buttons: [
+            { extend: 'copy', text: 'Copiar tabla', className: 'custom-button', exportOptions: { columns: ':not(:last-child)' } },
+
+            { extend: 'excel', text: 'Archivo Excel', className: 'custom-button', exportOptions: { columns: ':not(:last-child)' } },
+
+            { extend: 'pdf', text: 'PDF', className: 'custom-button', exportOptions: { columns: ':not(:last-child)' } },
+            
+            { extend: 'print', text: 'Imprimir', className: 'custom-button', exportOptions: { columns: ':not(:last-child)' } }
+        ],
+        dom: 'Bfrtip'
+    }).buttons().container().appendTo('#tabla_wrapper .col-md-6:eq(0)');
 });
 </script>
-{% endblock  %}
+{% endblock %}

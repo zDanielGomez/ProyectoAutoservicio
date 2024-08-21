@@ -1,0 +1,189 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block head %}
+    <title>Copia </title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styleB.css' %}">
+    <style>
+        /* General styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .containerBackup {
+            max-width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+            margin: auto;
+            text-align: center;
+        }
+
+        .containerTitle {
+            margin-bottom: 20px;
+        }
+
+        .containerTitle h1 {
+            font-size: 1.8em;
+            margin: 0;
+            color: #333;
+        }
+
+        .img_db {
+            max-width: 100%;
+            height: auto;
+            max-height: 150px; /* Ajuste de altura para dispositivos móviles */
+            display: block;
+            margin: 0 auto;
+        }
+
+        .backup-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .generate-section, .restore-section {
+            margin: 15px 0;
+            width: 100%;
+            max-width: 600px; /* Limita el ancho de las secciones */
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 1.4em;
+            margin-bottom: 10px;
+            color: #444;
+        }
+
+        button {
+            padding: 12px 25px;
+            font-size: 1em;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn_generate {
+            background-color: #28a745;
+        }
+
+        .btn_generate:hover {
+            background-color: #218838;
+        }
+
+        .btn_restore {
+            background-color: #007bff;
+        }
+
+        .btn_restore:hover {
+            background-color: #0056b3;
+        }
+
+        input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 600px) {
+            .containerTitle h1 {
+                font-size: 1.4em;
+            }
+
+            .generate-section, .restore-section {
+                margin: 10px;
+                padding: 10px;
+            }
+
+            button {
+                width: 100%;
+                padding: 15px;
+                font-size: 1.1em;
+            }
+        }
+    </style>
+{% endblock %}
+{% block contenido %}
+<div class="containerBackup">
+    <div class="containerTitle">
+        <h1>Gestión de Respaldos <br> Bases de Datos</h1>
+        <img class="img_db" src="{% static 'img/backup.png' %}" alt="Logo database">
+    </div>
+    <div class="backup-section">
+        <div class="generate-section">
+            <h2>Crear copia de seguridad</h2>
+            <form id="backupForm" method="post" action="{% url 'app:crear_backup' %}">
+                {% csrf_token %}
+                <button class="btn_generate" type="submit">Crear</button>
+            </form>
+        </div>
+        <div class="restore-section">
+            <h2>Restaurar copia de seguridad</h2>
+            <form id="restoreForm" method="post" action="{% url 'app:restaurar_backup' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="file" name="backup_file" accept=".sql, .db, .sqlite, .bak" required>
+                <p></p>
+                <button class="btn_restore" type="submit">Restaurar</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#backupForm').on('submit', function (event) {
+        event.preventDefault();
+        $.post($(this).attr('action'), $(this).serialize(), function (data) {
+            if (data.success) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Copia de seguridad creada correctamente',
+                    text: data.message,
+                    confirmButtonText: 'Aceptar'
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: data.message,
+                    confirmButtonText: 'Aceptar'
+                });
+            }
+        });
+    });
+
+    $('#restoreForm').on('submit', function (event) {
+        event.preventDefault();
+        var formData = new FormData(this);
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                if (data.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Copia de seguridad restaurada correctamente',
+                        text: data.message,
+                        confirmButtonText: 'Aceptar'
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: data.message,
+                        confirmButtonText: 'Aceptar'
+                    });
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}
