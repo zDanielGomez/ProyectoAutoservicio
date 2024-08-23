@@ -1,34 +1,62 @@
-{% load static %}
-{% load widget_tweaks %}
+{% load static %} {% load widget_tweaks %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Autoservicio</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
-        integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="{% static 'login/css/styles.css' %}">
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ titulo }}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="{% static 'login/css/styles.css' %}" />
+    <style>
+      .alert {
+        color: red;
+        font-size: 14px;
+        margin-bottom: 10px;
+      }
+      .alert p {
+        margin: 0;
+      }
+      .form-control {
+        display: block;
+        width: 100%;
+        padding: 8px;
+        margin: 5px 0;
+        box-sizing: border-box;
+      }
+      .login-page {
+        max-width: 360px;
+        width: 100%;
+        margin: 0 auto;
+      }
+    </style>
 </head>
-<body style="display:flex; align-items:center; justify-content:center;">
-<div class="login-page">
-  <div class="form">
-    <form class="login-form" method="post">
-      {% csrf_token %} 
-      <a href="/">
-        <img src= "{% static 'img/autosrvlogo.png'%}" alt="Logo" width="140">
-      </a>
-      <h2>Iniciar sesión</h2>
-      {{ form.username|add_class:'form-control'|attr:'autocomplete:off'|attr:"placeholder: Ingrese su usuario" }}
-      {{ form.password|add_class:'form-control'|attr:'autocomplete:off'|attr:"placeholder:Contraseña" }}
-      <button type="submit" name="send2"> Iniciar sesión</button>
-      <p class="message"><a href="{% url 'password_reset' %}">¿Olvido su contraseña? </a></p>
-    </form>
-  </div>
-</div>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="{% static 'login/js/main.js' %}"></script>
+<body style="display: flex; align-items: center; justify-content: center">
+    <div class="login-page">
+        <div class="form">
+            <form class="login-form" method="post">
+                {% csrf_token %}
+                <a href="/">
+                    <img src="{% static 'img/autosrvlogo.png' %}" alt="Logo" width="140" />
+                </a>
+                <h2>{{ titulo }}</h2>
+                {% if messages %}
+                <div class="alert">
+                    {% for message in messages %}
+                    <p>{{ message }}</p>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                {{ form.username|add_class:'form-control'|attr:'autocomplete:off'|attr:"placeholder: Ingrese su usuario" }}
+                {{ form.password|add_class:'form-control'|attr:'autocomplete:off'|attr:"placeholder: Contraseña" }}
+                <button type="submit" name="send2">Iniciar sesión</button>
+                <p class="message">
+                    <a href="{% url 'password_reset' %}">¿Olvidó su contraseña? </a>
+                </p>
+            </form>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{% static 'login/js/main.js' %}"></script>
 </body>
 </html>

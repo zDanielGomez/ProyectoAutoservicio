@@ -19,7 +19,6 @@ class BackupDatabaseView(View):
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
     
-
     
     def get(self, request, *args, **kwargs):
         return render(request, 'backup.html')
