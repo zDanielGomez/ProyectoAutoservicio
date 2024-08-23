@@ -1,44 +1,45 @@
-{% extends "layout.html" %}
+{% extends 'layout.html' %}
 {% load widget_tweaks %}
-{% block contenido %} 
-<form method="post" action=".">
+{% block contenido %}
+{% load static %}
+<form method="post" action="." id="deleteForm">
     <div class="card card-default">
         <div class="card-header">
             <h3 class="card-title">
-                <i class="fa fa-trash"></i> 
-                {{titulo}}
+                <i class="fas fa-trash"></i>
+                {{ titulo }}
             </h3>
         </div>
         <div class="card-body">
             {% csrf_token %}
-            {% if form.errors %}
-            <div class="alert alert-warning alert-dismissible">
-                <button type="button" class="close" data-dismiss="alert" 
-                aria-hidden="true">×</button>
-                <h5><i class="icon fa fa-ban"></i><b>Ha ocurrido un error al intentar
-                    guardar la categoria:</b></h5>
-                <ul>
-                    {% for field in form %}
-                        {% for error in field.errors %}
-                        <li>{{error}}</li>
-                        {% endfor %}
-                    {% endfor %}
-                </ul>
-                </div>
-                {% endif %}
-                <div class = "alert alert-danger alert-dismissible">
-                    <h5><i class = "icon fas fa-ban"></i>Advertencia!</h5>
-                    Desea eliminar el registro #{{object.id}} | Nombre: {{object.nombre}}?
-                </div>
-        </div>
-        <div class="card-footer">
-        <button type="submit" class = "btn btn-success swalDefaultSuccess">
-            <i class="fas fa-save"></i>Si, Aceptar
-            </button>
-            <a href="{{listar_url}}" class = "btn btn-info btn-flat">
-                <i class="fas fa-times"></i>No, Cancelar
-            </a>
+            <div class="alert alert-danger alert-dismissible">
+                <h5><i class="icon fas fa-ban"></i> Advertencia</h5>
+                Desea eliminar el registro #{{object.id}} | Nombre: {{object.nombre}}?
+            </div>
         </div>
     </div>
+    <div class="card-footer">
+        <button type="button" class="btn btn-danger" onclick="confirmDelete()">
+            <i class="fas fa-trash-alt"></i> Sí, eliminar
+        </button>
+        <a href="{{ listar_url }}" class="btn btn-info btn-flat">
+            <i class="fas fa-times"></i> Cancelar
+        </a>
+    </div>
+<script src="{% static 'lib/sweetalert2/sweetalert2.all.min.js' %}"></script>
+<script>
+    function confirmDelete() {
+        Swal.fire({
+            title: '¡Éxito!',
+            text: 'Se eliminó correctamente.',
+            icon: 'success warning',
+            confirmButtonText: 'Aceptar',
+            confirmButtonColor: '#be3b25',
+            timer: 2000 
+        }).then(() => {
+            document.getElementById('deleteForm').submit();
+        });
+    }
+</script>
 </form>
 {% endblock %}

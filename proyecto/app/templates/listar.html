@@ -10,16 +10,19 @@
 {% endblock %}
 
 {% block contenido %}
-
     <style>
         .custom-button {
             background-color: rgba(3,63,99,1);
             color: white;
+            font-size: 14px; /* Ajusta el tamaño del texto */
+            padding: 6px 12px; /* Ajusta el padding para dispositivos móviles */
+            margin: 5px; /* Espacio entre los botones */
         }
 
         .custom-button:hover {
             background-color: rgb(0, 94, 153);
         }
+
         .card {
             background-color: #fff;
             border-radius: 8px;
@@ -85,10 +88,21 @@
             .table {
                 font-size: 14px;
             }
+
+            .custom-button {
+                font-size: 12px; /* Ajusta el tamaño del texto para pantallas más pequeñas */
+                padding: 4px 8px; /* Ajusta el padding para pantallas más pequeñas */
+            }
+        }
+        
+        /* Asegúrate de que los botones se alineen correctamente en pantallas más pequeñas */
+        #tabla_wrapper .col-md-6 {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
         }
     </style>
-</head>
-<body>
+
     <div class="card card-default">
         <div class="card-header">
             <h3 class="card-title">
@@ -108,26 +122,20 @@
                 </tbody>
             </table>
             <div class="card-footer">
-                <a href="{{crear_url}}" class = "btn btn-primary btn btn-s"><i class="fas fa-plus"></i>  
+                <a href="{{crear_url}}" class="btn btn-primary btn btn-s">
+                    <i class="fas fa-plus"></i>  
                     Agregar
                 </a>
             </div>
         </div>
     </div>
-</body>
-</html>
-
-
-</div>
-
 {% endblock %}
 
 {% block javascript %}
-<script src="{% static 'lib/adminlte-3.2.0/datatables/Spanish.json' %}"></script>
 <script src="{% static 'lib/adminlte-3.2.0/dataTables/jquery.dataTables.min.js' %}"></script>
 <script src="{% static 'lib/adminlte-3.2.0/dataTables-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
 <script src="{% static 'lib/adminlte-3.2.0/datatables-responsive/js/dataTables.responsive.min.js' %}"></script>
-<script src="{% static 'lib/adminlte-3.2.0/dataTables-responsive/js/responsive.bootstrap4.min.js' %}"></script>
+<script src="{% static 'lib/adminlte-3.2.0/datatables-responsive/js/responsive.bootstrap4.min.js' %}"></script>
 <script src="{% static 'lib/adminlte-3.2.0/datatables-buttons/js/dataTables.buttons.min.js' %}"></script>
 <script src="{% static 'lib/adminlte-3.2.0/datatables-buttons/js/buttons.bootstrap4.min.js' %}"></script>
 <script src="{% static 'lib/adminlte-3.2.0/jszip/jszip.min.js' %}"></script>
@@ -140,7 +148,7 @@
 <script>
 $(document).ready(function() {
     $('#tabla').DataTable({
-        responsive: true,
+        responsive: false,
         lengthChange: false,
         autoWidth: false,
         language: {
@@ -148,11 +156,8 @@ $(document).ready(function() {
         },
         buttons: [
             { extend: 'copy', text: 'Copiar tabla', className: 'custom-button', exportOptions: { columns: ':not(:last-child)' } },
-
             { extend: 'excel', text: 'Archivo Excel', className: 'custom-button', exportOptions: { columns: ':not(:last-child)' } },
-
             { extend: 'pdf', text: 'PDF', className: 'custom-button', exportOptions: { columns: ':not(:last-child)' } },
-            
             { extend: 'print', text: 'Imprimir', className: 'custom-button', exportOptions: { columns: ':not(:last-child)' } }
         ],
         dom: 'Bfrtip'

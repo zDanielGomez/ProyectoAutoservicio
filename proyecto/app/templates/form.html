@@ -126,7 +126,26 @@
                     if (feedback && feedback.classList.contains('invalid-feedback')) {
                         feedback.textContent = 'El valor no puede ser negativo.';
                     }
+                
                 }
+                else if (key === 'telefono' && parseInt(fieldValue, 10) < 0) {
+                valid = false;
+                field.classList.add('is-invalid');
+                const feedback = field.nextElementSibling;
+                if (feedback && feedback.classList.contains('invalid-feedback')) {
+                    feedback.textContent = 'El valor no puede ser negativo.';
+                    }
+
+                }
+                else if (key === 'cc_cliente' && parseInt(fieldValue, 10) < 0) {
+                valid = false;
+                field.classList.add('is-invalid');
+                const feedback = field.nextElementSibling;
+                if (feedback && feedback.classList.contains('invalid-feedback')) {
+                    feedback.textContent = 'El valor no puede ser negativo.';
+                    }
+                }
+                
                 else if (key === 'precio') {
                     const precioValue = parseFloat(fieldValue);
                     if (isNaN(precioValue) || precioValue <= 0) {
