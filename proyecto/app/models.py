@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
 from django.core.validators import MinLengthValidator
+from django.forms import model_to_dict
 
 # Se agrego la tabla Empleado con sus atributos y metodos
 class Empleado(models.Model):
@@ -91,6 +92,10 @@ class Categoria(models.Model):
 
     def __str__(self):
         return self.nombre
+    
+    def toJSON(self):
+        item = model_to_dict(self)
+        return item
 
     class Meta:
         verbose_name = "Categoria"
@@ -117,7 +122,7 @@ class Cliente(models.Model):
     telefono = models.PositiveIntegerField(unique=True,verbose_name="Telefono")
     
     def __str__(self):
-        return self.nombres
+        return f"{self.cc_cliente}"
 
     class Meta:
         verbose_name = "Cliente"
@@ -149,6 +154,11 @@ class Producto(models.Model):
     
     def __str__(self):
         return self.nombre
+    
+    def toJSON(self):
+        item = model_to_dict(self)
+        item['categoria'] = self.categoria.toJSON()
+        return item
 
     class Meta:
         verbose_name = "Producto"
@@ -159,8 +169,7 @@ class Producto(models.Model):
 class Venta(models.Model):    
     fecha_venta = models.DateTimeField(default=datetime.now)  
     cliente = models.ForeignKey(Cliente,on_delete=models.CASCADE,verbose_name="Cliente")
-    empleado = models.ForeignKey(Empleado,on_delete=models.CASCADE,verbose_name="Empleado")
-    producto = models.ForeignKey(Producto,on_delete=models.CASCADE)
+    empleado = models.ForeignKey(Empleado,on_delete=models.CASCADE,verbose_name="Empleado")    
     total_venta = models.DecimalField(default=0.00,max_digits=9 ,decimal_places=2)
     
     def __str__(self):
