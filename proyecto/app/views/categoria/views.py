@@ -20,6 +20,7 @@ def lista_categoria(request):
     
     return render(request, "categoria/listar.html", nombre)
 
+@method_decorator(login_required, name='dispatch')
 @method_decorator(never_cache, name='dispatch')
 class CategoriaListView(ListView):
     model = Categoria
@@ -37,6 +38,7 @@ class CategoriaListView(ListView):
         context['entidad'] = 'Categorías'
         return context
   
+@method_decorator(login_required, name='dispatch')
 @method_decorator(never_cache, name='dispatch')  
 class CategoriaCreateView(CreateView):
     model = Categoria
@@ -56,6 +58,7 @@ class CategoriaCreateView(CreateView):
         
         return context
 
+@method_decorator(login_required, name='dispatch')
 @method_decorator(never_cache, name='dispatch')
 class CategoriaUpdateView(UpdateView):
     model = Categoria
@@ -75,6 +78,7 @@ class CategoriaUpdateView(UpdateView):
         
         return context
  
+@method_decorator(login_required, name='dispatch')
 @method_decorator(never_cache, name='dispatch')   
 class CategoriaDeleteView(DeleteView):
     model = Categoria

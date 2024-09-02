@@ -9,6 +9,7 @@ from django.shortcuts import render,redirect
 from app.models import *
 from app.forms import *
 from django.views.decorators.cache import never_cache
+
 def lista_marca(request):
     
     nombre = {
@@ -19,8 +20,8 @@ def lista_marca(request):
     
     return render(request, "marca/listar.html", nombre)
 
-
-@method_decorator(never_cache, name='dispatch') 
+@method_decorator(login_required, name='dispatch')
+@method_decorator(never_cache, name='dispatch')
 class MarcaListView(ListView):
     model = Marca
     template_name = 'categoria/listar.html'
@@ -36,8 +37,8 @@ class MarcaListView(ListView):
         context['entidad'] = 'Marca'
         return context
 
-
-@method_decorator(never_cache, name='dispatch')  
+@method_decorator(login_required, name='dispatch')
+@method_decorator(never_cache, name='dispatch')
 class MarcaCreateView(CreateView):
     model = Marca
     form_class = MarcaForm
@@ -57,7 +58,8 @@ class MarcaCreateView(CreateView):
         return context
 
 
-@method_decorator(never_cache, name='dispatch') 
+@method_decorator(login_required, name='dispatch')
+@method_decorator(never_cache, name='dispatch')
 class MarcaUpdateView(UpdateView):
     model = Marca
     form_class = Marca
@@ -76,8 +78,8 @@ class MarcaUpdateView(UpdateView):
         
         return context
 
-
-@method_decorator(never_cache, name='dispatch') 
+@method_decorator(login_required, name='dispatch')
+@method_decorator(never_cache, name='dispatch')
 class MarcaDeleteView(DeleteView):
     model = Marca
     template_name = 'marca/eliminar.html'

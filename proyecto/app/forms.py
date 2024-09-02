@@ -38,23 +38,96 @@ class CategoriaForm(ModelForm):
         }
         
 class EmpleadoForm(ModelForm):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['nombres'].widget.attrs['autofocus'] = True
+    username = forms.CharField(
+        label="Nombre de usuario",
+        max_length=150,
+        widget=forms.TextInput(attrs={"placeholder": "Nombre de usuario"})
+    )
+    email = forms.EmailField(
+        label="Email",
+        max_length=150,
+        widget=forms.EmailInput(attrs={"placeholder": "Correo electrónico"})
+    )
+    password = forms.CharField(
+        label="Contraseña",
+        widget=PasswordInput(attrs={"placeholder": "Contraseña"}),
+        required=False
+    )
+    conf_password = forms.CharField(
+        label="Confirmar contraseña",
+        widget=PasswordInput(attrs={"placeholder": "Confirmar contraseña"}),
+        required=False
+    )
+
+    def _init_(self, *args, **kwargs):
+        super()._init_(*args, **kwargs)
+        self.fields["username"].widget.attrs["autofocus"] = True
+        
+        if self.instance and self.instance.pk and hasattr(self.instance, 'user'):
+            self.fields['username'].initial = self.instance.user.username
+            self.fields['email'].initial = self.instance.user.email
+
+    def clean(self):
+        cleaned_data = super().clean()
+        username = cleaned_data.get('username')
+        email = cleaned_data.get('email')
+        password1 = cleaned_data.get("password")
+        password2 = cleaned_data.get("conf_password")
+    
+        errors = {}
+
+        if User.objects.filter(username=username).exclude(pk=self.instance.user.pk if self.instance and self.instance.pk else None).exists():
+            errors['username'] = "Este nombre de usuario ya está en uso.  "
+        
+        if User.objects.filter(email=email).exclude(pk=self.instance.user.pk if self.instance and self.instance.pk else None).exists():
+            errors['email'] = "Este correo electrónico ya está en uso."
+        
+        if password1 and password2 and password1 != password2:
+            errors['password'] = "Las contraseñas no coinciden."
+    
+        if errors:
+            raise ValidationError(errors)
+    
+        return cleaned_data
+
+    def save(self, commit=True):
+        cleaned_data = self.cleaned_data
+        username = cleaned_data.get('username')
+        email = cleaned_data.get('email')
+        password = cleaned_data.get('password')
+
+        if self.instance.pk and hasattr(self.instance, 'user'):
+            user = self.instance.user
+            user.username = username
+            user.email = email
+            if password:
+                user.set_password(password)
+            user.save()
+        else:
+            user = User.objects.create_user(
+                username=username,
+                email=email,
+                password=password or None  
+            )
+            self.instance.user = user 
+
+        Empleado = super().save(commit=False)
+        Empleado.contrasena = password if password else Empleado.contrasena
+        Empleado.conf_contrasena = cleaned_data.get('conf_password') if password else Empleado.conf_contrasena
+        if commit:
+            Empleado.save()
+        return Empleado
+
     class Meta:
         model = Empleado
-        fields = '__all__'
+        fields = ["username", "email", "nombre", "tipo_documento", "numero_documento", "telefono", "password", "conf_password"]
         widgets = {
-            'nombres' : TextInput(
-                attrs= {
-                    'placeholder' : 'Ingrese los nombres',
-                }
-            ),
-            'apellidos' : TextInput(
-                attrs= {
-                    'placeholder' : 'Ingrese los apellidos',
-                }
-            ),   
+            "nombre": TextInput(attrs={"placeholder": "Nombre del Empleado"}),
+            "tipo_documento": Select(attrs={"placeholder": "Tipo de documento"}),
+            "numero_documento": NumberInput(attrs={"min": 8, "placeholder": "Número de documento"}),
+            "telefono": NumberInput(attrs={"min": 1, "placeholder": "Teléfono"}),
+            "password": PasswordInput(attrs={"min": 1, "placeholder": "Contraseña"}),
+            "conf_password": PasswordInput(attrs={"min": 1, "placeholder": "Confirme su contraseña"})
         }
 
 class ClienteForm(ModelForm):
@@ -92,7 +165,7 @@ class VentaForm(ModelForm):
                 'style': 'width: 100%'
             }),
             'fecha_venta': DateInput(
-                format='%Y-%m-%d %H:%M',
+                format='%Y-%m-%d',
                 attrs={
                     'value': datetime.now().strftime('%Y-%m-%d'),
                     'autocomplete': 'off',

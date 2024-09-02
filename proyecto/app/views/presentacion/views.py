@@ -21,7 +21,8 @@ def lista_presentacion(request):
     return render(request, "presentacion/listar.html", nombre)
 
 
-@method_decorator(never_cache, name='dispatch') 
+@method_decorator(login_required, name='dispatch')
+@method_decorator(never_cache, name='dispatch')
 class PresentacionListView(ListView):
     model = Presentacion
     template_name = 'presentacion/listar.html'
@@ -38,7 +39,8 @@ class PresentacionListView(ListView):
         context['entidad'] = 'Presentacion'
         return context
 
-@method_decorator(never_cache, name='dispatch')    
+@method_decorator(login_required, name='dispatch')
+@method_decorator(never_cache, name='dispatch')  
 class PresentacionCreateView(CreateView):
     model = Presentacion
     form_class = PresentacionForm
@@ -57,7 +59,8 @@ class PresentacionCreateView(CreateView):
         
         return context
 
-@method_decorator(never_cache, name='dispatch') 
+@method_decorator(login_required, name='dispatch')
+@method_decorator(never_cache, name='dispatch')
 class PresentacionUpdateView(UpdateView):
     model = Presentacion
     form_class = PresentacionForm
@@ -76,7 +79,8 @@ class PresentacionUpdateView(UpdateView):
         
         return context
   
-@method_decorator(never_cache, name='dispatch')   
+@method_decorator(login_required, name='dispatch')
+@method_decorator(never_cache, name='dispatch') 
 class PresentacionDeleteView(DeleteView):
     model = Presentacion
     template_name = 'presentacion/eliminar.html'

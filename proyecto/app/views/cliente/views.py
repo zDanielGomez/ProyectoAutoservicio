@@ -20,6 +20,7 @@ def lista_cliente(request):
     
     return render(request, "cliente/listar.html", nombre)
 
+@method_decorator(login_required, name='dispatch')
 @method_decorator(never_cache, name='dispatch')
 class ClienteListView(ListView):
     model = Cliente
@@ -35,7 +36,8 @@ class ClienteListView(ListView):
         context['crear_url'] = reverse_lazy('app:cliente_crear')
         context['entidad'] = 'Clientes'
         return context
-    
+
+@method_decorator(login_required, name='dispatch')
 @method_decorator(never_cache, name='dispatch')    
 class ClienteCreateView(CreateView):
     model = Cliente
@@ -55,6 +57,7 @@ class ClienteCreateView(CreateView):
         
         return context
 
+@method_decorator(login_required, name='dispatch')
 @method_decorator(never_cache, name='dispatch')
 class ClienteUpdateView(UpdateView):
     model = Cliente
@@ -73,7 +76,8 @@ class ClienteUpdateView(UpdateView):
         context['listar_url'] = reverse_lazy('app:cliente_lista')
         
         return context
-   
+
+@method_decorator(login_required, name='dispatch')
 @method_decorator(never_cache, name='dispatch') 
 class ClienteDeleteView(DeleteView):
     model = Cliente

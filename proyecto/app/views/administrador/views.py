@@ -1,6 +1,7 @@
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from django.views.decorators.cache import never_cache
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.shortcuts import render
 from django.core.exceptions import ValidationError
@@ -8,6 +9,7 @@ from app.models import Administrador
 from app.forms import AdministradorForm
 
 @method_decorator(login_required, name='dispatch')
+@method_decorator(never_cache, name='dispatch')
 class AdministradorListView(ListView):
     model = Administrador
     template_name = 'administrador/listar.html'
@@ -28,6 +30,7 @@ class AdministradorListView(ListView):
         return context
 
 @method_decorator(login_required, name='dispatch')
+@method_decorator(never_cache, name='dispatch')
 class AdministradorCreateView(CreateView):
     model = Administrador
     form_class = AdministradorForm
@@ -56,6 +59,7 @@ class AdministradorCreateView(CreateView):
             return self.form_invalid(form)
 
 @method_decorator(login_required, name='dispatch')
+@method_decorator(never_cache, name='dispatch')
 class AdministradorUpdateView(UpdateView):
     model = Administrador
     form_class = AdministradorForm
@@ -84,6 +88,7 @@ class AdministradorUpdateView(UpdateView):
             return self.form_invalid(form)
 
 @method_decorator(login_required, name='dispatch')
+@method_decorator(never_cache, name='dispatch')
 class AdministradorDeleteView(DeleteView):
     model = Administrador
     template_name = 'administrador/eliminar.html'

@@ -11,8 +11,16 @@
 </tr>
 {% endblock %}
 
-#2872a7
 {% block filas %}
+{% if not has_permission %}
+<tr>
+    <td colspan="7">
+        <div class="alert alert-danger" role="alert">
+            No tienes permiso para ver esta información.
+        </div>
+    </td>
+</tr>
+{% else %}
 {% for c in object_list %}
 
     <tr>
@@ -30,5 +38,5 @@
 
 
 {% endfor %}
-
+{% endif %}
 {% endblock %}

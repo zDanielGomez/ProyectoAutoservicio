@@ -20,8 +20,8 @@ def lista_producto(request):
     
     return render(request, "producto/listar.html", nombre)
 
+@method_decorator(login_required, name='dispatch')
 @method_decorator(never_cache, name='dispatch')
-
 class ProductoListView(ListView):
     model = Producto
     template_name = 'producto/listar.html'
@@ -37,6 +37,7 @@ class ProductoListView(ListView):
         context['entidad'] = 'Producto'
         return context
   
+@method_decorator(login_required, name='dispatch')
 @method_decorator(never_cache, name='dispatch')
 class ProductoCreateView(CreateView):
     model = Producto
@@ -55,6 +56,7 @@ class ProductoCreateView(CreateView):
         context['listar_url'] = reverse_lazy('app:producto_lista')
         return context
   
+@method_decorator(login_required, name='dispatch')
 @method_decorator(never_cache, name='dispatch')
 class ProductoUpdateView(UpdateView):
     model = Producto
@@ -74,6 +76,7 @@ class ProductoUpdateView(UpdateView):
         
         return context
   
+@method_decorator(login_required, name='dispatch')
 @method_decorator(never_cache, name='dispatch')   
 class ProductoDeleteView(DeleteView):
     model = Producto

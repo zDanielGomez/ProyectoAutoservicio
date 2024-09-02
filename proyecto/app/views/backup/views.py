@@ -1,29 +1,29 @@
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+from django.contrib.auth.decorators import login_required, permission_required
+from django.utils.decorators import method_decorator
+from django.views import View
+from django.views.decorators.cache import never_cache
 import os
 import subprocess
 from datetime import datetime
 from django.conf import settings
-from django.shortcuts import render, redirect
-from django.http import JsonResponse, Http404
+from django.shortcuts import render
+from django.http import JsonResponse
 from django.contrib import messages
-from django.core.paginator import Paginator
-from django.utils.decorators import method_decorator
-from django.views.decorators.cache import never_cache
-from django.views import View
-from django.contrib.auth.decorators import login_required
 
+@method_decorator(login_required, name='dispatch')
 @method_decorator(never_cache, name='dispatch')
-
-
 class BackupDatabaseView(View):
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
-    
+    @method_decorator(permission_required('app.view_backup', raise_exception=False))
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.has_perm('app.view_backup'):
+            return HttpResponseRedirect(reverse('access_denied'))
+        return super().dispatch(request, *args, **kwargs)
     
     def get(self, request, *args, **kwargs):
         return render(request, 'backup.html')
     
-
     def post(self, request, *args, **kwargs):
         success = False
         try:
@@ -61,30 +61,13 @@ class BackupDatabaseView(View):
 
         return JsonResponse({'messages': messages_str, 'success': success})
 
-def backup_list(request):
-    backup_dir = settings.BACKUP_DIR
-    backups = []
-    for filename in os.listdir(backup_dir):
-        if filename.endswith('.sql'):
-            file_path = os.path.join(backup_dir, filename)
-            created_at = datetime.fromtimestamp(os.path.getctime(file_path))
-            size = os.path.getsize(file_path)
-            backups.append({
-                'filename': filename,
-                'created_at': created_at.strftime('%Y-%m-%d %H:%M:%S'),
-                'size': f"{size / 1024 / 1024:.2f} MB"
-            })
-    
-    backups.sort(key=lambda x: x['created_at'], reverse=True)
-    
-    paginator = Paginator(backups, 10) 
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-    
-    return render(request, 'backup.html', {'page_obj': page_obj})
-
+@method_decorator(login_required, name='dispatch')
 @method_decorator(never_cache, name='dispatch')
 class RestoreDatabaseView(View):
+    @method_decorator(permission_required('app.add_backup', raise_exception=True))
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+    
     def post(self, request, *args, **kwargs):
         success = False
         try:
@@ -128,11 +111,12 @@ class RestoreDatabaseView(View):
 
         return JsonResponse({'messages': messages_str, 'success': success})
 
+@method_decorator(login_required, name='dispatch')
 @method_decorator(never_cache, name='dispatch')
 class DeleteBackupView(View):
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
+    @method_decorator(permission_required('app.delete_backup', raise_exception=True))
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         filename = request.POST.get('filename')

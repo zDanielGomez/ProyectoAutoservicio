@@ -1,3 +1,4 @@
+from django import views
 from django.urls import path
 from app.views import *
 from app.views.categoria.views import *
@@ -11,8 +12,6 @@ from app.views.marca.views import *
 from app.views.presentacion.views import *
 from app.views.administrador.views import *
 from app.views.backup.views import *
-
-
 
 app_name = 'app'
 urlpatterns = [
@@ -79,6 +78,5 @@ urlpatterns = [
     #Urls backup
     path('crear_backup/', BackupDatabaseView.as_view(), name='crear_backup'),
     path('restaurar_backup/', RestoreDatabaseView.as_view(), name='restaurar_backup'),
-
+    
 ]
-
