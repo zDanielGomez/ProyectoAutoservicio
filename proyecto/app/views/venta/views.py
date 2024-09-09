@@ -1,3 +1,4 @@
+import json
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
@@ -6,9 +7,10 @@ from django.http import JsonResponse
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.utils.decorators import method_decorator
 from django.shortcuts import render, redirect
-from app.models import *
-from app.forms import *
+from app.forms import VentaForm, Venta
 from django.views.decorators.cache import never_cache
+from app.models import Producto , Det_Venta
+
 
 def lista_venta(request):
     
@@ -24,11 +26,26 @@ def lista_venta(request):
 @method_decorator(never_cache, name='dispatch') 
 class VentaListView(ListView):
     model = Venta
-    template_name = 'venta/listar.html'
+    template_name = 'venta/listdetalle.html'
     
-    @method_decorator(login_required)
+    @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs): 
         return super().dispatch(request, *args, **kwargs)
+
+
+    def post(self, request, *args, **kwargs):
+        data = {}
+        try: 
+            action = request.POST['action']
+            if action == 'searchdata':
+                data = []
+                for i in Venta.objects.all():
+                    data.append(i.toJSON())
+            else:
+                data['error'] = 'Ha ocurrido un error'
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data, safe=False)
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -60,8 +77,25 @@ class VentaCreateView(CreateView):
                     item = i.toJSON()
                     item['value'] = i.nombre
                     data.append(item)
+            elif action == 'add':
+                print(request.POST['vents'])
+                vents = json.loads(request.POST['vents'])
+                venta = Venta()
+                venta.fecha_venta=vents["fecha_venta"]
+                venta.cliente_id =vents["cliente"]
+                venta.empleado_id =vents["empleado"]
+                venta.total_venta=float(vents["subtotal"])
+                venta.save()
+                for i in vents['products']:
+                    det= Det_Venta()
+                    det.id_venta_id = venta.id
+                    det.id_producto_id = i['id']
+                    det.cantidad = int(i['cant'])
+                    det.precio = float(i['precio'])
+                    det.subtotal = float(i['subtotal'])
+                    det.save()
             else:
-                data['error'] = 'No ha ingresado a ninguna opción'
+                data['error'] = 'Jueputa'
         except Exception as e:
             data['error'] = str(e)
         return JsonResponse(data, safe=False)
@@ -72,7 +106,9 @@ class VentaCreateView(CreateView):
         context['titulo'] = 'Crear Venta'
         context['entidad'] = 'Ventas'
         context['listar_url'] = reverse_lazy('app:venta_lista')
-        
+        context['action'] = 'add'
+        context['det'] = []
+
         return context
 
 @method_decorator(never_cache, name='dispatch') 

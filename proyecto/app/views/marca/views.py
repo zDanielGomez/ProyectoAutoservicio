@@ -24,7 +24,7 @@ def lista_marca(request):
 @method_decorator(never_cache, name='dispatch')
 class MarcaListView(ListView):
     model = Marca
-    template_name = 'categoria/listar.html'
+    template_name = 'marca/listar.html'
     
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs): 

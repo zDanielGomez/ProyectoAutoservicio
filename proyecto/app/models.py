@@ -32,6 +32,10 @@ class Empleado(models.Model):
         super().clean()
         if self.contrasena != self.conf_contrasena:
             raise ValidationError({"conf_contrasena": "Las contraseñas no coinciden"})
+        
+    def toJSON(self):
+        item = model_to_dict(self)
+        return item
 
     def __str__(self):
         return self.nombre
@@ -146,7 +150,11 @@ class Cliente(models.Model):
     telefono = models.PositiveIntegerField(unique=True,verbose_name="Telefono")
     
     def __str__(self):
-        return self.nombres
+        return f"{self.cc_cliente}"
+    
+    def toJSON(self):
+        item = model_to_dict(self)
+        return item
 
     class Meta:
         verbose_name = "Cliente"
@@ -176,6 +184,7 @@ class Producto(models.Model):
     presentacion = models.ForeignKey(Presentacion,on_delete=models.CASCADE)
     precio = models.DecimalField(default=0.00,max_digits=9 ,decimal_places=2)
     
+    
     def __str__(self):
         return self.nombre
     
@@ -196,6 +205,15 @@ class Venta(models.Model):
     empleado = models.ForeignKey(Empleado,on_delete=models.CASCADE,verbose_name="Empleado")
     total_venta = models.DecimalField(default=0.00,max_digits=9 ,decimal_places=2)
     
+    def toJSON(self):
+        item = model_to_dict(self)
+        item['fecha_venta'] = self.fecha_venta.strftime('%Y-%m-%d %H:%M')
+        item['cc_cliente'] = self.cliente.cc_cliente
+        item['cliente'] = self.cliente.nombres+" "+self.cliente.apellidos
+        item['empleado'] = self.empleado.nombre
+        item['total_venta'] = format(self.total_venta, '.2f')
+        return item
+    
     def __str__(self):
         return f"{self.fecha_venta}"
     
@@ -203,6 +221,30 @@ class Venta(models.Model):
         verbose_name = "Venta"
         verbose_name_plural = "Ventas"
         db_table = "Venta" 
+        
+
+class Det_Venta(models.Model):
+    
+    id_venta = models.ForeignKey(Venta, on_delete=models.PROTECT)
+    id_producto = models.ForeignKey(Producto, on_delete=models.PROTECT)
+    cantidad = models.PositiveIntegerField()
+    precio = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
+    subtotal = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
+    
+    def toJSON(self):
+        item = model_to_dict(self, exclude=['id_venta'])
+        item['id_producto'] = self.id_producto.toJSON()
+        item['precio'] = format(self.precio, '.2f')
+        item['subtotal'] = format(self.subtotal, '.2f')
+        return item
+
+    def _str_(self):
+        return self.id_producto
+
+    class Meta:
+        verbose_name= "Detalle venta"
+        verbose_name_plural ='Detalles de ventas'
+        db_table ='Detalle_Venta'
 
 # Se agrego la tabla Compra con sus atributos y metodos
 class Compra(models.Model):

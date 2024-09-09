@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% load static %}
-
 {% block head %}
+
 <link rel="stylesheet" href="{% static 'lib/adminlte-3.2.0/dataTables-bs4/css/dataTables.bootstrap4.min.css' %}" />
 <link rel="stylesheet" href="{% static 'lib/adminlte-3.2.0/datatables-responsive/css/responsive.bootstrap4.min.css' %}" />
 <link rel="stylesheet" href="{% static 'lib/adminlte-3.2.0/datatables-buttons/css/buttons.bootstrap4.min.css' %}" />
@@ -114,9 +114,9 @@
             </h3>
         </div>
         <div class="table-responsive">
-            <table id="tabla" class="table">
+            <table class="table table-bordered" id="data">
                 <thead>
-                    {% block columnas %} 
+                    {% block columns %} 
                     {% endblock %}
                 </thead>
                 <tbody>
@@ -148,23 +148,5 @@
 <script src="{% static 'lib/adminlte-3.2.0/datatables-buttons/js/buttons.print.min.js' %}"></script>
 <script src="{% static 'lib/adminlte-3.2.0/datatables-buttons/js/buttons.colVis.min.js' %}"></script>
 
-<script>
-$(document).ready(function() {
-    $('#tabla').DataTable({
-        responsive: false,
-        lengthChange: false,
-        autoWidth: false,
-        language: {
-            url: "{% static 'lib/adminlte-3.2.0/datatables/Spanish.json' %}"
-        },
-        buttons: [
-            { extend: 'copy', text: 'Copiar tabla', className: 'custom-button', exportOptions: { columns: ':not(:last-child)' } },
-            { extend: 'excel', text: 'Archivo Excel', className: 'custom-button', exportOptions: { columns: ':not(:last-child)' } },
-            { extend: 'pdf', text: 'PDF', className: 'custom-button', exportOptions: { columns: ':not(:last-child)' } },
-            { extend: 'print', text: 'Imprimir', className: 'custom-button', exportOptions: { columns: ':not(:last-child)' } }
-        ],
-        dom: 'Bfrtip'
-    }).buttons().container().appendTo('#tabla_wrapper .col-md-6:eq(0)');
-});
-</script>
+
 {% endblock %}

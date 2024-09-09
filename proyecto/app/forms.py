@@ -165,7 +165,7 @@ class VentaForm(ModelForm):
                 'style': 'width: 100%'
             }),
             'fecha_venta': DateInput(
-                format='%Y-%m-%d',
+                format='%Y-%m-%d %H:%M',
                 attrs={
                     'value': datetime.now().strftime('%Y-%m-%d'),
                     'autocomplete': 'off',
