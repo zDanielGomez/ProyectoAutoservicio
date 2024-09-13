@@ -191,6 +191,7 @@ class Producto(models.Model):
     def toJSON(self):
         item = model_to_dict(self)
         item['categoria'] = self.categoria.toJSON()
+        item['precio'] = format(self.precio, '.2f')
         return item
 
     class Meta:
@@ -212,6 +213,7 @@ class Venta(models.Model):
         item['cliente'] = self.cliente.nombres+" "+self.cliente.apellidos
         item['empleado'] = self.empleado.nombre
         item['total_venta'] = format(self.total_venta, '.2f')
+        item['det'] = [i.toJSON() for i in self.det_venta_set.all()]
         return item
     
     def __str__(self):
@@ -224,9 +226,8 @@ class Venta(models.Model):
         
 
 class Det_Venta(models.Model):
-    
-    id_venta = models.ForeignKey(Venta, on_delete=models.PROTECT)
-    id_producto = models.ForeignKey(Producto, on_delete=models.PROTECT)
+    id_venta = models.ForeignKey(Venta, on_delete=models.CASCADE)
+    id_producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
     cantidad = models.PositiveIntegerField()
     precio = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
     subtotal = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
@@ -248,7 +249,7 @@ class Det_Venta(models.Model):
 
 # Se agrego la tabla Compra con sus atributos y metodos
 class Compra(models.Model):
-    fecha_compra = models.DateTimeField(auto_now=True)  
+    fecha_compra = models.DateTimeField(default=datetime.now)  
     proveedor = models.ForeignKey(Proveedor,on_delete=models.CASCADE)
     producto = models.ForeignKey(Producto,on_delete=models.CASCADE)
     total_compra = models.DecimalField(default=0.00,max_digits=9 ,decimal_places=2)
@@ -260,3 +261,25 @@ class Compra(models.Model):
         verbose_name = "Compra"
         verbose_name_plural = "Compras"
         db_table = "Compra"
+
+class Det_Compra(models.Model):
+    id_compra = models.ForeignKey(Compra, on_delete=models.CASCADE)
+    id_producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
+    cantidad = models.PositiveIntegerField()
+    precio = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
+    subtotal = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
+    
+    def toJSON(self):
+        item = model_to_dict(self, exclude=['id_compra'])
+        item['id_producto'] = self.id_producto.toJSON()
+        item['precio'] = format(self.precio, '.2f')
+        item['subtotal'] = format(self.subtotal, '.2f')
+        return item
+
+    def _str_(self):
+        return self.id_producto
+
+    class Meta:
+        verbose_name= "Detalle Compra"
+        verbose_name_plural ='Detalles de Compras'
+        db_table ='Detalle_Compra'

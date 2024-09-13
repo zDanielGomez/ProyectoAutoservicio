@@ -1,16 +1,22 @@
 {% load static %}
+<head>  
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AdminLTE 3</title>
+    <link rel="stylesheet" href="{% static 'css/animation.css' %}" />
+    <script src="{% static 'js/animation.js' %}"></script>
+</head>
 <aside class="main-sidebar sidebar-light-primary elevation-4">
     <div class="sidebar" style="display: flex; flex-direction: column; height: 100%;">
         <!-- User Panel -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
-                <img src="{% static 'img/user.png' %}" class="img-circle elevation-2" style="border: 2px solid #333; margin-right: 8px;">
+                <i class="fa fa-user-alt" style="font-size: 24px; color: #fff; border: 2px solid #fff; border-radius: 50%; padding: 5px; background-color: rgb(3, 63, 99);"></i>
             </div>
             <div class="info">
-                <a href="#" class="d-block">{{ request.user.username }}</a>
+                <a href="#" class="d-block" style="color: #fff; font-size: 16px; font-weight: bold;">{{ request.user.username }}</a>
             </div>
         </div>
-
         <!-- Navigation -->
         <nav class="mt-2" style="flex: 1; display: flex; flex-direction: column;">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false" style="flex: 1;">
@@ -45,7 +51,7 @@
 
                 <li class="nav-item">
                     <a href="{% url 'app:cliente_lista' %}" class="nav-link">
-                        <i class="fa fa-users" style="font-size:20px; margin-right: 8px;"></i>
+                        <i class="fa fa-users" style="font-size:24px; margin-right: 8px;"></i>
                         <p>Clientes</p>
                     </a>
                 </li>

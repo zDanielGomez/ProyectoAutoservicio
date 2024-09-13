@@ -6,9 +6,6 @@ document.addEventListener("DOMContentLoaded", function() {
         "Monochrome": "Monocromo",
         "Low Saturation": "Baja Saturación",
         "High Saturation": "Alta Saturación",
-        "High Contrast": "Alto Contraste",
-        "Light Contrast": "Bajo Contraste",
-        "Dark Contrast": "Contraste Oscuro",
         "Big Cursor": "Cursor Grande",
         "Stop Animations": "Detener Animaciones",
         "Reading Guide": "Guía de Lectura"

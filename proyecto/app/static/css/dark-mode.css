@@ -1,0 +1,281 @@
+/* Estilos para el botón del modo oscuro */
+.dark-mode-toggle {
+  position: fixed;
+  bottom: 80px; /* Ajusta este valor para subir el botón */
+  right: 18px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #1e1e1e; /* Color de fondo del botón en modo oscuro */
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  border: 2px solid #fff;
+}
+
+.dark-mode-toggle:hover {
+  background-color: #333; /* Color de fondo al pasar el ratón sobre el botón */
+  transform: scale(1.1); /* Agranda el botón al pasar el ratón por encima */
+}
+
+/* Estilo global para el modo oscuro */
+.dark-mode {
+  background-color: #1e1e1e; /* Fondo oscuro general */
+  color: #e0e0e0; /* Color de texto claro */
+}
+
+/* Transición suave para el modo oscuro */
+.dark-mode .content-wrapper {
+  background-color: #1e1e1e; /* Fondo oscuro para los contenedores */
+  color: #e0e0e0; /* Color de texto claro */
+}
+
+/* Estilo específico para tarjetas (cards) */
+.dark-mode .card {
+  background-color: #1e1e1e; /* Fondo de las tarjetas */
+  color: #ddd; /* Color del texto en las tarjetas */
+  border: 1px solid #444; /* Borde de las tarjetas */
+}
+
+/* Estilo para el encabezado de la tarjeta (card-header) */
+.dark-mode .card-header {
+  background-color: #1e1e1e; /* Fondo oscuro para el encabezado de la tarjeta */
+  color: #e0e0e0; /* Color del texto en el encabezado */
+  border-bottom: 1px solid #444; /* Borde inferior del encabezado */
+}
+
+/* Estilo para el título de la tarjeta (card-title) */
+.dark-mode .card-title {
+  color: #e0e0e0; /* Color del texto del título */
+}
+
+/* Estilo para los íconos dentro de la tarjeta */
+.dark-mode .card-title i {
+  color: #e0e0e0; /* Color de los íconos */
+}
+
+/* Estilo para la tabla */
+.dark-mode .table {
+  background-color: #1e1e1e; /* Fondo oscuro para la tabla */
+  color: #e0e0e0; /* Color del texto en la tabla */
+}
+
+.dark-mode .table thead {
+  background-color: #333; /* Fondo más oscuro para el encabezado de la tabla */
+}
+
+.dark-mode .table tbody tr:hover {
+  background-color: #444; /* Fondo de las filas al pasar el ratón sobre ellas */
+}
+
+/* Estilo para el pie de la tarjeta (card-footer) */
+.dark-mode .card-footer {
+  background-color: #1e1e1e; /* Fondo oscuro para el pie de la tarjeta */
+  color: #e0e0e0; /* Color del texto en el pie */
+}
+
+/* Estilo para botones primarios */
+.dark-mode .btn-primary {
+  background-color: #6c757d; /* Color de fondo gris para los botones primarios */
+  border-color: #6c757d; /* Color del borde para los botones primarios */
+  color: #fff; /* Color del texto en los botones primarios */
+}
+
+.dark-mode .btn-primary:hover {
+  background-color: #5a6268; /* Color de fondo gris más oscuro al pasar el ratón sobre el botón */
+  border-color: #5a6268; /* Color del borde al pasar el ratón sobre el botón */
+}
+
+/* Estilo para el menú lateral principal */
+.dark-mode .main-sidebar,
+.dark-mode .sidebar {
+  background-color: #1e1e1e; /* Fondo oscuro para el menú lateral */
+}
+
+/* Estilo para el panel de usuario en el menú lateral */
+.dark-mode .user-panel {
+  background-color: #1e1e1e; /* Fondo oscuro para el panel de usuario */
+  color: #fff; /* Color del texto del panel de usuario */
+}
+
+.dark-mode .user-panel .image i {
+  color: #fff; /* Color del ícono del usuario */
+  background-color: #1e1e1e; /* Fondo del ícono del usuario */
+  border-color: #fff; /* Color del borde del ícono del usuario */
+}
+
+/* Estilo para el texto del usuario */
+.dark-mode .user-panel .info a {
+  color: #fff; /* Color del texto del usuario */
+}
+
+/* Estilo para los elementos de navegación en la barra lateral */
+.dark-mode .nav-sidebar {
+  background-color: #1e1e1e; /* Fondo oscuro para los elementos de navegación */
+}
+
+.dark-mode .nav-sidebar .nav-link {
+  background-color: #1e1e1e !important; /* Fondo de los enlaces de navegación */
+  color: #e0e0e0; /* Color del texto de los enlaces de navegación */
+}
+
+.dark-mode .nav-sidebar .nav-link i {
+  background-color: #1e1e1e !important;
+  color: #e0e0e0; /* Color de los íconos dentro de los enlaces de navegación */
+}
+
+.dark-mode .nav-sidebar .nav-link:hover {
+  background-color: #1e1e1e !important; /* Fondo de los enlaces de navegación al pasar el ratón */
+  color: #e0e0e0; /* Color del texto al pasar el ratón */
+}
+
+.dark-mode .navbar-nav {
+  background-color: #1e1e1e; /* Color de fondo oscuro */
+}
+
+/* Estilos para los botones del DataTable en modo oscuro */
+.dark-mode .custom-button {
+  background-color: #6c757d; /* Color de fondo gris para los botones */
+  color: #fff; /* Color del texto blanco */
+  border-color: #6c757d; /* Color del borde de los botones */
+}
+
+.dark-mode .custom-button:hover {
+  background-color: #5a6268; /* Color de fondo gris más oscuro al pasar el ratón */
+  border-color: #5a6268; /* Color del borde al pasar el ratón */
+}
+
+.dark-mode .custom-button:active {
+  background-color: #545b62; /* Color de fondo gris aún más oscuro al hacer clic */
+  border-color: #545b62; /* Color del borde al hacer clic */
+}
+
+.dark-mode .tabla_previus {
+  color: #444;
+}
+
+.dark-mode .form-control {
+  background-color: #1e1e1e; /* Fondo gris oscuro para los campos de entrada */
+  color: #fff; /* Texto blanco en los campos de entrada */
+  border: 1px solid #444; /* Borde gris oscuro */
+}
+
+.dark-mode .paginate_buttons {
+  background-color: #1e1e1e; /* Fondo de los botones de paginación */
+  color: #000000; /* Color del texto en los botones de paginación */
+}
+
+.dark-mode .main-header {
+  background-color: #1e1e1e !important; /* Fondo oscuro para el header */
+  border-color: #000000 !important; /* Borde del header */
+  color: #fff; /* Color del texto en el header */
+}
+
+.dark-mode .main-footer {
+  background-color: #1e1e1e !important; /* Fondo oscuro para el pie de página */
+  border-color: #000000 !important; /* Borde del pie de página */
+  color: #fff; /* Color del texto en el pie de página */
+}
+
+.dark-mode .form {
+  background-color: #1e1e1e; /* Fondo oscuro para formularios */
+  color: #fff; /* Color del texto en los formularios */
+}
+
+/* Estilos para el formulario de inicio de sesión en modo oscuro */
+.dark-mode .login-form {
+  background-color: #1e1e1e; /* Fondo oscuro para el formulario */
+  padding: 20px;
+  border-radius: 5px;
+}
+
+/* Estilos para los campos de formulario en modo oscuro */
+.dark-mode .form-control {
+  background-color: #1e1e1e; /* Fondo gris oscuro para los campos de entrada */
+  color: #fff; /* Texto blanco en los campos de entrada */
+  border: 1px solid #444; /* Borde gris oscuro */
+  padding: 10px;
+}
+
+/* Estilo para el botón de envío del formulario */
+.dark-mode .login-form button {
+  background-color: #6c757d; /* Fondo gris para el botón */
+  color: #fff; /* Texto blanco en el botón */
+  border: 1px solid #6c757d; /* Borde gris para el botón */
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Estilo para el botón de envío del formulario al pasar el ratón */
+.dark-mode .login-form button:hover {
+  background-color: #5a6268; /* Fondo gris más oscuro al pasar el ratón */
+  border-color: #5a6268; /* Borde gris más oscuro al pasar el ratón */
+}
+
+/* Estilo para el enlace de contraseña olvidada */
+.dark-mode .message a {
+  color: #f7f7f7; /* Color azul para el enlace */
+}
+
+/* Estilo para el botón del modo oscuro */
+.dark-mode .asw-menu {
+  background: #1e1e1e; /* Fondo del menú oscuro */
+  color: #e0e0e0; /* Color del texto en el menú oscuro */
+}
+
+.dark-mode .asw-menu-btn {
+  background: #1e1e1e; /* Fondo del botón del menú en modo oscuro */
+  fill: #e0e0e0 !important; /* Color del ícono en el botón del menú */
+}
+
+.dark-mode .asw-menu-btn:hover {
+  background: #333; /* Fondo del botón del menú cuando se pasa el ratón */
+}
+
+.dark-mode .asw-btn {
+  background: #6c757d; /* Fondo de los botones en modo oscuro */
+  color: #fff; /* Color del texto en los botones */
+  border: 3px solid #6c757d; /* Borde de los botones en modo oscuro */
+}
+
+.dark-mode .asw-btn:hover {
+  border-color: #5a6268; /* Color del borde cuando se pasa el ratón */
+}
+
+.dark-mode .asw-btn.asw-selected {
+  background: #5a6268; /* Fondo de los botones seleccionados en modo oscuro */
+  color: #e0e0e0; /* Texto en los botones seleccionados */
+  border-color: #5a6268; /* Borde de los botones seleccionados */
+}
+
+.dark-mode .asw-menu-header {
+  background: #1e1e1e; /* Fondo de la cabecera del menú en modo oscuro */
+  color: #e0e0e0; /* Color del texto de la cabecera */
+}
+
+.dark-mode .asw-footer {
+  background: #1e1e1e; /* Fondo del pie de página en modo oscuro */
+}
+
+.dark-mode .asw-card {
+  background: #1e1e1e; /* Fondo de las tarjetas en modo oscuro */
+  color: #e0e0e0; /* Color del texto en las tarjetas */
+}
+
+.dark-mode .asw-adjust-font {
+  background: #1e1e1e; /* Fondo de la sección de ajuste de fuente en modo oscuro */
+}
+
+.dark-mode .asw-overlay {
+  background: rgba(30, 30, 30, 0.7); /* Fondo del overlay en modo oscuro */
+}
+
+
+
+
+

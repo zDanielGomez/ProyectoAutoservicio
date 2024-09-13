@@ -1,5 +1,4 @@
 var tblSale;
-var rutaJson = "app/static/venta/js/Spanish.json";
 $(function () {
     tblSale = $('#data').DataTable({
         responsive: false,
@@ -29,10 +28,20 @@ $(function () {
             {"data": "cc_cliente"},
             {"data": "cliente"},
             {"data": "empleado"},
+            {"data": "id"},
             {"data": "total_venta"},
             {"data": "id"},
         ],
         columnDefs: [
+            {
+                targets: [-3],
+                class: 'text-center',
+                orderable: false,
+                render: function (data, type, row) {
+                    var buttons =  '<a rel="detalle" + class="btn btn-success btn-xs btn-flat"><i class="fas fa-search"></i></a> ';
+                    return buttons;
+                }
+            },
             {
                 targets: [-2],
                 class: 'text-center',
@@ -47,8 +56,7 @@ $(function () {
                 orderable: false,
                 render: function (data, type, row) {
                     var buttons = '<a href="/app/venta/eliminar/' + row.id + '/" class="btn btn-danger btn-xs btn-flat"><i class="fas fa-trash-alt"></i></a> ';
-                    //var buttons = '<a href="/erp/sale/update/' + row.id + '/" class="btn btn-warning btn-xs btn-flat"><i class="fas fa-edit"></i></a> ';
-                    return buttons;
+                    buttons += '<a href="/app/venta/editar/' + row.id + '/" class="btn btn-warning btn-xs btn-flat"><i class="fas fa-edit"></i></a> ';                    return buttons;
                 }
             },
         ],
@@ -56,4 +64,57 @@ $(function () {
 
         }
     });
+
+    $('#data tbody')
+        .on('click', 'a[rel="detalle"]', function () {
+            var tr = tblSale.cell($(this).closest('td, li')).index();
+            var data = tblSale.row(tr.row).data();
+            console.log(data);
+
+            $('#tablaDet').DataTable({
+                responsive: true,
+                autoWidth: false,
+                destroy: true,
+                deferRender: true,
+                ajax: {
+                    url: window.location.pathname,
+                    type: 'POST',
+                    data: {
+                        'action': 'search_details_prod',
+                        'id': data.id
+                    },
+                    dataSrc: "",
+                },
+                columns: [
+                    {"data": "id_producto.nombre"},
+                    {"data": "id_producto.categoria.nombre"},
+                    {"data": "precio"},
+                    {"data": "cantidad"},
+                    {"data": "subtotal"},
+                ],
+                columnDefs: [
+                    {
+                        targets: [-1,-3],
+                        class: 'text-center',
+                        orderable: false,
+                        render: function (data, type, row) {
+                            return '$' + parseFloat(data).toFixed(2);
+                        }
+                    },
+                    {
+                        targets: [-2],
+                        class: 'text-center',
+                        render: function (data, type, row) {
+                            return data;
+                        }
+                    },
+                ],
+                initComplete: function (settings, json) {
+        
+                }
+            });
+            
+            
+            $('#ModeloDet').modal('show');  
+        });   
 });

@@ -1,4 +1,5 @@
-{% load static %} {% load widget_tweaks %}
+{% load static %} 
+{% load widget_tweaks %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,28 +9,8 @@
     <title>{{ titulo }}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="{% static 'login/css/styles.css' %}" />
-    <style>
-      .alert {
-        color: red;
-        font-size: 14px;
-        margin-bottom: 10px;
-      }
-      .alert p {
-        margin: 0;
-      }
-      .form-control {
-        display: block;
-        width: 100%;
-        padding: 8px;
-        margin: 5px 0;
-        box-sizing: border-box;
-      }
-      .login-page {
-        max-width: 360px;
-        width: 100%;
-        margin: 0 auto;
-      }
-    </style>
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/dark-mode.css' %}"/>
 </head>
 <body style="display: flex; align-items: center; justify-content: center">
     <div class="login-page">
@@ -56,7 +37,17 @@
             </form>
         </div>
     </div>
+    <!-- Botón de alternancia de modo oscuro -->
+    <div class="dark-mode-toggle" id="darkModeToggle">
+      <i class="fas fa-moon"></i> 
+  </div>
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{% static 'login/js/main.js' %}"></script>
-</body>
+    <script src="{% static 'js/sienna.js' %}"></script>
+    <script src="{% static 'js/custom.js' %}"></script>
+    <script src="{% static 'js/dark-mode.js' %}"></script>
+
+
+   </body>
 </html>

@@ -1,17 +1,91 @@
 .asw-menu-btn {
-    background-color: #0212f8 !important;
+    background-color: rgb(3, 63, 99) !important;
+    color: #fff;
+    border: 2px solid #fff; /* Borde blanco sólido de 2px */
+    border-radius: 5px; /* Bordes redondeados (ajusta el valor según sea necesario) */
+    padding: 10px 20px; /* Espaciado interno (ajusta según sea necesario) */
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.5); /* Sombra blanca sutil (opcional) */
+    transition: border-color 0.3s ease; /* Transición suave para el borde (opcional) */
 }
+
+.asw-menu-btn:hover {
+    border-color: rgba(255, 255, 255, 0.8); /* Color del borde en hover */
+}
+
 .asw-menu-header {
-    background: #0212f8 !important;
+    background: rgb(3, 63, 99) !important;
     color: #fff;
 }
 
 .asw-footer {
-    background: #0212f8 !important;
+    background: rgb(3, 63, 99) !important;
     color: #fff;
 }
 
 .asw-adjust-font div[role=button] {
-    background: #0212f8 !important;
+    background: rgb(17, 147, 228) !important;
     color: #fff;
+    border: 2px solid #fff; /* Borde blanco sólido de 2px */
+    border-radius: 5px; /* Bordes redondeados (ajusta el valor según sea necesario) */
+    padding: 10px 20px; /* Espaciado interno (ajusta según sea necesario) */
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.5); /* Sombra blanca sutil (opcional) */
+    transition: border-color 0.3s ease; /* Transición suave para el borde (opcional) */
 }
+
+.asw-adjust-font div[role=button]:hover {
+    border-color: rgba(255, 255, 255, 0.8); /* Color del borde en hover */
+}
+
+.main-footer {
+    background-color: rgb(3, 63, 99) !important;
+    color: #fff !important;
+}
+
+.main-footer a {
+    color: #fff !important;
+    text-decoration: none; /* Opcional: para eliminar el subrayado en los enlaces */
+}
+
+.main-footer a:hover {
+    text-decoration: underline; /* Opcional: para agregar subrayado en los enlaces cuando se pasa el ratón */
+}
+.main-sidebar {
+    background-color: rgb(3, 63, 99) !important; /* Color de fondo del aside */
+}
+
+.nav-link {
+    color: #fff !important; /* Color del texto de los enlaces */
+}
+
+.nav-link i {
+    color: #fff !important; /* Color de los íconos */
+}
+
+.nav-header {
+    color: #fff !important; /* Color del texto de los encabezados */
+}
+
+.user-panel .info a {
+    color: #fff !important; /* Color del texto del usuario */
+}
+
+.user-panel .image img {
+    border: 2px solid #fff; /* Borde blanco para la imagen del usuario */
+}
+.breadcrumb {
+    background-color: rgb(3, 63, 99); /* Fondo con el mismo color que el borde */
+    padding: 12px 20px; /* Aumenta el espaciado interno para separar el texto del borde */
+    border-radius: 4px; /* Bordes redondeados */
+    margin-bottom: 20px; /* Espaciado inferior */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada */
+    border: 2px solid rgb(3, 63, 99); /* Borde con color RGB (3, 63, 99) y grosor ajustado */
+    margin-left: 40px; /* Espaciado a la izquierda del breadcrumb */
+}
+
+/* Estilo para los enlaces del breadcrumb */
+.breadcrumb-item a {
+    color: #141414; /* Color del texto blanco */
+    text-decoration: none; /* Sin subrayado */
+    font-weight: bold; /* Negrita */
+}
+

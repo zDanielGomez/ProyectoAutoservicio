@@ -218,21 +218,27 @@ class CompraForm(ModelForm):
         model = Compra
         fields = '__all__'
         widgets = {
-            'nombres' : TextInput(
-                attrs= {
-                    'placeholder' : 'Ingrese los nombres',
+            'proveedor': Select(attrs={
+                'class': 'form-control select2',
+                'style': 'width: 100%'
+            }),
+            
+            'fecha_compra': DateInput(
+                format='%Y-%m-%d %H:%M',
+                attrs={
+                    'value': datetime.now().strftime('%Y-%m-%d'),
+                    'autocomplete': 'off',
+                    'class': 'form-control datetimepicker-input',
+                    'id': 'date_joined',
+                    'data-target': '#date_joined',
+                    'data-toggle': 'datetimepicker',
+                    'readonly': True,
                 }
             ),
-            'apellidos' : TextInput(
-                attrs= {
-                    'placeholder' : 'Ingrese los apellidos',
-                }
-            ),
-            'telefono' : TextInput(
-                attrs= {
-                    'placeholder' : 'Ingrese el telefono',
-                }
-            ),     
+            # 'fecha_venta': TimeInput(attrs={
+            #     'readonly': True,
+            #     'class': 'form-control',
+            # })
         }
         
 class ProveedorForm(ModelForm):

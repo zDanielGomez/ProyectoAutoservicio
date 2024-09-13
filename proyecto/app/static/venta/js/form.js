@@ -130,7 +130,7 @@ var vents = {
             columns: [
                 {"data": "id"},
                 {"data": "nombre"},
-                {"data": "categoria.nombre"},
+                {"data": "cantidad"},
                 {"data": "precio"},
                 {"data": "cant"}, 
                 {"data": "subtotal"},
@@ -142,6 +142,22 @@ var vents = {
                     orderable: false,
                     render: function (data, type, row) {
                         return '<a rel="remove" class="btn btn-danger btn-xs btn-flat" style="color: white"><i class="fas fa-trash-alt"></i></a>';
+                    }
+                },
+                {
+                    targets: [-4],
+                    class: 'text-center',
+                    orderable: false,
+                    render: function (data, type, row) {
+                        if(data > 10){
+                            return '<span class= "badge badge-success">'+data+'</span>'
+                        }
+                        else if( data <=10 ){
+                            return '<span class= "badge badge-warning">'+data+'</span>'
+                        }
+                        else {
+                            return '<span class= "badge badge-danger">'+data+'</span>'
+                        }
                     }
                 },
                 {
@@ -157,7 +173,7 @@ var vents = {
                     class: 'text-center',
                     orderable: false,
                     render: function (data, type, row) {
-                        return '<input type="text" name="cant" class="form-control form-control-sm input-sm" autocomplete="off" value="'+row.cant+'">';
+                        return '<input type="number" name="cant" class="form-control form-control-sm input-sm" autocomplete="off" value="'+row.cant+'">';
                     }
                 },
                 {
@@ -173,7 +189,7 @@ var vents = {
 
                 $(row).find('input[name="cant"]').TouchSpin({
                     min: 1,
-                    max: 1000000000,
+                    max: data.cantidad,
                     step: 1
                 });
 
@@ -224,7 +240,7 @@ $(function () {
             $(this).val("");
         }
     });
-
+    
     $('.btneliminartodo').on('click', function(){
         if (vents.items.products.length===0){
             Swal.fire({
@@ -307,6 +323,11 @@ $(function () {
 
     $('form').on('submit', function (e) {
         e.preventDefault();
+
+        if(vents.items.products.length === 0){
+            message_error('Debe al menos tener un item en su detalle de venta');
+            return false;
+        }
         vents.items.fecha_venta = $('input[name="fecha_venta"]').val();
         vents.items.cliente = $('select[name="cliente"]').val();
         vents.items.empleado = $('select[name="empleado"]').val();
@@ -317,7 +338,6 @@ $(function () {
             location.href = '/app/venta/listar/';
         });
     });
-    
 });
 
 
