@@ -1,19 +1,59 @@
+import json
+from django.http import JsonResponse
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.shortcuts import render
+from django.views.decorators.csrf import csrf_protect, csrf_exempt
 from django.views.decorators.cache import never_cache
 from django.core.exceptions import ValidationError
-from app.models import Compra  # Cambiado de Proveedor a Compra
+from app.models import Compra, Det_Compra, Producto  # Cambiado de Proveedor a Compra
 from app.forms import CompraForm  # Cambiado de ProveedorForm a CompraForm
 from app.views import *
+
+def lista_compra(request):
+    
+    nombre = {
+        
+        'titulo': 'Listado de Compras',
+        'empleados': Compra.objects.all()
+    }
+    
+    return render(request, "compra/listar.html", nombre)
 
 @method_decorator(login_required, name='dispatch')
 @method_decorator(never_cache, name='dispatch')
 class CompraListView(ListView):
     model = Compra
     template_name = 'compra/listar.html'  # Cambiado de proveedor/listar.html a compra/listar.html
+
+    
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs): 
+        return super().dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        data = {}
+        try: 
+            action = request.POST['action']
+            if action == 'searchdata':
+                data = []
+                for i in Compra.objects.all():
+                    data.append(i.toJSON())
+            elif action == "search_details_prod":
+                data = []
+                for i in Det_Compra.objects.filter(id_compra_id=request.POST['id']):
+                    data.append(i.toJSON())
+            else:
+                data['error'] = 'Ha ocurrido un error'
+        except Exception as e:
+            data['error'] = str(e)
+        
+        print(data)
+        return JsonResponse(data, safe=False)
+    
+
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -36,7 +76,54 @@ class CompraCreateView(CreateView):
     model = Compra
     form_class = CompraForm  # Cambiado de ProveedorForm a CompraForm
     template_name = 'compra/crear.html'  # Cambiado de proveedor/crear.html a compra/crear.html
-    success_url = reverse_lazy('app:compra_lista')  # Cambiado de proveedor_lista a compra_lista
+    success_url = reverse_lazy('app:compra_lista')# Cambiado de proveedor_lista a compra_lista
+    url_redirect = success_url
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        if not self.request.user.has_perm('app.add_compra') or self.request.user.groups.filter(name='Compra').exists():  # Cambiado de add_proveedor a add_compra
+            list_context = CompraListView.as_view()(request, *args, **kwargs).context_data
+            return render(request, 'compra/listar.html', list_context)  # Cambiado de proveedor/listar.html a compra/listar.html
+        return super().dispatch(request, *args, **kwargs)
+    
+    
+    def post(self, request, *args, **kwargs):
+        data = {}
+        try:
+            action = request.POST['action']
+            if action == 'search_products':
+                data = []
+                ids_existentes = json.loads(request.POST['ids'])
+                print(ids_existentes)
+                prods = Producto.objects.filter(cantidad__gt=0,nombre__icontains=request.POST['term']).exclude(id__in=ids_existentes)[0:10]
+                for i in prods:
+                    item = i.toJSON()
+                    item['value'] = i.nombre
+                    data.append(item)
+            elif action == 'add':
+                print(request.POST['compras'])
+                compras = json.loads(request.POST['compras'])
+                compra = Compra()
+                compra.fecha_compra=compras["fecha_compra"]
+                compra.proveedor_id =compras["proveedor"]
+                compra.total_compra=float(compras["subtotal"])
+                compra.save()
+                for i in compras['products']:
+                    det= Det_Compra()
+                    det.id_compra_id = compra.id
+                    det.id_producto_id = i['id']
+                    det.cantidad = int(i['cant'])
+                    det.precio = float(i['precio'])
+                    det.subtotal = float(i['subtotal'])
+                    det.save()
+                    
+                    det.id_producto.cantidad+=det.cantidad
+                    det.id_producto.save()
+            else:
+                data['error'] = 'z'
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data, safe=False)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -44,20 +131,18 @@ class CompraCreateView(CreateView):
         context['entidad'] = 'Registrar compra'  # Cambiado de Registrar proveedor a Registrar compra
         context['listar_url'] = reverse_lazy('app:compra_lista')  # Cambiado de proveedor_lista a compra_lista
         context['has_permission'] = not self.request.user.groups.filter(name='Compra').exists() and self.request.user.has_perm('app.add_compra')  # Cambiado de add_proveedor a add_compra
+        context['action'] = 'add'
+        context['det'] = []
         return context
-
-    def dispatch(self, request, *args, **kwargs):
-        if not self.request.user.has_perm('app.add_compra') or self.request.user.groups.filter(name='Compra').exists():  # Cambiado de add_proveedor a add_compra
-            list_context = CompraListView.as_view()(request, *args, **kwargs).context_data
-            return render(request, 'compra/listar.html', list_context)  # Cambiado de proveedor/listar.html a compra/listar.html
-        return super().dispatch(request, *args, **kwargs)
-
+    
     def form_valid(self, form):
         try:
             return super().form_valid(form)
         except ValidationError as e:
             form.add_error(None, e)
             return self.form_invalid(form)
+        
+    
 
 @method_decorator(login_required, name='dispatch')
 @method_decorator(never_cache, name='dispatch')

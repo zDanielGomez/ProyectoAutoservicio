@@ -11,6 +11,11 @@ body{
   padding: 8% 0 0;
   margin: auto;
 }
+.alert p {
+  color: #ff0000;
+  font-weight: bold; /* Negrilla */
+}
+
 .form {
   position: relative;
   z-index: 1;

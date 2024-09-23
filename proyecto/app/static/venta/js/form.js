@@ -11,7 +11,6 @@ function message_error(obj) {
     }
     Swal.fire({
         title: 'Error!',
-        html: html,
         icon: 'error'
     });
 }
@@ -104,6 +103,13 @@ var vents = {
         total: 0.00,
         products: []
     },
+    get_ids:function(){
+        var ids =[];
+        $.each(this.items.products, function (key, value){
+            ids.push(value.id)
+        });
+        return ids;
+    },
     calcular_factura: function(){
         var subtotal = 0.00;
         $.each(this.items.products, function(pos,dict){
@@ -173,7 +179,7 @@ var vents = {
                     class: 'text-center',
                     orderable: false,
                     render: function (data, type, row) {
-                        return '<input type="number" name="cant" class="form-control form-control-sm input-sm" autocomplete="off" value="'+row.cant+'">';
+                        return '<input type="number" min="0" name="cant" class="form-control form-control-sm input-sm" autocomplete="off" value="'+row.cant+'">';
                     }
                 },
                 {
@@ -198,6 +204,9 @@ var vents = {
 
             }
         });
+        console.log(this.items);
+        console.log("idsss");
+        console.log(this.get_ids());
     },
 };
 
@@ -217,7 +226,8 @@ $(function () {
                 type: 'POST',
                 data: {
                     'action': 'search_products',
-                    'term': request.term
+                    'term': request.term,
+                    'ids': JSON.stringify(vents.get_ids())
                 },
                 dataType: 'json',
             }).done(function (data) {
@@ -323,11 +333,43 @@ $(function () {
 
     $('form').on('submit', function (e) {
         e.preventDefault();
+        console.log(vents.items)
+
+        
 
         if(vents.items.products.length === 0){
-            message_error('Debe al menos tener un item en su detalle de venta');
+            Swal.fire({
+                title: 'Error!',
+                text: 'No tienes productos agregados',
+                icon: 'success warning',
+                confirmButtonText: 'Aceptar',
+                confirmButtonColor: '#be3b25',
+                timer: 2000 
+            });
             return false;
         }
+
+        var isValid = true;
+        $.each(vents.items.products, function (index, product) {
+            if (product.cant <= 0 || product.cant > product.cantidad) {
+                isValid = false;
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'La cantidad del producto ' + product.nombre + ' es inválida',
+                    icon: 'error',
+                    confirmButtonText: 'Aceptar',
+                    confirmButtonColor: '#be3b25',
+                    timer: 2000
+                });
+                return false;
+            }
+        });
+
+        if (!isValid) {
+            return false;
+        }
+
+        
         vents.items.fecha_venta = $('input[name="fecha_venta"]').val();
         vents.items.cliente = $('select[name="cliente"]').val();
         vents.items.empleado = $('select[name="empleado"]').val();

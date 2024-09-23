@@ -1,15 +1,25 @@
 import json
+import os
+import django
+import django.conf
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
+from django.views import View
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
-from django.http import JsonResponse
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.utils.decorators import method_decorator
 from django.shortcuts import render, redirect
 from app.forms import VentaForm, Venta
 from django.views.decorators.cache import never_cache
 from app.models import Producto , Det_Venta
+from django.conf import settings
+from django.http import HttpResponse
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+from django.contrib.staticfiles import finders
+
 
 
 def lista_venta(request):
@@ -78,7 +88,9 @@ class VentaCreateView(CreateView):
             action = request.POST['action']
             if action == 'search_products':
                 data = []
-                prods = Producto.objects.filter(cantidad__gt=0,nombre__icontains=request.POST['term'])[0:10]
+                ids_existentes = json.loads(request.POST['ids'])
+                print(ids_existentes)
+                prods = Producto.objects.filter(cantidad__gt=0,nombre__icontains=request.POST['term']).exclude(id__in=ids_existentes)[0:10]
                 for i in prods:
                     item = i.toJSON()
                     item['value'] = i.nombre
@@ -210,3 +222,61 @@ class VentaDeleteView(DeleteView):
         context['listar_url'] = reverse_lazy('app:venta_lista')
         
         return context
+
+class VentaFacturaView(View):
+    def link_callback(self,uri, rel):
+            """
+            Convert HTML URIs to absolute system paths so xhtml2pdf can access those
+            resources
+            """
+            result = finders.find(uri)
+            if result:
+                    if not isinstance(result, (list, tuple)):
+                            result = [result]
+                    result = list(os.path.realpath(path) for path in result)
+                    path=result[0]
+            else:
+                    sUrl = settings.STATIC_URL        # Typically /static/
+                    sRoot = settings.STATIC_ROOT      # Typically /home/userX/project_static/
+                    mUrl = settings.MEDIA_URL         # Typically /media/
+                    mRoot = settings.MEDIA_ROOT       # Typically /home/userX/project_static/media/
+
+                    if uri.startswith(mUrl):
+                            path = os.path.join(mRoot, uri.replace(mUrl, ""))
+                    elif uri.startswith(sUrl):
+                            path = os.path.join(sRoot, uri.replace(sUrl, ""))
+                    else:
+                            return uri
+
+            # make sure that file exists
+            if not os.path.isfile(path):
+                    raise RuntimeError(
+                            'media URI must start with %s or %s' % (sUrl, mUrl)
+                    )
+            return path
+    def get(self,request,*arg,**kwargs):
+        try:
+            template = get_template("venta/factura.html")
+            context = {
+                'venta': Venta.objects.get(pk=self.kwargs['pk']),
+                'autoservicio': {
+                    'nombre':'Autoservicio el rincon de los angeles',
+                    'nit':"123456",
+                    'direccion': "Sogamoso"
+                    },
+                'logo':'{}{}'.format(settings.STATIC_URL, 'img/backup.png' )
+                
+                }
+            html = template.render(context)
+            response = HttpResponse(content_type='application/pdf')
+            pisa_status = pisa.CreatePDF(
+                html, dest=response,
+                link_callback=self.link_callback
+                )
+            if pisa_status.err:
+                return HttpResponse('We had some errors <pre>' + html + '</pre>')
+            return response
+        except:
+            pass
+        return HttpResponseRedirect(reverse_lazy('app:venta_lista'))
+    

@@ -38,6 +38,7 @@ urlpatterns = [
     path('venta/crear/', VentaCreateView.as_view(), name='venta_crear'),
     path('venta/editar/<int:pk>/', VentaUpdateView.as_view(), name='venta_editar'),
     path('venta/eliminar/<int:pk>/', VentaDeleteView.as_view(), name='venta_eliminar'),
+    path('venta/factura/<int:pk>/', VentaFacturaView.as_view(), name='venta_factura'),
     
     #Urls producto
     path('producto/listar/', ProductoListView.as_view(), name='producto_lista'),

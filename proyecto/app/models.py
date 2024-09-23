@@ -1,3 +1,4 @@
+from ast import Delete
 from django.db import models
 from datetime import datetime
 from django.forms import ValidationError, model_to_dict
@@ -215,9 +216,18 @@ class Venta(models.Model):
         item['total_venta'] = format(self.total_venta, '.2f')
         item['det'] = [i.toJSON() for i in self.det_venta_set.all()]
         return item
-    
+
     def __str__(self):
         return f"{self.fecha_venta}"
+    
+    
+    def delete(self,using=None, keep_parents=False):
+        for det in self.det_venta_set.all():
+            print("---------")
+            print(det.toJSON() )
+            det.id_producto.cantidad += det.cantidad
+            det.id_producto.save()
+        super(Venta,self).delete()
     
     class Meta:
         verbose_name = "Venta"
@@ -251,8 +261,23 @@ class Det_Venta(models.Model):
 class Compra(models.Model):
     fecha_compra = models.DateTimeField(default=datetime.now)  
     proveedor = models.ForeignKey(Proveedor,on_delete=models.CASCADE)
-    producto = models.ForeignKey(Producto,on_delete=models.CASCADE)
     total_compra = models.DecimalField(default=0.00,max_digits=9 ,decimal_places=2)
+    
+    def toJSON(self):
+        item = model_to_dict(self)
+        item['fecha_compra'] = self.fecha_compra.strftime('%Y-%m-%d %H:%M')
+        item['proveedor'] = self.proveedor
+        item['total_compra'] = format(self.total_compra, '.2f')
+        item['det'] = [i.toJSON() for i in self.det_compra_set.all()]
+        return item
+    
+    def delete(self,using=None, keep_parents=False):
+        for det in self.det_compra_set.all():
+            print("---------")
+            print(det.toJSON() )
+            det.id_producto.cantidad -= det.cantidad
+            det.id_producto.save()
+        super(Compra,self).delete()
     
     def __str__(self):
         return f"{self.fecha_compra}"

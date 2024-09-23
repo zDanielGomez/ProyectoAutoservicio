@@ -235,7 +235,11 @@ class CompraForm(ModelForm):
                     'readonly': True,
                 }
             ),
-            # 'fecha_venta': TimeInput(attrs={
+            'total_compra': TextInput(attrs={
+                'readonly': True,
+                'class': 'form-control',
+            }),
+            # 'total_compra': TimeInput(attrs={
             #     'readonly': True,
             #     'class': 'form-control',
             # })
