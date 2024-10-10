@@ -1,16 +1,18 @@
 import json
-from django.http import JsonResponse
+from django.http import Http404, JsonResponse
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
-from django.shortcuts import render
+from django.shortcuts import render , redirect
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
 from django.views.decorators.cache import never_cache
 from django.core.exceptions import ValidationError
 from app.models import Compra, Det_Compra, Producto  # Cambiado de Proveedor a Compra
 from app.forms import CompraForm  # Cambiado de ProveedorForm a CompraForm
 from app.views import *
+from django.contrib import messages
+import re
 
 def lista_compra(request):
     
@@ -69,6 +71,31 @@ class CompraListView(ListView):
             context['can_add'] = self.request.user.has_perm('app.add_compra')  # Cambiado de add_proveedor a add_compra
 
         return context
+    
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        # Obtiene los parámetros de consulta de la URL
+        id = self.request.GET.get('id')
+        fecha = self.request.GET.get('fecha')
+        proveedor_nombres = self.request.GET.get('proveedor')
+
+        # Filtra los resultados según los parámetros proporcionados
+        if id:
+            if int(id) >= 1:  # Verifica que el número sea positivo
+                    queryset = queryset.filter(id=id)
+            else:
+                messages.error(self.request, "El ID debe ser un número positivo.")
+        
+        if fecha:
+            queryset = queryset.filter(fecha_compra__icontains=fecha)
+        if proveedor_nombres:
+            if re.match("^[A-Za-z0-9\\s]+$", proveedor_nombres):  # Solo letras, números y espacios
+                queryset = queryset.filter(proveedor__nombres__icontains=proveedor_nombres)
+            else:
+                messages.error(self.request, "El nombre no puede contener caracteres especiales.")
+
+        return queryset
+
 
 @method_decorator(login_required, name='dispatch')
 @method_decorator(never_cache, name='dispatch')
@@ -193,3 +220,14 @@ class CompraDeleteView(DeleteView):
             list_context = CompraListView.as_view()(request, *args, **kwargs).context_data
             return render(request, 'compra/listar.html', list_context)  # Cambiado de proveedor/listar.html a compra/listar.html
         return super().dispatch(request, *args, **kwargs)
+    
+    def delete(self, request, *args, **kwargs):
+        messages.success(request, 'La compra se eliminó correctamente.')
+        return super().delete(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        try:
+            return super().get(request, *args, **kwargs)
+        except Http404:
+            messages.error(request, 'La compra no existe o ya ha sido eliminada.')
+            return redirect(self.success_url)

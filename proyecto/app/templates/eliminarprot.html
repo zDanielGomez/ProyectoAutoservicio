@@ -1,0 +1,47 @@
+{% extends 'layout.html' %}
+{% load widget_tweaks %}
+{% block contenido %}
+{% load static %}
+<form method="post" action="." id="deleteForm">
+    <div class="card card-default">
+        <div class="card-header">
+            <h3 class="card-title">
+                <i class="fas fa-trash"></i>
+                {{ titulo }}
+            </h3>
+        </div>
+        <div class="card-body">
+            {% csrf_token %}
+            <div class="alert alert-danger alert-dismissible">
+                <h5><i class="icon fas fa-ban"></i> Advertencia</h5>
+                Desea eliminar el registro #{{object.id}}?
+            </div>
+        </div>
+    </div>
+    <div class="card-footer">
+        <button type="button" class="btn btn-danger" onclick="confirmDelete()">
+            <i class="fas fa-trash-alt"></i> Sí, eliminar
+        </button>
+        <a href="{{ listar_url }}" class="btn btn-info btn-flat">
+            <i class="fas fa-times"></i> Cancelar
+        </a>
+    </div>
+<script src="{% static 'lib/sweetalert2/sweetalert2.all.min.js' %}"></script>
+<script>
+    function confirmDelete() {
+        Swal.fire({
+            title: '¿Estás seguro que deseas eliminar?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, eliminar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('deleteForm').submit();
+            }
+        });
+    }
+</script>
+</form>
+{% endblock %}

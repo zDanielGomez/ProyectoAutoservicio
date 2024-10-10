@@ -1,0 +1,370 @@
+/* Estilos para el botón del modo oscuro */
+.dark-mode-toggle {
+  position: fixed;
+  bottom: 80px; /* Ajusta este valor para subir el botón */
+  right: 19px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #1e1e1e; /* Color de fondo del botón en modo oscuro */
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  border: 2px solid #fff;
+}
+
+.dark-mode-toggle:hover {
+  background-color: #333; /* Color de fondo al pasar el ratón sobre el botón */
+  transform: scale(1.1); /* Agranda el botón al pasar el ratón por encima */
+}
+
+
+/* Estilo para el botón del modo oscuro */
+.dark-mode .asw-menu {
+  background: #1e1e1e; /* Fondo del menú oscuro */
+  color: #e0e0e0; /* Color del texto en el menú oscuro */
+}
+
+.dark-mode .asw-menu-btn {
+  background: #1e1e1e !important; /* Fondo del botón del menú en modo oscuro */
+  fill: #e0e0e0 !important; /* Color del ícono en el botón del menú */
+}
+
+.dark-mode .asw-menu-btn:hover {
+  background: #333; /* Fondo del botón del menú cuando se pasa el ratón */
+}
+
+.dark-mode .asw-btn {
+  background: #1e1e1e; /* Fondo de los botones en modo oscuro */
+  color: #fff; /* Color del texto en los botones */
+  border: 3px solid #1e1e1e; /* Borde de los botones en modo oscuro */
+}
+
+.dark-mode .asw-btn:hover {
+  border-color: #1e1e1e; /* Color del borde cuando se pasa el ratón */
+}
+
+.dark-mode .asw-btn.asw-selected {
+  background: #1e1e1e; /* Fondo de los botones seleccionados en modo oscuro */
+  color: #e0e0e0; /* Texto en los botones seleccionados */
+  border-color: #eef0f1; /* Borde de los botones seleccionados */
+}
+
+.dark-mode .asw-menu-header {
+  background: #1e1e1e !important; /* Fondo de la cabecera del menú en modo oscuro */
+  color: #e0e0e0; /* Color del texto de la cabecera */
+}
+
+.dark-mode .asw-footer {
+  background: #1e1e1e  !important; /* Fondo del pie de página en modo oscuro */
+}
+
+.dark-mode .asw-card {
+  background: #1e1e1e; /* Fondo de las tarjetas en modo oscuro */
+  color: #e0e0e0; /* Color del texto en las tarjetas */
+}
+
+.dark-mode .asw-adjust-font {
+  background: #1e1e1e; /* Fondo de la sección de ajuste de fuente en modo oscuro */
+}
+
+.dark-mode .asw-overlay {
+  background: rgba(30, 30, 30, 0.7); /* Fondo del overlay en modo oscuro */
+}
+
+:root {
+  --bg-color-dark: #1e1e1e; /* Fondo oscuro general */
+  --text-color-light: #e0e0e0; /* Texto claro general */
+  --header-bg-dark: #1e1e1e; /* Fondo oscuro para el header */
+  --nav-bg-dark: #1e1e1e; /* Fondo oscuro para el menú de navegación */
+  --nav-link-color: #e0e0e0; /* Color de los enlaces en el menú */
+  --nav-link-active: #fff; /* Color de enlace activo */
+  --section-bg-dark: #1e1e1e; /* Fondo oscuro para secciones */
+  --icon-box-bg-dark: #1e1e1e; /* Fondo oscuro para icon boxes */
+  --icon-box-border: #444; /* Borde claro para icon boxes */
+  --icon-color: #e0e0e0; /* Color de íconos */
+  --text-muted-color: #e0e0e0; /* Color para texto menos destacado */
+  --text-color-light1: #121212;
+  
+
+}
+
+body.dark-mode {
+  background-color: var(--bg-color-dark) !important; /* Fondo oscuro general */
+  color: var(--text-color-light) !important; /* Texto claro general */
+}
+
+/* Header */
+.dark-mode #header {
+  background-color: var(--header-bg-dark) !important; /* Fondo oscuro para el header */
+}
+
+.dark-mode #header .sitename {
+  color: var(--text-color-light) !important; /* Color de la marca */
+}
+
+.dark-mode #navmenu {
+  background-color: var(--nav-bg-dark) !important; /* Fondo oscuro para el menú de navegación */
+}
+
+.dark-mode #navmenu ul li a {
+  color: var(--nav-link-color) !important; /* Color de los enlaces en el menú */
+}
+
+.dark-mode #navmenu ul li a.active {
+  color: var(--nav-link-active) !important; /* Color de enlace activo */
+}
+
+/* Hero Section */
+.dark-mode .hero {
+  background-color: var(--section-bg-dark) !important; /* Fondo oscuro para la sección de héroe */
+}
+
+.dark-mode .hero h2,
+.dark-mode .hero p {
+  color: var(--text-color-light) !important; /* Texto claro en la sección de héroe */
+}
+
+/* About Section */
+.dark-mode .about {
+  background-color: var(--section-bg-dark) !important; /* Fondo oscuro para la sección */
+}
+
+.dark-mode .about .content {
+  color: var(--text-color-light) !important; /* Color de texto claro para el contenido */
+}
+
+.dark-mode .about .content h3 {
+  color: var(--nav-link-color) !important; /* Color de título claro */
+}
+
+.dark-mode .about .icon-box {
+  background-color: var(--icon-box-bg-dark) !important; /* Fondo oscuro para los icon boxes */
+  color: var(--text-color-light) !important; /* Color de texto claro para icon boxes */
+  border: 1px solid var(--icon-box-border) !important; /* Borde claro para icon boxes */
+}
+
+.dark-mode .about .icon-box h4 {
+  color: var(--text-color-light) !important; /* Color de título blanco en icon boxes */
+}
+
+.dark-mode .about .icon-box p {
+  color: var(--nav-link-color) !important; /* Color de texto claro para descripciones en icon boxes */
+}
+
+.dark-mode .about .icon-box i {
+  color: var(--icon-color) !important; /* Color de íconos */
+}
+
+.dark-mode .about .text-muted {
+  color: var(--text-muted-color1) !important; /* Color para texto menos destacado */
+}
+
+/* Team Section */
+.dark-mode .team {
+  background-color: var(--section-bg-dark) !important; /* Fondo oscuro para la sección de equipo */
+}
+
+.dark-mode .team .section-title h2 {
+  color: var(--nav-link-color) !important; /* Color del título en modo oscuro */
+}
+
+.dark-mode .team .team-member {
+  background-color: var(--icon-box-bg-dark) !important; /* Fondo oscuro para los miembros del equipo */
+  border-radius: 8px !important; /* Bordes redondeados para los miembros */
+  transition: transform 0.3s !important;
+}
+
+
+.dark-mode .team .member-info h4 {
+  color: var(--text-color-light1) !important; /* Títulos de los miembros en claro */
+}
+
+.dark-mode .team .member-info span {
+  color: var(--text-color-light1) !important; /* Color de la posición en gris claro */
+}
+
+.dark-mode .team .member-info .social a {
+  color: var(--icon-color) !important; /* Color de los íconos de redes sociales */
+}
+
+/* Contact Section */
+.dark-mode .contact {
+  background-color: var(--section-bg-dark) !important; /* Fondo oscuro para la sección de contacto */
+}
+
+.dark-mode .contact .section-title h2 {
+  color: var(--nav-link-color) !important; /* Color del título en modo oscuro */
+}
+
+.dark-mode .contact .info-wrap {
+  background-color: var(--icon-box-bg-dark) !important; /* Fondo oscuro para el contenedor de información */
+  color: var(--text-color-light) !important; /* Color de texto claro */
+}
+
+.dark-mode .contact .info-item h3 {
+  color: var(--text-color-light) !important; /* Títulos de información en claro */
+}
+
+.dark-mode .contact .info-item p {
+  color: var(--nav-link-color) !important; /* Color de texto en gris claro */
+}
+
+.dark-mode .contact .info-item i {
+  color: var(--icon-color) !important; /* Color de íconos en contacto */
+}
+
+/* Modo oscuro para el Footer */
+.dark-mode #footer {
+  background-color: var(--header-bg-dark) !important; /* Fondo oscuro para el footer */
+  color: var(--text-color-light) !important; /* Texto claro en el footer */
+}
+
+.dark-mode #footer .copyright p {
+  color: var(--nav-link-color) !important; /* Color de texto gris claro para el copyright */
+}
+
+.dark-mode #footer .credits a {
+  color: var(--icon-color) !important; /* Color de enlaces en los créditos */
+}
+
+.dark-mode #footer .credits {
+  color: var(--text-muted-color) !important; /* Color de texto menos destacado para los créditos */
+}
+
+/* Portfolio Section */
+.dark-mode .portfolio {
+  background-color: var(--section-bg-dark) !important; /* Fondo oscuro para la sección de portfolio */
+}
+
+.dark-mode .portfolio .section-title h2,
+.dark-mode .portfolio .section-title p {
+  color: var(--text-color-light) !important; /* Texto claro en el título de la sección */
+}
+
+.dark-mode .portfolio .portfolio-item {
+  background-color: var(--icon-box-bg-dark) !important; /* Fondo oscuro para los elementos de portfolio */
+  border-radius: 8px !important; /* Bordes redondeados para los elementos */
+  overflow: hidden; /* Para mantener la estética */
+  transition: transform 0.3s ease; /* Suavizar la transición al hover */
+}
+
+.dark-mode .portfolio .portfolio-item:hover {
+  transform: scale(1.05) !important; /* Efecto de zoom al pasar el ratón */
+}
+
+.dark-mode .portfolio .filter-active {
+  color: var(--text-color-light) !important; /* Efecto de zoom al pasar el ratón */
+}
+
+
+.dark-mode .portfolio .portfolio-info {
+  color: var(--text-color-light) !important; /* Color de texto claro en la información del portfolio */
+}
+
+.dark-mode .portfolio .portfolio-info h4 {
+  color: var(--nav-link-color) !important; /* Color de título en claro */
+}
+
+.dark-mode .portfolio .portfolio-info p {
+  color: var(--nav-link-color) !important; /* Color de descripción en gris claro */
+}
+
+.dark-mode .portfolio .glightbox.preview-link,
+.dark-mode .portfolio .details-link {
+  color: var(--icon-color) !important; /* Color de íconos de enlaces */
+}
+
+
+
+
+
+/* Mobile Navigation */
+@media (max-width: 1199px) {
+  .dark-mode .mobile-nav-toggle {
+    background-color: #1e1e1e !important; /* Color del icono de navegación */
+    font-size: 28px;
+    line-height: 0;
+    margin-right: 10px;
+    cursor: pointer;
+    transition: color 0.3s;
+  }
+
+  .dark-mode .navmenu {
+    padding: 0;
+    z-index: 9997;
+  }
+ 
+
+  /* Dropdowns en móvil */
+  .dark-mode .navmenu .dropdown ul {
+    position: static;
+    display: none;
+    z-index: 99;
+    padding: 10px 0;
+    margin: 10px 20px;
+    background-color: #1e1e1e !important; /* Fondo oscuro para dropdowns */
+    border: #1e1e1e; /* Borde claro para dropdowns */
+    box-shadow: none;
+    transition: all 0.5s ease-in-out;
+  }
+
+
+  .dark-mode .mobile-nav-active .mobile-nav-toggle {
+    background-color: #1e1e1e!important; /* Color del icono de navegación activo */
+    position: absolute;
+    font-size: 32px;
+    top: 15px;
+    right: 15px;
+    margin-right: 0;
+    z-index: 9999;
+  }
+
+  .dark-mode .mobile-nav-active .navmenu {
+    position: fixed;
+    overflow: hidden;
+    inset: 0;
+    background: #1e1e1e !important; /* Fondo oscuro para el menú activo */
+    transition: 0.3s;
+  }
+
+  .dark-mode .navmenu ul {
+    background-color: #121212 !important;
+    border: 2px solid #444 !important;
+
+  }
+
+  /* Botón de Login personalizado */
+  .dark-mode .navmenu .nav-item .btn-primary {
+    background-color:#1e1e1e !important; /* Fondo transparente para un look más limpio */ 
+    border: 2px solid #444 !important; /* Borde con color primario */
+    border-radius: 25px;
+    padding: 12px 24px;
+    font-size: 16px;
+    text-align: center;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  .dark-mode .navmenu .nav-item .btn-primary:hover {
+    background-color:#1e1e1e!important; /* Color de fondo al hacer hover */
+    color: #444!important; /* Texto oscuro en hover */
+  }
+
+  .dark-mode .navmenu .nav-item .btn-primary:focus {
+    outline: none; /* Elimina el borde de enfoque */
+  }
+}
+
+.dark-mode .hero img {
+  filter: grayscale(100%) !important; /* Aplica filtro en blanco y negro */
+}
+
+.dark-mode .hero:before {
+  background: color-mix(in srgb, var(--background-color-dark), transparent 70%);
+}
+
+

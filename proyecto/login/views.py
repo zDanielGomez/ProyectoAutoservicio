@@ -7,6 +7,29 @@ from django.contrib import messages
 from django.views.generic import TemplateView
 from django.contrib.auth import login
 from django.contrib.auth.views import LoginView as DjangoLoginView
+from django.urls import reverse_lazy
+from django.views.generic.edit import FormView
+from .forms import CustomPasswordResetForm  # Asegúrate de que la ruta sea correcta
+from django.conf import settings
+from django.contrib.auth.forms import PasswordResetForm
+from django.views.generic.edit import FormView
+from django.urls import reverse_lazy
+
+class CustomPasswordResetView(FormView):
+    template_name = 'register/password_reset_form.html'
+    form_class = CustomPasswordResetForm
+    success_url = reverse_lazy('password_reset_done')
+
+    def form_valid(self, form):
+        # Sobrescribe el método para asegurarte de usar la plantilla HTML correcta
+        opts = {
+            'use_https': self.request.is_secure(),
+            'from_email': settings.DEFAULT_FROM_EMAIL,
+            'request': self.request,
+            'html_email_template_name': 'register/password_reset_email.html',  # Usamos la plantilla personalizada
+        }
+        form.save(**opts)  # Envía el correo de restablecimiento de contraseña
+        return super().form_valid(form)
 
 class LoginFormView(DjangoLoginView):
     template_name = "login.html"

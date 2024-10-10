@@ -7,7 +7,12 @@ from django.core.validators import validate_email
 from django.contrib.auth.models import User
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
-from django.core.validators import MinLengthValidator
+from django.core.validators import MinLengthValidator, MinValueValidator
+
+def valnumn(valor):
+    if valor <= 0:
+        raise ValidationError("no se puede ingresar solo 0 ni numeros negativos")
+
 
 # Se agrego la tabla Empleado con sus atributos y metodos
 class Empleado(models.Model):
@@ -145,7 +150,18 @@ class Presentacion(models.Model):
 
 # Se agrego la tabla Cliente con sus atributos y metodos
 class Cliente(models.Model):
-    cc_cliente = models.PositiveIntegerField(unique=True)
+    
+    class TipoDocumento(models.TextChoices):
+        CC = 'CC', 'Cédula de Ciudadanía'
+        CE = 'CE', 'Cédula de Extranjería'
+        PSP = 'PSP', 'Pasaporte'
+
+    def validar_numero_documento(value):
+        if value < 10000000 or value > 9999999999:
+            raise ValidationError("El número de documento debe tener entre 8 y 10 dígitos")
+        
+    tipo_documento = models.CharField(max_length=3, choices=TipoDocumento.choices, default=TipoDocumento.CC, verbose_name="Tipo de documento")
+    cc_cliente = models.PositiveIntegerField(unique=True, validators=[validar_numero_documento])
     nombres = models.CharField(max_length=200, verbose_name="Nombres")
     apellidos = models.CharField(max_length=200, verbose_name="Apellidos")
     telefono = models.PositiveIntegerField(unique=True,verbose_name="Telefono")
@@ -180,10 +196,10 @@ class Proveedor(models.Model):
 class Producto(models.Model):    
     nombre = models.CharField(max_length=200, verbose_name="Nombre")
     cantidad = models.PositiveIntegerField(verbose_name="Cantidad")
-    marca = models.ForeignKey(Marca,on_delete=models.CASCADE)
-    categoria = models.ForeignKey(Categoria,on_delete=models.CASCADE)
-    presentacion = models.ForeignKey(Presentacion,on_delete=models.CASCADE)
-    precio = models.DecimalField(default=0.00,max_digits=9 ,decimal_places=2)
+    marca = models.ForeignKey(Marca,on_delete=models.PROTECT)
+    categoria = models.ForeignKey(Categoria,on_delete=models.PROTECT)
+    presentacion = models.ForeignKey(Presentacion,on_delete=models.PROTECT)
+    precio = models.DecimalField(default=0.00,max_digits=9 ,decimal_places=2, validators=[valnumn])
     
     
     def __str__(self):
@@ -203,9 +219,9 @@ class Producto(models.Model):
 # Se agrego la tabla Venta con sus atributos y metodos
 class Venta(models.Model):    
     fecha_venta = models.DateTimeField(default=datetime.now)  
-    cliente = models.ForeignKey(Cliente,on_delete=models.CASCADE,verbose_name="Cliente")
-    empleado = models.ForeignKey(Empleado,on_delete=models.CASCADE,verbose_name="Empleado")
-    total_venta = models.DecimalField(default=0.00,max_digits=9 ,decimal_places=2)
+    cliente = models.ForeignKey(Cliente,on_delete=models.PROTECT,verbose_name="Cliente")
+    empleado = models.ForeignKey(Empleado,on_delete=models.PROTECT,verbose_name="Empleado")
+    total_venta = models.DecimalField(default=0.00,max_digits=15 ,decimal_places=2)
     
     def toJSON(self):
         item = model_to_dict(self)
@@ -237,10 +253,10 @@ class Venta(models.Model):
 
 class Det_Venta(models.Model):
     id_venta = models.ForeignKey(Venta, on_delete=models.CASCADE)
-    id_producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
+    id_producto = models.ForeignKey(Producto, on_delete=models.PROTECT)
     cantidad = models.PositiveIntegerField()
     precio = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
-    subtotal = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
+    subtotal = models.DecimalField(default=0.00, max_digits=15, decimal_places=2)
     
     def toJSON(self):
         item = model_to_dict(self, exclude=['id_venta'])
@@ -260,7 +276,7 @@ class Det_Venta(models.Model):
 # Se agrego la tabla Compra con sus atributos y metodos
 class Compra(models.Model):
     fecha_compra = models.DateTimeField(default=datetime.now)  
-    proveedor = models.ForeignKey(Proveedor,on_delete=models.CASCADE)
+    proveedor = models.ForeignKey(Proveedor,on_delete=models.PROTECT)
     total_compra = models.DecimalField(default=0.00,max_digits=9 ,decimal_places=2)
     
     def toJSON(self):
@@ -289,7 +305,7 @@ class Compra(models.Model):
 
 class Det_Compra(models.Model):
     id_compra = models.ForeignKey(Compra, on_delete=models.CASCADE)
-    id_producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
+    id_producto = models.ForeignKey(Producto, on_delete=models.PROTECT)
     cantidad = models.PositiveIntegerField()
     precio = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
     subtotal = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)

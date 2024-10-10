@@ -2,12 +2,15 @@ import json
 import os
 import django
 import django.conf
+from django.db.models import ProtectedError, Q
+from django.contrib.staticfiles import finders
+from django.templatetags.static import static
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.http import Http404, HttpResponse, HttpResponseRedirect, JsonResponse
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.utils.decorators import method_decorator
 from django.shortcuts import render, redirect
@@ -19,7 +22,8 @@ from django.http import HttpResponse
 from django.template.loader import get_template
 from xhtml2pdf import pisa
 from django.contrib.staticfiles import finders
-
+from django.contrib import messages
+import re
 
 
 def lista_venta(request):
@@ -30,7 +34,7 @@ def lista_venta(request):
         'empleados': Venta.objects.all()
     }
     
-    return render(request, "venta/listar.html", nombre)
+    return render(request, "venta/listdetalle.html", nombre)
 
 @method_decorator(login_required, name='dispatch')
 @method_decorator(never_cache, name='dispatch')
@@ -48,11 +52,7 @@ class VentaListView(ListView):
         data = {}
         try: 
             action = request.POST['action']
-            if action == 'searchdata':
-                data = []
-                for i in Venta.objects.all():
-                    data.append(i.toJSON())
-            elif action == "search_details_prod":
+            if action == "search_details_prod":
                 data = []
                 for i in Det_Venta.objects.filter(id_venta_id=request.POST['id']):
                     data.append(i.toJSON())
@@ -68,6 +68,50 @@ class VentaListView(ListView):
         context['crear_url'] = reverse_lazy('app:venta_crear')
         context['entidad'] = 'Venta'
         return context
+    
+    def get_queryset(self):
+        queryset = super().get_queryset()
+
+        # Captura los parámetros de la URL
+        id = self.request.GET.get('id')
+        fecha = self.request.GET.get('fecha')
+        cc_cliente= self.request.GET.get('cc')
+        cliente_nombres_o_apellidos = self.request.GET.get('cliente')
+        empleado_nombre = self.request.GET.get('empleado')
+
+        # Filtrar por ID
+        if id:
+            try:
+                id = int(id)
+                if id >= 1:
+                    queryset = queryset.filter(id=id)
+                else:
+                    messages.error(self.request, "El ID debe ser un número positivo.")
+            except ValueError:
+                messages.error(self.request, "El ID debe ser un número válido.")
+        
+        if fecha:
+            queryset = queryset.filter(fecha_venta__icontains=fecha)
+
+        if cc_cliente:
+            queryset = queryset.filter(cliente__cc_cliente__icontains=cc_cliente)
+            
+        if cliente_nombres_o_apellidos:
+            if re.match("^[A-Za-zÀ-ÿ\\s]+$", cliente_nombres_o_apellidos):  # Verifica que solo tenga letras (incluye acentos)
+                queryset = queryset.filter(
+                    Q(cliente__nombres__icontains=cliente_nombres_o_apellidos) |
+                    Q(cliente__apellidos__icontains=cliente_nombres_o_apellidos)
+                )
+            else:
+                messages.error(self.request, "El nombre del cliente solo debe contener letras")
+        if empleado_nombre:
+            if re.match("^[A-Za-zÀ-ÿ\\s]+$", empleado_nombre):  # Verifica que solo tenga letras (incluye acentos)
+                queryset = queryset.filter(empleado__nombre__icontains=empleado_nombre)
+            
+            else:
+                messages.error(self.request, "El nombre del cliente solo debe contener letras")
+                
+        return queryset
 @method_decorator(login_required, name='dispatch')
 @method_decorator(never_cache, name='dispatch')
 @method_decorator(never_cache, name='dispatch')     
@@ -115,6 +159,9 @@ class VentaCreateView(CreateView):
                     
                     det.id_producto.cantidad-=det.cantidad
                     det.id_producto.save()
+                    
+                data ={'id' : venta.id}
+                print(data)
             else:
                 data['error'] = 'z'
         except Exception as e:
@@ -222,14 +269,32 @@ class VentaDeleteView(DeleteView):
         context['listar_url'] = reverse_lazy('app:venta_lista')
         
         return context
+    
+    def delete(self, request, *args, **kwargs):
+        return super().delete(request, *args, **kwargs)
 
+    def get(self, request, *args, **kwargs):
+        try:
+            return super().get(request, *args, **kwargs)
+        except Http404:
+            messages.error(request, 'La venta no existe o ya ha sido eliminada.')
+            return redirect(self.success_url)
+
+@method_decorator(login_required, name='dispatch')
+@method_decorator(never_cache, name='dispatch')
+@method_decorator(never_cache, name='dispatch') 
 class VentaFacturaView(View):
+    
     def link_callback(self,uri, rel):
+            print("Método link_callback iniciado.")
+            print(f"link_callback llamado con uri: {uri}")
             """
             Convert HTML URIs to absolute system paths so xhtml2pdf can access those
             resources
             """
             result = finders.find(uri)
+            
+            print(f"Resultado de finders.find({uri}): {result}")
             if result:
                     if not isinstance(result, (list, tuple)):
                             result = [result]
@@ -241,42 +306,47 @@ class VentaFacturaView(View):
                     mUrl = settings.MEDIA_URL         # Typically /media/
                     mRoot = settings.MEDIA_ROOT       # Typically /home/userX/project_static/media/
 
+                    print(f"STATIC_ROOT: {sRoot}")
+                    print(f"URI: {uri}")
+                    
+                    
                     if uri.startswith(mUrl):
                             path = os.path.join(mRoot, uri.replace(mUrl, ""))
                     elif uri.startswith(sUrl):
                             path = os.path.join(sRoot, uri.replace(sUrl, ""))
                     else:
                             return uri
-
+            print(f"Verificando si la ruta existe: {path}")
             # make sure that file exists
             if not os.path.isfile(path):
-                    raise RuntimeError(
-                            'media URI must start with %s or %s' % (sUrl, mUrl)
-                    )
+                    raise RuntimeError(f"El archivo {path} no se encontró o no existe.")
             return path
-    def get(self,request,*arg,**kwargs):
+    
+    def get(self,request,*args, **kwargs):
         try:
             template = get_template("venta/factura.html")
-            context = {
+            context ={
                 'venta': Venta.objects.get(pk=self.kwargs['pk']),
-                'autoservicio': {
+                'autoservicio':{
                     'nombre':'Autoservicio el rincon de los angeles',
                     'nit':"123456",
-                    'direccion': "Sogamoso"
+                    'direccion': "Calle 46 #11a-2, Sogamoso, Boyacá"
                     },
-                'logo':'{}{}'.format(settings.STATIC_URL, 'img/backup.png' )
-                
+                'logo': finders.find('img/autosrvlogo.png')
                 }
-            html = template.render(context)
+            html =template.render(context)
             response = HttpResponse(content_type='application/pdf')
+            
             pisa_status = pisa.CreatePDF(
                 html, dest=response,
                 link_callback=self.link_callback
                 )
-            if pisa_status.err:
-                return HttpResponse('We had some errors <pre>' + html + '</pre>')
             return response
-        except:
+        
+            if pisa_status.err:
+                return HttpResponse('Error al generar el PDF')
+            
+        except :
+            print("no existe esta factura")
             pass
-        return HttpResponseRedirect(reverse_lazy('app:venta_lista'))
-    
+            return HttpResponseRedirect(reverse_lazy("app:venta_lista"))

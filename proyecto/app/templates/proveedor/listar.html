@@ -1,5 +1,27 @@
 {% extends 'listar.html' %}
 
+{% block filtro_form_contenido %} 
+<form method="GET" action="">
+    <div class="form-group">
+        <label for="id">ID</label>
+        <input type="number" class="form-control" id="id" name="id" value="{{ request.GET.id }}">
+        <!--Campo para filtrar por ID -->
+    </div>
+    <div class="form-group">
+        <label for="nombre">Nombres:</label>
+        <input type="text" name="nombres" id="nombres" class="form-control" value="{{ request.GET.nombres }}">
+    </div>
+    <div class="form-group">
+        <label for="telefono">Telefono:</label>
+        <input type="number" name="telefono" id="telefono" class="form-control" value="{{ request.GET.telefono }}">
+    </div>
+    <div class="form-group">
+        <label for="correo_electronico">Correo Electronico:</label>
+        <input type="text" name="correo" id="correo" class="form-control" value="{{ request.GET.correo }}">
+    </div>
+</form>
+{%endblock%}
+
 {% block columnas %}
 <tr>
     <th scope="col">#</th>
@@ -28,8 +50,8 @@
     <td>{{c.telefono}}</td>
     <td>{{c.correo}}</td>
     <td>
-        <a href="{% url 'app:proveedor_editar' c.id%}" type="button" class="btn btn-primary btn-xs"><i class="fas fa-edit" title="Editar elemento"></i></a>
-        <a href="{% url 'app:proveedor_eliminar' c.id%}" type="button" class="btn btn-danger btn-xs"><i class="fas fa-trash" title="Eliminar elemento"></i></a>
+        <a href="{% url 'app:proveedor_editar' c.id%}" type="button" class="btn btn-warning btn-xs btn-flat"><i class="fas fa-edit" title="Editar elemento"></i></a>
+        <a href="{% url 'app:proveedor_eliminar' c.id%}" type="button" class="btn btn-danger btn-xs btn-flat"><i class="fas fa-trash-alt" title="Eliminar elemento"></i></a>
     </td>
 </tr>
 

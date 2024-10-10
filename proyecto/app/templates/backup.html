@@ -1,199 +1,178 @@
 {% extends 'layout.html' %}
 {% load static %}
 {% block head %}
-    <title>Gestión de Respaldos</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/styleB.css' %}">
-    <style>
-        /* General styles */
-        body {
-            font-family: 'Roboto', sans-serif;
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            background: linear-gradient(to right, #f8f9fa, #e9ecef);
-            color: #333;
-        }
+<title>Gestión de Respaldos</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="{% static 'css/styleB.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
+body {
+    background-color: #f8f9fa; /* Color de fondo suave */
+}
 
-        .containerBackup {
-            max-width: 100%;
-            padding: 20px;
-            box-sizing: border-box;
-            margin: auto;
-            text-align: center;
-        }
+h1, h2 {
+    color: #343a40; /* Color del texto */
+}
 
-        .containerTitle {
-            margin-bottom: 30px;
-        }
+.btn_generate {
+    padding: 8px 16px; /* Ajustar tamaño del botón */
+    font-size: 1rem; /* Tamaño de fuente más pequeño */
+    border: none;
+    border-radius: 5px;
+    background-color: #28a745; /* Color verde */
+    color: white;
+    cursor: pointer;
+}
 
-        .containerTitle h1 {
-            font-size: 2.2em;
-            margin: 0;
-            color: #000000;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
+.btn_generate:hover {
+    background-color: #218838; /* Color verde oscuro al pasar el mouse */
+}
 
-        .img_db {
-            max-width: 100%;
-            height: auto;
-            max-height: 150px;
-            display: block;
-            margin: 15px auto;
-        }
+.table {
+    margin-top: 20px;
+    background-color: white; /* Fondo blanco para la tabla */
+    border: 1px solid rgba(3, 63, 99, 1); /* Borde de la tabla */
+}
 
-        .backup-section {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-        }
+.table th, .table td {
+    text-align: center; /* Centrar texto en las celdas */
+    border: 1px solid rgba(3, 63, 99, 1); /* Bordes de las celdas */
+}
 
-        .generate-section, .restore-section {
-            width: 100%;
-            max-width: 500px;
-            background-color: #ffffff;
-            padding: 20px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-            transition: transform 0.3s;
-        }
+.table th {
+    background-color: rgba(3, 63, 99, 1); /* Color de fondo para encabezados */
+    color: white;
+}
 
-        .generate-section:hover, .restore-section:hover {
-            transform: translateY(-5px);
-        }
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(3, 63, 99, 0.1); /* Color alterno para filas */
+}
 
-        h2 {
-            font-size: 1.6em;
-            margin-bottom: 15px;
-            color: #343a40;
-        }
+.btn {
+    border: none;
+    background-color: transparent; /* Fondo transparente para los botones */
+    color: white;
+    font-size: 1.5rem; /* Tamaño de los iconos */
+    cursor: pointer;
+}
 
-        button {
-            padding: 15px 30px;
-            font-size: 1.1em;
-            border: none;
-            color: #fff;
-            cursor: pointer;
-            border-radius: 50px;
-            transition: background-color 0.3s ease, transform 0.2s;
-        }
+.btn:hover {
+    opacity: 0.8; /* Opacidad al pasar el mouse */
+}
 
-        button:hover {
-            transform: translateY(-3px);
-        }
+.btn-warning {
+    color: yellow; /* Color amarillo para el icono de restaurar */
+}
 
-        .btn_generate {
-            background-color: #28a745;
-        }
+.btn-danger {
+    color: red; /* Color rojo para el icono de eliminar */
+}
 
-        .btn_generate:hover {
-            background-color: #218838;
-        }
+@media (max-width: 768px) {
+    h1 {
+        font-size: 1.5rem; /* Tamaño de fuente en móviles */
+    }
 
-        .btn_restore {
-            background-color: #007bff;
-        }
+    .btn_generate {
+        width: 100%; /* Botón ocupa todo el ancho en móviles */
+    }
 
-        .btn_restore:hover {
-            background-color: #0056b3;
-        }
-
-        input[type="file"] {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 15px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            box-sizing: border-box;
-            transition: border-color 0.3s;
-        }
-
-        input[type="file"]:focus {
-            border-color: #007bff;
-        }
-
-        /* Responsive styles */
-        @media (max-width: 600px) {
-            .containerTitle h1 {
-                font-size: 1.8em;
-            }
-
-            .generate-section, .restore-section {
-                margin: 10px;
-                padding: 15px;
-            }
-
-            button {
-                width: 100%;
-                padding: 15px;
-                font-size: 1.1em;
-            }
-        }
-    </style>
+    .table {
+        font-size: 0.9rem; /* Ajustar el tamaño de fuente en móviles */
+    }
+}
+</style>
 {% endblock %}
 {% block contenido %}
-<div class="containerBackup">
-    <div class="containerTitle">
-        <h1>Gestión de Respaldos <br> Bases de Datos</h1>
-        <img class="img_db" src="{% static 'img/backup.png' %}" alt="Logo database">
+<div class="container mt-5">
+    <h1 class="text-center">Gestión de Respaldos</h1>
+
+    <div>
+        <h2 class="text-center">Archivos de Backups</h2>
+        <div class="table-responsive">
+
+            <table id="backupTable" class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Nombre del Archivo</th>
+                        <th>Fecha</th>
+                        <th>Tamaño</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Los archivos de backup se cargarán aquí -->
+                </tbody>
+            </table>
+            
+        </div>
+        
     </div>
-    <div class="backup-section">
-        <div class="generate-section">
-            <h2>Crear copia de seguridad</h2>
-            <form id="backupForm" method="post" action="{% url 'app:crear_backup' %}">
-                {% csrf_token %}
-                <button class="btn_generate" type="submit">Crear</button>
-            </form>
-        </div>
-        <div class="restore-section">
-            <h2>Restaurar copia de seguridad</h2>
-            <form id="restoreForm" method="post" action="{% url 'app:restaurar_backup' %}" enctype="multipart/form-data">
-                {% csrf_token %}
-                <input type="file" name="backup_file" accept=".sql, .db, .sqlite, .bak" required>
-                <button class="btn_restore" type="submit">Restaurar</button>
-            </form>
-        </div>
+</div>
+<div class="row mb-4">
+    <div class="col-md-6 offset-md-3 text-center">
+        <h2>Crear copia de seguridad</h2>
+        <form id="backupForm" method="post" action="{% url 'app:crear_backup' %}">
+            {% csrf_token %}
+            <button class="btn_generate" type="submit"><i class="fas fa-plus-circle"></i></button>
+        </form>
     </div>
 </div>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    $('#backupForm').on('submit', function (event) {
-        event.preventDefault();
-        $.post($(this).attr('action'), $(this).serialize(), function (data) {
-            if (data.success) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Copia de seguridad creada correctamente',
-                    text: data.message,
-                    confirmButtonText: 'Aceptar'
-                });
-            } else {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: data.message,
-                    confirmButtonText: 'Aceptar'
-                });
-            }
-        });
-    });
+    $(document).ready(function () {
+        const tableBody = $('#backupTable tbody');
 
-    $('#restoreForm').on('submit', function (event) {
-        event.preventDefault();
-        var formData = new FormData(this);
-        $.ajax({
-            url: $(this).attr('action'),
-            type: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function (data) {
+        function formatDateTime(timestamp) {
+            const date = new Date(timestamp * 1000);
+            return date.toLocaleString();
+        }
+
+        function loadBackupFiles() {
+            $.get('{% url "app:listar_backup" %}', function (data) {
+                tableBody.empty();
+                if (data.error) {
+                    console.error('Error:', data.error);
+                    return;
+                }
+                if (data.files.length === 0) {
+                    const row = $('<tr><td colspan="4">No hay copias de seguridad generadas</td></tr>');
+                    tableBody.append(row);
+                } else {
+                    data.files.forEach(file => {
+                        const row = $(`
+                            <tr>
+                                <td>${file.filename}</td>
+                                <td>${formatDateTime(file.created_at)}</td> 
+                                <td>${(file.size / (1024 * 1024)).toFixed(2)} MB</td>
+                                <td>
+                                    <button class="btn select-file btn-warning" title="Restaurar" data-filename="${file.filename}">
+                                        <i class="fas fa-undo"></i>
+                                    </button>
+                                    <button class="btn delete-file btn-danger" title="Eliminar" data-filename="${file.filename}">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        `);
+                        tableBody.append(row);
+                    });
+                }
+            }).fail(function (error) {
+                console.error('Error:', error);
+            });
+        }
+
+        loadBackupFiles();
+
+        $('#backupForm').on('submit', function (event) {
+            event.preventDefault();
+            $.post($(this).attr('action'), $(this).serialize(), function (data) {
                 if (data.success) {
                     Swal.fire({
                         icon: 'success',
-                        title: 'Copia de seguridad restaurada correctamente',
+                        title: 'Copia de seguridad creada correctamente',
                         text: data.message,
                         confirmButtonText: 'Aceptar'
                     });
@@ -205,7 +184,80 @@
                         confirmButtonText: 'Aceptar'
                     });
                 }
-            }
+                loadBackupFiles(); // Refresca la lista de archivos
+            });
+        });
+
+        tableBody.on('click', '.select-file', function () {
+            const filename = $(this).data('filename');
+            Swal.fire({
+                title: '¿Restaurar Backup?',
+                text: `¿Estás seguro de que deseas restaurar el archivo: ${filename}?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, restaurar',
+                cancelButtonText: 'Cancelar',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.post('{% url "app:restaurar_backup" %}', { filename: filename, csrfmiddlewaretoken: '{{ csrf_token }}' }, function (data) {
+                        if (data.success) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Copia de seguridad restaurada correctamente',
+                                text: data.message,
+                                confirmButtonText: 'Aceptar'
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: data.message,
+                                confirmButtonText: 'Aceptar'
+                            });
+                        }
+                        loadBackupFiles(); // Refresca la lista de archivos
+                    }).fail(function (error) {
+                        console.error('Error:', error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Ocurrió un error inesperado.',
+                            confirmButtonText: 'Aceptar'
+                        });
+                    });
+                }
+            });
+        });
+
+        tableBody.on('click', '.delete-file', function () {
+            const filename = $(this).data('filename');
+            Swal.fire({
+                title: '¿Eliminar Backup?',
+                text: `¿Estás seguro de que deseas eliminar el archivo: ${filename}?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.post('{% url "app:eliminar_backup" %}', { filename: filename, csrfmiddlewaretoken: '{{ csrf_token }}' }, function (data) {
+                        if (data.success) {
+                            Swal.fire('Eliminado', data.message, 'success');
+                        } else {
+                            Swal.fire('Error', data.message, 'error');
+                        }
+                        loadBackupFiles(); // Refresca la lista de archivos
+                    }).fail(function (error) {
+                        console.error('Error:', error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Ocurrió un error inesperado.',
+                            confirmButtonText: 'Aceptar'
+                        });
+                    });
+                }
+            });
         });
     });
 </script>

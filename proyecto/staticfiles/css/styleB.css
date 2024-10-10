@@ -1,0 +1,100 @@
+/* General Styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f2f5;
+    margin: 0;
+    padding: 0;
+}
+
+/* Container Styles */
+.containerBackup {
+    width: 80%;
+    margin: 30px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Title Styles */
+.containerTitle {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+/* Backup Section Styles */
+.backup-section {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.generate-section, .restore-section {
+    width: 45%;
+    padding: 20px;
+    background-color: #fafafa;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Remove hover animation from sections */
+.generate-section:hover, .restore-section:hover {
+    transform: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.generate-section h2, .restore-section h2 {
+    font-size: 22px;
+    color: #444;
+    margin-bottom: 15px;
+}
+
+/* Form Styles */
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+button {
+    padding: 12px 20px;
+    font-size: 18px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.btn_generate {
+    background-color: #4caf50;
+    color: white;
+}
+
+.btn_generate:hover {
+    background-color: #45a049;
+    transform: translateY(-2px);
+}
+
+.btn_restore {
+    background-color: #2196f3;
+    color: white;
+}
+
+.btn_restore:hover {
+    background-color: #0b7dda;
+    transform: translateY(-2px);
+}
+
+input[type="file"] {
+    margin-top: 10px;
+}
+
+/* Error and Success Messages */
+.swal2-popup {
+    font-size: 16px;
+}
+
+.swal2-title {
+    font-size: 20px;
+}

@@ -94,8 +94,9 @@
 .dark-mode .main-sidebar,
 .dark-mode .sidebar {
   background-color: #1e1e1e; /* Fondo oscuro para el menú lateral */
+  scrollbar-color: #9f9f9f  #1e1e1e;
 }
-
+  
 /* Estilo para el panel de usuario en el menú lateral */
 .dark-mode .user-panel {
   background-color: #1e1e1e; /* Fondo oscuro para el panel de usuario */
@@ -238,13 +239,13 @@
 }
 
 .dark-mode .asw-btn {
-  background: #6c757d; /* Fondo de los botones en modo oscuro */
+  background: #1e1e1e; /* Fondo de los botones en modo oscuro */
   color: #fff; /* Color del texto en los botones */
-  border: 3px solid #6c757d; /* Borde de los botones en modo oscuro */
+  border: 3px solid #1e1e1e; /* Borde de los botones en modo oscuro */
 }
 
 .dark-mode .asw-btn:hover {
-  border-color: #5a6268; /* Color del borde cuando se pasa el ratón */
+  border-color: #1e1e1e; /* Color del borde cuando se pasa el ratón */
 }
 
 .dark-mode .asw-btn.asw-selected {
@@ -379,4 +380,36 @@
 .dark-mode .login-box button:hover {
   background-color: #5a6268; /* Fondo gris más oscuro al pasar el ratón */
   border-color: #5a6268; /* Borde gris más oscuro al pasar el ratón */
+}
+
+
+.dark-mode body {
+  background-color: #1e1e1e; /* Fondo oscuro para todo el body */
+  color: #e0e0e0; /* Texto más claro */
+}
+
+.dark-mode .recuadro {
+  background-color: #1e1e1e !important; /* Fondo oscuro para el recuadro */
+  border-color: #ccc !important; /* Borde más claro */
+  color: #e0e0e0 !important; /* Texto claro */
+}
+
+.dark-mode .recuadro h2 {
+  color: #ccc; /* Color del título en modo oscuro */
+}
+
+.dark-mode .recuadro button {
+  background-color: #6c757d; /* Fondo gris oscuro para el botón */
+  color: #fff; /* Texto blanco en el botón */
+  border: 1px solid #6c757d; /* Borde gris para el botón */
+  cursor: pointer;
+}
+
+.dark-mode .recuadro button:hover {
+  background-color: #5a6268; /* Fondo gris más oscuro al hacer hover */
+  border-color: #5a6268; /* Borde más oscuro al hacer hover */
+}
+
+.dark-mode .dark-mode-toggle i {
+  color: #fff; /* Color del ícono de modo oscuro */
 }

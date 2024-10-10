@@ -27,6 +27,7 @@ function submit_with_ajax(url, title, content, parameters, callback) {
         cancelButtonColor: '#d33',
     }).then((result) => {
         if (result.isConfirmed) {
+
             $.ajax({
                 url: url, //window.location.pathname
                 type: 'POST',
@@ -39,13 +40,11 @@ function submit_with_ajax(url, title, content, parameters, callback) {
                 if (!data.hasOwnProperty('error')) {
                     Swal.fire({
                         title: '¡Éxito!',
-                        text: 'Compra agregada correctamente',
+                        text: 'Venta agregada correctamente',
                         icon: 'success',
-                        confirmButtonText: 'Aceptar',
-                        confirmButtonColor: '#3085d6',
-                        timer: 1000
+                        timer: 2000
                     }).then((result) => {
-                        callback();
+                        callback(data);
                     });
                     return false;
                 }
@@ -318,24 +317,85 @@ $(function () {
 
             
         }  )
-        .on('change', 'input[name="cant"]', function(){
-        console.clear();
-        var cant = parseInt($(this).val());
-        var tr = tablaproductos.cell($(this).closest('td, li')).index();
-        var data = tablaproductos.row(tr.row).node();
-        console.log(data);
-        vents.items.products[tr.row].cant = cant;
-        console.log(vents.items.products)
-        vents.calcular_factura();
-        $('td:eq(5)',tablaproductos.row(tr.row).node()).html('$'+ vents.items.products[tr.row].subtotal.toFixed(2));
+        .on('change', 'input[name="cant"]', function() {
+            console.clear();
+            
+            var cant = parseInt($(this).val());
+            var tr = tablaproductos.cell($(this).closest('td, li')).index();
+            var data = tablaproductos.row(tr.row).data(); // Cambiar aquí para obtener los datos de la fila
+            console.log("----")
+            console.log(data)
+    
+            if (cant > data.cantidad) {
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'No se puede agregar '+ cant +'. La cantidad máxima disponible es ' + data.cantidad,
+                    icon: 'warning',
+                    confirmButtonText: 'Aceptar',
+                    confirmButtonColor: '#be3b25',
+                });
+                $(this).val(data.cantidad);
+                cant = data.cantidad;
+            }
+            else if (cant<=0){
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'No puedes dejar '+cant+' en la cantidad del producto '+ data.nombre+' tienes que ingresar un numero positivo',
+                    icon: 'warning',
+                    confirmButtonText: 'Aceptar',
+                    confirmButtonColor: '#be3b25',
+                });
+            } else if (isNaN(cant) ) {
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'La cantidad del producto '+data.nombre+' no puede estar vacía.',
+                    icon: 'warning',
+                    confirmButtonText: 'Aceptar',
+                    confirmButtonColor: '#be3b25',
+                });
+                $(this).val(1);
+                return;
+            }
+    
+            vents.items.products[tr.row].cant = cant;
+            vents.calcular_factura();
+            $('td:eq(5)', tablaproductos.row(tr.row).node()).html('$' + vents.items.products[tr.row].subtotal.toFixed(2));
+        });
+    //     .on('change', 'input[name="cant"]', function(){
+    //     console.clear();
+    //     var cant = parseInt($(this).val());
+    //     var tr = tablaproductos.cell($(this).closest('td, li')).index();
+    //     var data = tablaproductos.row(tr.row).node();
+    //     console.log(data);
+    //     vents.items.products[tr.row].cant = cant;
+    //     console.log(vents.items.products)
+    //     vents.calcular_factura();
+    //     $('td:eq(5)',tablaproductos.row(tr.row).node()).html('$'+ vents.items.products[tr.row].subtotal.toFixed(2));
 
-    });
+    // });
 
     $('form').on('submit', function (e) {
         e.preventDefault();
         console.log(vents.items)
 
-        
+        var isValid = true; // Suponemos que es válido
+        $('#tablaproductos tbody input[type="number"]').each(function() {
+            if ($(this).val() === '') {
+                isValid = false; 
+                return false; 
+            }
+        });
+    
+        if (!isValid) {
+            Swal.fire({
+                title: 'Error!',
+                text: 'Todos los campos de precio deben estar llenos.',
+                icon: 'warning',
+                confirmButtonText: 'Aceptar',
+                confirmButtonColor: '#be3b25',
+            });
+            return false; 
+        }
 
         if(vents.items.products.length === 0){
             Swal.fire({
@@ -348,27 +408,6 @@ $(function () {
             });
             return false;
         }
-
-        var isValid = true;
-        $.each(vents.items.products, function (index, product) {
-            if (product.cant <= 0 || product.cant > product.cantidad) {
-                isValid = false;
-                Swal.fire({
-                    title: 'Error!',
-                    text: 'La cantidad del producto ' + product.nombre + ' es inválida',
-                    icon: 'error',
-                    confirmButtonText: 'Aceptar',
-                    confirmButtonColor: '#be3b25',
-                    timer: 2000
-                });
-                return false;
-            }
-        });
-
-        if (!isValid) {
-            return false;
-        }
-
         
         vents.items.fecha_venta = $('input[name="fecha_venta"]').val();
         vents.items.cliente = $('select[name="cliente"]').val();
@@ -376,8 +415,25 @@ $(function () {
         var parameters = new FormData();
         parameters.append('action', $('input[name="action"]').val());
         parameters.append('vents', JSON.stringify(vents.items));
-        submit_with_ajax(window.location.pathname, 'Notificación', '¿Estas seguro de realizar la siguiente acción?', parameters, function () {
-            location.href = '/app/venta/listar/';
+        submit_with_ajax(window.location.pathname, 'Notificación', '¿Estas seguro de realizar la siguiente acción?', parameters, function (respuesta) {
+            console.log(respuesta);
+            Swal.fire({
+                title: '¿Deseas imprimir la factura?',
+                
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Sí',
+                cancelButtonText: 'No',
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                }).then((result) => {
+                if (result.isConfirmed) {
+                    location.href = '/app/venta/factura/'+respuesta.id+'/';
+                } else {
+                    location.href = '/app/venta/listar/';
+                }
+            });
+            
         });
     });
 });

@@ -1,12 +1,58 @@
 {% extends 'listar.html' %}
 {% load static %}
+{% load humanize %}
+
+{% block filtro_form_contenido %} 
+<form method="GET" action="">
+    <div class="form-group">
+        <label for="id">ID:</label>
+        <input type="number" class="form-control" id="id" name="id" value="{{ request.GET.id }}">
+    </div>
+
+    <div class="form-group">
+        <label for="nombre">Nombre:</label>
+        <input type="text" name="nombre" id="nombre" class="form-control" value="{{ request.GET.nombre }}">
+    </div>
+
+    <div class="form-group">
+        <label for="marca">Marca:</label>
+        <select name="marca" id="marca" class="form-control">
+            <option value="">Seleccione una marca</option>
+            {% for marca in marca %}
+                <option value="{{ marca.id }}" {% if request.GET.marca == marca.id %}selected{% endif %}>{{ marca.nombre }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="categoria">Categoría:</label>
+        <select name="categoria" id="categoria" class="form-control">
+            <option value="">Seleccione una categoría</option>
+            {% for categoria in categoria %}
+                <option value="{{ categoria.id }}" {% if request.GET.categoria == categoria.id %}selected{% endif %}>{{ categoria.nombre }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="presentacion">Presentación:</label>
+        <select name="presentacion" id="presentacion" class="form-control">
+            <option value="">Seleccione una presentación</option>
+            {% for presentacion in presentacion %}
+                <option value="{{ presentacion.id }}" {% if request.GET.presentacion == presentacion.id %}selected{% endif %}>{{ presentacion.descripcion }}</option>
+            {% endfor %}
+        </select>
+    </div>
+</form>
+{% endblock %}
+
 {% block columnas %}
 <tr>
     <th scope="col">#</th>
     <th scope="col">Nombre</th>
     <th scope="col">Marca</th>
-    <th scope="col">Categoria</th>
-    <th scope="col">Presentacion</th>
+    <th scope="col">Categoría</th>
+    <th scope="col">Presentación</th>
     <th scope="col">Cantidad</th>
     <th scope="col">Precio</th>
     <th scope="col">Opciones</th>
@@ -15,28 +61,29 @@
 
 {% block filas %}
 {% for c in object_list %}
-
     <tr>
-    <td>{{c.id}}</td>
-    <td>{{c.nombre}}</td>
-    <td>{{c.marca}}</td>
-    <td>{{c.categoria}}</td>
-    <td>{{c.presentacion}}</td>
-    <td>{{c.cantidad}}</td>
-    <td>{{c.precio}}</td>
-    <td>
-        <a href="{% url 'app:producto_editar' c.id%}" type="button" class="btn btn-primary btn-xs"><i class="fas fa-edit" title="Editar elemento"></i></a>
-        <a href="{% url 'app:producto_eliminar' c.id%}" type="button" class="btn btn-danger btn-xs"><i class="fas fa-trash" title="Eliminar elemento"></i></a>
-    </td>
-</tr>
-
-
-
+        <td>{{ c.id }}</td>
+        <td>{{ c.nombre }}</td>
+        <td>{{ c.marca }}</td>
+        <td>{{ c.categoria }}</td>
+        <td>{{ c.presentacion }}</td>
+        <td>{{ c.cantidad }}</td>
+        <td>{{ c.precio }}</td>
+        <td>
+            <a href="{% url 'app:producto_editar' c.id %}"type="button" class="btn btn-warning btn-xs btn-flat"><i class="fas fa-edit" title="Editar elemento"></i></a>
+            <a href="{% url 'app:producto_eliminar' c.id %}" type="button" class="btn btn-danger btn-xs btn-flat"><i class="fas fa-trash-alt" title="Eliminar elemento"></i></a>
+        </td>
+    </tr>
 {% endfor %}
-
 {% endblock %}
 
 {% block javascript %}
+<!-- Incluir CSS de Select2 -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+<!-- Incluir jQuery y Select2 JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
 <script src="{% static 'lib/adminlte-3.2.0/dataTables/jquery.dataTables.min.js' %}"></script>
 <script src="{% static 'lib/adminlte-3.2.0/dataTables-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
 <script src="{% static 'lib/adminlte-3.2.0/datatables-responsive/js/dataTables.responsive.min.js' %}"></script>
@@ -52,12 +99,28 @@
 
 <script>
 $(document).ready(function() {
+    // Inicializa Select2 para los select de marca, categoría y presentación
+    $('#marca').select2({
+        placeholder: 'Seleccione una marca',
+        allowClear: true
+    });
+    
+    $('#categoria').select2({
+        placeholder: 'Seleccione una categoría',
+        allowClear: true
+    });
+
+    $('#presentacion').select2({
+        placeholder: 'Seleccione una presentación',
+        allowClear: true
+    });
+
     $('#tabla').DataTable({
         responsive: false,
         lengthChange: false,
         autoWidth: false,
         language: {
-            url: "{% static 'lib/adminlte-3.2.0/datatables/Spanish.json' %}"
+            url: "{% static 'lib/datatables-1.10.20/español.json' %}",
         },
         buttons: [
             { extend: 'copy', text: 'Copiar tabla', className: 'custom-button', exportOptions: { columns: ':not(:last-child)' } },
@@ -83,10 +146,34 @@ $(document).ready(function() {
                     }
                 }
             },
-            ]
-        
-    })
+        ]
+    });
+});
 
+function clearFilters() {
+    // Limpia los campos del formulario
+    document.querySelector('#filtroModal form').reset();
+    // Redirige a la URL actual sin parámetros
+    const url = new URL(window.location.href);
+    url.search = ''; // Elimina todos los parámetros de búsqueda
+    window.location.href = url.toString();
+}
+
+function applyFilters() {
+    document.querySelector('#filtroModal form').submit();
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    {% if messages %}
+        {% for message in messages %}
+            Swal.fire({
+                icon: '{{ message.tags }}',  // Tipo de mensaje: success, error, etc.
+                title: '{% if message.tags == "success" %}¡Éxito!{% elif message.tags == "error" %}¡Error!{% endif %}',  // Título basado en el tipo de mensaje
+                text: "{{ message }}",  // Mensaje del contenido
+                confirmButtonText: 'OK'
+            });
+        {% endfor %}
+    {% endif %}
 });
 </script>
 {% endblock %}

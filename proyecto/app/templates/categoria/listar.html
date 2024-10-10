@@ -1,5 +1,23 @@
 {% extends 'listar.html' %}
 
+{% block filtro_form_contenido %} 
+<!--Bloque para el formulario de filtrado -->
+<form method="GET" action="">
+    <!-- Formulario que envía datos por GET a la vista 'listar_Tipo' -->
+    <div class="form-group">
+        <label for="id">ID</label>
+        <input type="number" class="form-control" id="id" name="id" value="{{ request.GET.id }}">
+        <!--Campo para filtrar por ID -->
+    </div>
+
+    <div class="form-group">
+        <label for="nombre">Nombre</label>
+        <input type="text" class="form-control" id="nombre" name="nombre" value="{{ request.GET.nombre }}">
+        <!-- Campo para filtrar por nombre -->
+    </div>
+    
+</form>
+{% endblock %}
 {% block columnas %}
 <tr>
     <th scope="col">#</th>
@@ -16,8 +34,8 @@
     <td>{{c.id}}</td>
     <td>{{c.nombre}}</td>
     <td>
-        <a href="{% url 'app:categoria_editar' c.id%}" type="button" class="btn btn-primary btn-xs"><i class="fas fa-edit" title="Editar elemento"></i></a>
-        <a href="{% url 'app:categoria_eliminar' c.id%}" type="button" class="btn btn-danger btn-xs"><i class="fas fa-trash" title="Eliminar elemento"></i></a>
+        <a href="{% url 'app:categoria_editar' c.id%}" type="button" class="btn btn-warning btn-xs btn-flat"><i class="fas fa-edit" title="Editar elemento"></i></a>
+        <a href="{% url 'app:categoria_eliminar' c.id%}" type="button" class="btn btn-danger btn-xs btn-flat"><i class="fas fa-trash-alt" title="Eliminar elemento"></i></a>
     </td>
 </tr>
 

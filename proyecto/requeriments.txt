@@ -4,3 +4,4 @@ mysqlclient
 PyMySQL
 cryptography
 django-backup
+xhtml2pdf

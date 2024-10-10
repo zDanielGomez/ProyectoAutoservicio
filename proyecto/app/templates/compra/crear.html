@@ -16,7 +16,28 @@
     <script src="{% static 'compra/js/form.js' %}"></script>
 {% endblock %}
 {% block contenido %}
+    <style>
+        .cantidad-col {
+            min-width: 120px; /* Ajusta según el tamaño que necesites */
+        }
 
+        /* Ajustes adicionales para cuando la tabla se vuelva responsive */
+        @media (max-width: 768px) {
+            .cantidad-col {
+                min-width: 150px; /* Aumenta el ancho en pantallas pequeñas si es necesario */
+            }
+        }
+        .precio-col {
+            min-width: 120px; /* Ajusta según el tamaño que necesites */
+        }
+
+        /* Ajustes adicionales para cuando la tabla se vuelva responsive */
+        @media (max-width: 768px) {
+            .precio-col {
+                min-width: 150px; /* Aumenta el ancho en pantallas pequeñas si es necesario */
+            }
+        }
+    </style>
     <form method="post">
         <div class="card card-primary">
             <div class="card-header">
@@ -60,8 +81,8 @@
                                                 <th>Eliminar</th>
                                                 <th>Producto</th>
                                                 <th>Stock</th>
-                                                <th>Precio</th>
-                                                <th>Cantidad</th>
+                                                <th class="precio-col">Precio</th>
+                                                <th class="cantidad-col">Cantidad</th> 
                                                 <th>Subtotal</th>
                                             </tr>
                                         </thead>

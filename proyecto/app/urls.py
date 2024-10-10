@@ -12,6 +12,7 @@ from app.views.marca.views import *
 from app.views.presentacion.views import *
 from app.views.administrador.views import *
 from app.views.backup.views import *
+from app.views.reportes.views import *
 
 app_name = 'app'
 urlpatterns = [
@@ -79,5 +80,10 @@ urlpatterns = [
     #Urls backup
     path('crear_backup/', BackupDatabaseView.as_view(), name='crear_backup'),
     path('restaurar_backup/', RestoreDatabaseView.as_view(), name='restaurar_backup'),
+    path('listar_backup/', BackupListView.as_view(), name='listar_backup'),
+    path('eliminar_backup/', BackupDeleteView.as_view(), name='eliminar_backup'),
     
+    #Urls reporte ventas
+    path('reportes/', ReportesVentasView.as_view(), name='reportes_ventas'),
+
 ]

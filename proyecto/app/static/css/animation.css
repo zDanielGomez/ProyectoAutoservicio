@@ -22,6 +22,28 @@
     animation: fadeInUp 0.6s ease-in-out; /* Animación de entrada */
 }
 
+.user-panel .image i {
+    font-size: 24px;
+}
+
+.user-panel .info a {
+    font-size: 16px;
+    color: #fff;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+/* Estilo responsivo */
+@media (max-width: 768px) {
+    .user-panel .image i {
+        font-size: 20px; /* Reducir el tamaño del ícono en pantallas pequeñas */
+    }
+    .user-panel .info a {
+        font-size: 14px; /* Reducir el tamaño del texto en pantallas pequeñas */
+    }
+}
+
 /* Definición de la animación de entrada */
 @keyframes fadeInUp {
     from {

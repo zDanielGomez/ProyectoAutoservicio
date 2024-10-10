@@ -31,21 +31,21 @@
             background-color: #bd1717;
             color: rgb(255, 255, 255);
         }
-        .btn-secondary:hover{
+        .btn-secondary:hover {
             background-color: #ff0404;
         }
         .form-control.is-invalid {
-            border-color: #dc3545;
+            border-color: #dc3545; /* Color de borde para campos inválidos */
         }
         .invalid-feedback {
             color: #dc3545;
-            display: block;
+            display: block; /* Mostrar la retroalimentación de error */
         }
     </style>
 </head>
 <body>
 
-<form method="post" action="." id="myForm">
+<form method="post" action="." id="myForm" novalidate>
     <div class="card card-default">
         <div class="card-header">
             <h3 class="card-title">
@@ -55,23 +55,10 @@
         </div>
         <div class="card-body">
             {% csrf_token %}
-            {% if form.errors %}
-            <div class="alert alert-warning alert-dismissible">
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                <h4><i class="icon fa fa-ban"></i><b>Ha ocurrido un error al intentar guardar el dato:</b></h4>
-                <ul>
-                    {% for field in form %}
-                        {% for error in field.errors %}
-                        <li>{{error}}</li>
-                        {% endfor %}
-                    {% endfor %}
-                </ul>
-            </div>
-            {% endif %}
             {% for field in form.visible_fields %}
                 <div class="form-group">
                     <label for="{{ field.id_for_label }}">{{ field.label }}:</label>
-                    {{ field|add_class:"form-control"|attr:"autocomplete:off" }}
+                    {{ field|add_class:"form-control"|add_error_class:"is-invalid"|attr:"autocomplete:off" }}
                     {% if field.errors %}
                     <div class="invalid-feedback">
                         {% for error in field.errors %}
@@ -82,136 +69,50 @@
                 </div>
             {% endfor %}
         </div>
-
         <div class="card-footer">
-            <button type="button" class="btn btn-primary btn-s" onclick="validateForm()">
+            <button type="submit" class="btn btn-primary btn-s">
                 <i class="fas fa-plus"></i> Guardar
             </button>
-            <button type="button" class="btn btn-secondary btn-s" onclick="confirmCancel()">
-                <i class="fas fa-times"></i> Cancelar 
-            </button>
+            
+            <a href="{{ listar_url }}" class="btn btn-danger btn-s">
+                <i class="fas fa-times"></i> Cancelar
+            </a>
         </div>
     </div>
 </form>
 
-<script src="{% static 'js/validateForm.js' %}"></script>
-<script>
-    function validateForm() {
-        const form = document.getElementById('myForm');
-        const formData = new FormData(form);
-        let valid = true;
-
-        
-        document.querySelectorAll('.form-control').forEach(el => el.classList.remove('is-invalid'));
-
-        
-        formData.forEach((value, key) => {
-            const field = form.querySelector(`[name="${key}"]`);
-            if (field) {
-                const fieldValue = value.trim();
-                
-                if (!fieldValue) {
-                    valid = false;
-                    field.classList.add('is-invalid');
-                    const feedback = field.nextElementSibling;
-                    if (feedback && feedback.classList.contains('invalid-feedback')) {
-                        feedback.textContent = 'Este campo es obligatorio.';
-                    }
-                }
-                
-                else if (key === 'cantidad' && parseInt(fieldValue, 10) < 0) {
-                    valid = false;
-                    field.classList.add('is-invalid');
-                    const feedback = field.nextElementSibling;
-                    if (feedback && feedback.classList.contains('invalid-feedback')) {
-                        feedback.textContent = 'El valor no puede ser negativo.';
-                    }
-                
-                }
-                else if (key === 'telefono' && parseInt(fieldValue, 10) < 0) {
-                valid = false;
-                field.classList.add('is-invalid');
-                const feedback = field.nextElementSibling;
-                if (feedback && feedback.classList.contains('invalid-feedback')) {
-                    feedback.textContent = 'El valor no puede ser negativo.';
-                    }
-
-                }
-                else if (key === 'cc_cliente' && parseInt(fieldValue, 10) < 0) {
-                valid = false;
-                field.classList.add('is-invalid');
-                const feedback = field.nextElementSibling;
-                if (feedback && feedback.classList.contains('invalid-feedback')) {
-                    feedback.textContent = 'El valor no puede ser negativo.';
-                    }
-                }
-                
-                else if (key === 'precio') {
-                    const precioValue = parseFloat(fieldValue);
-                    if (isNaN(precioValue) || precioValue <= 0) {
-                        valid = false;
-                        field.classList.add('is-invalid');
-                        const feedback = field.nextElementSibling;
-                        if (feedback && feedback.classList.contains('invalid-feedback')) {
-                            feedback.textContent = 'El precio debe ser un número positivo.';
-                        }
-                    }
-                }
-            }
-        });
-
-        if (valid) {
-            Swal.fire({
-                title: '¡Éxito!',
-                text: 'Se agregó correctamente.',
-                icon: 'success',
-                confirmButtonText: 'Aceptar',
-                confirmButtonColor: '#3085d6'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    form.submit();
-                }
-            });
-        } else {
-            Swal.fire({
-                title: 'Error!',
-                text: 'Por favor, corrija los errores en el formulario.',
-                icon: 'error',
-                confirmButtonText: 'Aceptar',
-                confirmButtonColor: '#3085d6'
-            });
-        }
-    }
-
-    function confirmCancel() {
-        Swal.fire({
-            title: '¿Está seguro que desea cancelar?',
-            text: "Los cambios no guardados se perderán.",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Sí, cancelar',
-            cancelButtonText: 'No, volver'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                window.history.back(); 
-            }
-        });
-    }
-</script>
-
-{% if form.errors %}
+<!-- Mostrar mensaje de éxito solo si se ha guardado correctamente -->
+{% if messages %}
 <script>
     Swal.fire({
-        title: 'Error!',
-        text: 'Ha ocurrido un error al intentar guardar el dato.',
-        icon: 'error',
+        title: '¡Éxito!',
+        text: '{{ success_message }}',
+        icon: 'success',
         confirmButtonText: 'Aceptar',
         confirmButtonColor: '#3085d6'
     });
 </script>
 {% endif %}
+
+<!-- Mostrar mensaje de error si hay errores en el servidor y enviarlos a SweetAlert -->
+<script>
+    const errorList = [];
+    {% for field in form %}
+        {% for error in field.errors %}
+            errorList.push("{{ field.label }}: {{ error }}");
+        {% endfor %}
+    {% endfor %}
+    
+    if (errorList.length > 0) {
+        Swal.fire({
+            title: 'Error',
+            html: '<ul>' + errorList.map(error => '<li>' + error + '</li>').join('') + '</ul>',
+            icon: 'error',
+            confirmButtonText: 'Aceptar',
+            confirmButtonColor: '#3085d6'
+        });
+    }
+</script>
 
 </body>
 </html>
