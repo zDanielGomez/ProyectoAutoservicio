@@ -1,0 +1,73 @@
+{% extends 'listar.html' %}
+{% block filtro_form_contenido %} 
+<form method="GET" action="">
+    <div class="form-group">
+        <label for="estado">Tipo Documento:</label>
+        <select name="tipo_documento" id="tipo_documento" class="form-control">
+            <option value="">Todos</option>
+            <option value="CC" {% if request.GET.tipo_documento == "CC" %}selected{% endif %}>CC</option>
+            <option value="CE" {% if request.GET.tipo_documento == "CE" %}selected{% endif %}>CE</option>
+            <option value="PSP" {% if request.GET.tipo_documento == "PSP" %}selected{% endif %}>PSP</option>
+            <option value="TI" {% if request.GET.tipo_documento == "TI" %}selected{% endif %}>TI</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="nit">Numeró Documento:</label>
+        <input type="number" name="cc_cliente" id="cc_cliente" class="form-control" value="{{ request.GET.cc_cliente }}">
+    </div>
+    <div class="form-group">
+        <label for="nombre">Nombres:</label>
+        <input type="text" name="nombres" id="nombres" class="form-control" value="{{ request.GET.nombres }}">
+    </div>
+    <div class="form-group">
+        <label for="marcas">Apellidos:</label>
+        <input type="text" name="apellidos" id="apellidos" class="form-control" value="{{ request.GET.apellidos }}">
+    </div>
+    <div class="form-group">
+        <label for="telefono">Telefono:</label>
+        <input type="number" name="telefono" id="telefono" class="form-control" value="{{ request.GET.telefono }}">
+    </div>
+    <div class="form-group">
+        <label for="estado">Estado:</label>
+        <select name="estado" id="estado" class="form-control">
+            <option value="">Todos</option>
+            <option value="Activo" {% if request.GET.estado == "Activo" %}selected{% endif %}>Activo</option>
+            <option value="Inactivo" {% if request.GET.estado == "Inactivo" %}selected{% endif %}>Inactivo</option>
+        </select>
+    </div>
+</form>
+{%endblock%}
+{% block columnas %}
+<tr>
+    <th scope="col">#</th>
+    <th scope="col">Tipo Documento</th>
+    <th scope="col">Número Documento</th>
+    <th scope="col">Nombre</th>
+    <th scope="col">Apellidos</th>
+    <th scope="col">Telefono</th>
+    <th scope="col">Estado</th>
+    <th scope="col">Opciones</th>
+</tr>
+{% endblock %}
+
+
+{% block filas %}
+{% for c in object_list %}
+
+    <tr>
+    <td>{{c.id}}</td>
+    <td>{{c.tipo_documento}}</td>
+    <td>{{c.cc_cliente}}</td>
+    <td>{{c.nombres}}</td>
+    <td>{{c.apellidos}}</td>
+    <td>{{c.telefono}}</td>
+    <td>{{ c.estado }}</td>
+    <td>
+        <a href="{% url 'app:cliente_editar' c.id%}" type="button" class="btn btn-warning btn-xs btn-flat"><i class="fas fa-edit" title="Editar elemento"></i></a>
+        <a href="{% url 'app:cliente_eliminar' c.id%}" type="button" class="btn btn-danger btn-xs btn-flat"><i class="fas fa-trash-alt" title="Eliminar elemento"></i></a>
+    </td>
+</tr>
+
+{% endfor %}
+
+{% endblock %}

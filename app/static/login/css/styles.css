@@ -1,0 +1,93 @@
+body {
+  height: 100vh;
+  overflow: hidden;
+  font-family: "Poppins";
+  background: #0e2941;
+}
+
+.login-page {
+  width: 100%; /* Para que se ajuste en pantallas pequeñas */
+  padding: 8% 0 0;
+  margin: auto;
+}
+
+.alert p {
+  color: #ff0000;
+  font-weight: bold; /* Negrilla */
+}
+
+.form {
+  position: relative;
+  z-index: 1;
+  background: #FFFFFF;
+  max-width: 320px; /* Hacemos el formulario más pequeño */
+  margin: 0 auto 100px;
+  padding: 35px; /* Reducimos ligeramente el padding */
+  text-align: center;
+  border-radius: 15px;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+
+.form input {
+  font-family: "Poppins", sans-serif;
+  outline: 0;
+  background: #f2f2f2;
+  width: 100%;
+  border: 0;
+  border-radius: 7px;
+  margin: 0 0 12px; /* Reducimos un poco el margen entre los inputs */
+  padding: 12px; /* Reducimos un poco el padding de los inputs */
+  box-sizing: border-box;
+  font-size: 13px; /* Reducimos ligeramente el tamaño del texto */
+}
+
+.form button {
+  font-family: "Poppins", sans-serif;
+  text-transform: uppercase;
+  outline: 0;
+  background: #234666;
+  width: 100%;
+  border: 0;
+  padding: 12px; /* Hacemos los botones más pequeños */
+  color: #FFFFFF;
+  border-radius: 7px;
+  font-size: 13px; /* Reducimos ligeramente el tamaño del texto del botón */
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.form button:hover, .form button:active, .form button:focus {
+  background: #0e2941;
+}
+
+.form .message {
+  margin: 10px 0 0;
+  color: #b3b3b3;
+  font-size: 12px;
+}
+
+.form .message a {
+  color: #234666;
+  text-decoration: none;
+}
+
+.form .register-form {
+  display: none;
+}
+
+/* latin-ext */
+@font-face {
+font-family: 'Poppins';
+font-style: normal;
+font-weight: 300;
+src: url(https://fonts.gstatic.com/s/poppins/v21/pxiByp8kv8JHgFVrLDz8Z1JlFc-K.woff2) format('woff2');
+unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+font-family: 'Poppins';
+font-style: normal;
+font-weight: 300;
+src: url(https://fonts.gstatic.com/s/poppins/v21/pxiByp8kv8JHgFVrLDz8Z1xlFQ.woff2) format('woff2');
+unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
